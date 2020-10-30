@@ -73,7 +73,7 @@ private:
 
     // Widgets
     QStackedWidget *centralStackedWidget;
-    Dashboard *dashBoardWidget;
+    Dashboard *dashboardWidget;
     QWidget *germanyContentWidget;
     QWidget *worldContentWidget;
     QWidget *americaContentWidget;

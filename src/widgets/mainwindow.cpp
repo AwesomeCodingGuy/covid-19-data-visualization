@@ -84,9 +84,9 @@ void MainWindow::initWidgets()
     centralStackedWidget = new QStackedWidget();
     this->setCentralWidget(centralStackedWidget);
 
-    dashBoardWidget = new Dashboard(appSettings);
+    dashboardWidget = new Dashboard(appSettings);
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::Dashboard),
-                                       dashBoardWidget);
+                                       dashboardWidget);
     germanyContentWidget = new QWidget();
     germanyContentWidget->setStyleSheet("Background-color: #000000");
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::Germany),
