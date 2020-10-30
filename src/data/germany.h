@@ -63,6 +63,11 @@ public:
     Germany();
     ~Germany();
 
+    State* getStateByName(const QString &state);
+    State* getStateByCode(const QString &code);
+    District* getDistrictByAgs(const QString &ags);
+    District* getDistrictByAgs(int ags);
+
     bool loadData(const QString &folder);
 
 private:

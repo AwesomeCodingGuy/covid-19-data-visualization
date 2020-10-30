@@ -16,6 +16,44 @@ Germany::~Germany()
 
 }
 
+State* Germany::getStateByName(const QString &state)
+{
+    if(!data.states.empty()) {
+        for(auto it = data.states.begin(); it != data.states.end(); ++it) {
+            if(it->name == state)
+                return it;
+        }
+    }
+
+    return nullptr;
+}
+
+State* Germany::getStateByCode(const QString &code)
+{
+    if(!data.states.empty()) {
+        for(auto it = data.states.begin(); it != data.states.end(); ++it) {
+            if(it->code == code)
+                return it;
+        }
+    }
+
+    return nullptr;
+}
+
+District* Germany::getDistrictByAgs(const QString &ags)
+{
+    return getDistrictByAgs(ags.toInt());
+}
+
+District* Germany::getDistrictByAgs(int ags)
+{
+    if(data.districtMap.contains(ags)) {
+        return data.districtMap.value(ags);
+    } else {
+        return nullptr;
+    }
+}
+
 bool Germany::loadData(const QString &folder)
 {
     qDebug() << "Loading data: " << folder;
