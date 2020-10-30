@@ -23,6 +23,8 @@ signals:
 private slots:
     void selectGermanyFolder();
     void selectJhuFolder();
+    void germanyFolderChanged(const QString &text);
+    void jhuFolderChanged(const QString &text);
 
 private:
     AppSettings &appSettings;
@@ -40,6 +42,8 @@ private:
     QPushButton *jhuDataSearchPathButton;
 
     QLabel *infoLabel;
+
+    QPushButton *loadDataButton;
 };
 
 #endif // DASHBOARD_H

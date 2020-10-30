@@ -37,6 +37,8 @@ void Dashboard::initWidgets()
     if(!appSettings.germanyDataPath.isNull()) {
         germanyDataLineEdit->setText(appSettings.germanyDataPath);
     }
+    connect(germanyDataLineEdit, &QLineEdit::textChanged,
+            this, &Dashboard::germanyFolderChanged);
     germanyDataSearchPathButton = new QPushButton(tr("..."));
     connect(germanyDataSearchPathButton, &QPushButton::clicked,
             this, &Dashboard::selectGermanyFolder);
@@ -53,6 +55,8 @@ void Dashboard::initWidgets()
     if(!appSettings.jhuDataPath.isNull()) {
         jhuDataLineEdit->setText(appSettings.jhuDataPath);
     }
+    connect(jhuDataLineEdit, &QLineEdit::textChanged,
+            this, &Dashboard::jhuFolderChanged);
     jhuDataSearchPathButton = new QPushButton(tr("..."));
     connect(jhuDataSearchPathButton, &QPushButton::clicked,
             this, &Dashboard::selectJhuFolder);
@@ -62,6 +66,8 @@ void Dashboard::initWidgets()
                               "Die Daten müssen derzeit täglich händisch aktualisiert werden."));
     infoLabel->setWordWrap(true);
     infoLabel->setTextFormat(Qt::RichText);
+
+    loadDataButton = new QPushButton(tr("Daten laden"));
 
     // build the layout
     gLayout->addWidget(germanyDataLabel, 0, 0);
@@ -75,7 +81,8 @@ void Dashboard::initWidgets()
     gLayout->addWidget(jhuDataSearchPathButton, 4, 1);
 
     gLayout->addWidget(infoLabel, 6, 2);
-    gLayout->addItem(new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding), 7, 0, 1, 3);
+    gLayout->addWidget(loadDataButton, 7, 2);
+    gLayout->addItem(new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Expanding), 8, 0, 1, 3);
 
     setLayout(gLayout);
 }
@@ -87,7 +94,6 @@ void Dashboard::selectGermanyFolder()
                                                     "C:\\",
                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     germanyDataLineEdit->setText(dir);
-    appSettings.germanyDataPath = dir;
 }
 
 void Dashboard::selectJhuFolder()
@@ -97,6 +103,14 @@ void Dashboard::selectJhuFolder()
                                                     "C:\\",
                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     jhuDataLineEdit->setText(dir);
-    appSettings.jhuDataPath = dir;
 }
 
+void Dashboard::germanyFolderChanged(const QString &text)
+{
+    appSettings.germanyDataPath = text;
+}
+
+void Dashboard::jhuFolderChanged(const QString &text)
+{
+    appSettings.jhuDataPath = text;
+}
