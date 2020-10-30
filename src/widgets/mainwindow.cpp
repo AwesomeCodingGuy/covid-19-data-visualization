@@ -55,6 +55,11 @@ void MainWindow::about()
     qDebug() << "Not yet implemented";
 }
 
+void MainWindow::loadData()
+{
+    bool ret = covidData.loadGermanData(appSettings.germanyDataPath);
+}
+
 void MainWindow::readSettings()
 {
     // load settings
@@ -87,6 +92,9 @@ void MainWindow::initWidgets()
     dashboardWidget = new Dashboard(appSettings);
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::Dashboard),
                                        dashboardWidget);
+    connect(dashboardWidget, &Dashboard::sigLoadData,
+            this, &MainWindow::loadData);
+
     germanyContentWidget = new QWidget();
     germanyContentWidget->setStyleSheet("Background-color: #000000");
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::Germany),

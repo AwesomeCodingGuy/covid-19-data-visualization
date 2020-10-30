@@ -10,12 +10,18 @@ CONFIG += c++11
 
 SOURCES += \
     src/data/appsettings.cpp \
+    src/data/coviddata.cpp \
+    src/data/germany.cpp \
     src/main.cpp \
     src/widgets/dashboard.cpp \
     src/widgets/mainwindow.cpp
 
 HEADERS += \
     src/data/appsettings.h \
+    src/data/casedata.h \
+    src/data/countrycode.h \
+    src/data/coviddata.h \
+    src/data/germany.h \
     src/widgets/dashboard.h \
     src/widgets/mainwindow.h
 
@@ -23,3 +29,6 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    data/data.qrc

@@ -5,6 +5,7 @@
 #include <QMap>
 
 #include "../data/appsettings.h"
+#include "../data/coviddata.h"
 
 class QSettings;
 class QMenu;
@@ -39,6 +40,7 @@ public slots:
 private slots:
     void switchView(QAction *action);
     void about();
+    void loadData();
 
 private:
     void readSettings();
@@ -49,6 +51,7 @@ private:
     bool userReallyWantsToQuit();
 
     AppSettings appSettings;
+    CovidData covidData;
 
     // Menus
     QMenu *fileMenu;

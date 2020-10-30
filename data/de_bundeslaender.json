@@ -1,0 +1,87 @@
+{
+    "id": 278,
+    "name": "Deutschland",
+    "code": "DE",
+    "states": [
+        {
+            "id": 1,
+            "name": "Schleswig-Holstein",
+            "code": "DE-SH"
+        },
+        {
+            "id": 2,
+            "name": "Hamburg",
+            "code": "DE-HH"
+        },
+        {
+            "id": 3,
+            "name": "Niedersachsen",
+            "code": "DE-NI"
+        },
+        {
+            "id": 4,
+            "name": "Bremen",
+            "code": "DE-HB"
+        },
+        {
+            "id": 5,
+            "name": "Nordrhein-Westfalen",
+            "code": "DE-NW"
+        },
+        {
+            "id": 6,
+            "name": "Hessen",
+            "code": "DE-HE"
+        },
+        {
+            "id": 7,
+            "name": "Rheinland-Pfalz",
+            "code": "DE-RP"
+        },
+        {
+            "id": 8,
+            "name": "Baden-Württemberg",
+            "code": "DE-BW"
+        },
+        {
+            "id": 9,
+            "name": "Bayern",
+            "code": "DE-BY"
+        },
+        {
+            "id": 10,
+            "name": "Saarland",
+            "code": "DE-SL"
+        },
+        {
+            "id": 11,
+            "name": "Berlin",
+            "code": "DE-BE"
+        },
+        {
+            "id": 12,
+            "name": "Brandenburg",
+            "code": "DE-BB"
+        },
+        {
+            "id": 13,
+            "name": "Mecklenburg-Vorpommern",
+            "code": "DE-MV"
+        },
+        {
+            "id": 14,
+            "name": "Sachsen",
+            "code": "DE-SN"
+        },
+        {
+            "id": 15,
+            "name": "Sachsen-Anhalt",
+            "code": "DE-ST"
+        },
+        {
+            "id": 16,
+            "name": "Thüringen",
+            "code": "DE-TH"
+        }
+    ]
+}

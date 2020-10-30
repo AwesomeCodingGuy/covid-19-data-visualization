@@ -68,6 +68,8 @@ void Dashboard::initWidgets()
     infoLabel->setTextFormat(Qt::RichText);
 
     loadDataButton = new QPushButton(tr("Daten laden"));
+    connect(loadDataButton, &QPushButton::clicked,
+            this, &Dashboard::sigLoadData);
 
     // build the layout
     gLayout->addWidget(germanyDataLabel, 0, 0);

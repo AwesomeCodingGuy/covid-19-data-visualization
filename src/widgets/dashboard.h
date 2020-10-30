@@ -19,6 +19,7 @@ public:
     void initWidgets();
 
 signals:
+    void sigLoadData();
 
 private slots:
     void selectGermanyFolder();
