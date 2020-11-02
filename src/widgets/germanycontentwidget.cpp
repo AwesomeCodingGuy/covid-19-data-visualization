@@ -1,6 +1,7 @@
 #include "germanycontentwidget.h"
 
 #include "../models/germanydatatreemodel.h"
+#include "chartwidget.h"
 
 #include <QDebug>
 #include <QComboBox>
@@ -10,14 +11,15 @@
 #include <QStackedWidget>
 #include <QBoxLayout>
 #include <QHeaderView>
+#include <QMessageBox>
 
 GermanyContentWidget::GermanyContentWidget(QWidget *parent)
     : QWidget(parent)
 {
     // build left splitter part
     contentSelectCombo = new QComboBox();
-    contentSelectCombo->addItem("Charts", 0);
-    contentSelectCombo->addItem("Karte", 1);
+    contentSelectCombo->addItem(tr("Diagramme"), 0);
+    contentSelectCombo->addItem(tr("Karte"), 1);
 
     treeView = new QTreeView();
     treeView->setIndentation(10);
@@ -36,6 +38,7 @@ GermanyContentWidget::GermanyContentWidget(QWidget *parent)
 
     // build right splitter part
     tabWidget = new QTabWidget;
+    tabWidget->setTabsClosable(true);
     mapWidget = new QWidget;
     contentStackedWidget = new QStackedWidget();
     contentStackedWidget->insertWidget(0, tabWidget);
@@ -54,6 +57,10 @@ GermanyContentWidget::GermanyContentWidget(QWidget *parent)
     // make connections
     connect(contentSelectCombo, SIGNAL(currentIndexChanged(int)),
             contentStackedWidget, SLOT(setCurrentIndex(int)));
+    connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(addNewChart(const QModelIndex &)));
+    connect(tabWidget, SIGNAL(tabCloseRequested(int)),
+            tabWidget, SLOT(removeTab(int)));
 }
 
 bool GermanyContentWidget::loadGermanData(const QString &folder)
@@ -71,4 +78,37 @@ bool GermanyContentWidget::loadGermanData(const QString &folder)
     }
 
     return ret;
+}
+
+void GermanyContentWidget::addNewChart(const QModelIndex &index)
+{
+    if(contentSelectCombo->currentIndex() == 0) {
+        QVector<QVariant> rowData = model->rowData(index, Qt::DisplayRole);
+
+        QVector<QDateTime> timestamps;
+        CaseData data;
+
+        QString code = "";
+        if(!rowData[1].isNull()) {
+            code = rowData[1].toString();
+        } else if(!rowData[2].isNull()) {
+            code = rowData[2].toString();
+        }
+
+        if(!germany.getCaseDataByCode(code, data, timestamps)) {
+            QMessageBox::information(this, tr("Error"),
+                                     tr("Der Datensatz ist fehlerhaft. Das Diagramm kann nicht geladen werden."));
+            return;
+        }
+
+        if(data.cases.isEmpty()) {
+            QMessageBox::information(this, tr("Information"),
+                                     tr("Der Datensatz ist leer. Das Diagramm kann nicht geladen werden."));
+            return;
+        }
+
+        // Add Chart to QTabWidget
+        ChartWidget *chartWidget = new ChartWidget(timestamps, data);
+        tabWidget->addTab(chartWidget, rowData[0].toString());
+    }
 }

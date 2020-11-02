@@ -261,7 +261,7 @@ bool Germany::readCsvByState(QString filename, FileType fileType)
         if(fileType == FileType::Cases) {
             s->data.casesCumulated = data[i];
             s->data.cases = calculateIncrease(data[i]);
-            s->data.casesSevenDayAverage = calculateAveragedIncrease(data[i]);
+            s->data.casesSevenDayAverage = calculateAveragedIncrease(s->data.cases);
         } else {
             s->data.deathsCumulated = data[i];
             s->data.deaths = calculateIncrease(data[i]);
@@ -270,7 +270,7 @@ bool Germany::readCsvByState(QString filename, FileType fileType)
     if(fileType == FileType::Cases) {
         country.data.casesCumulated = data[dataSize - 1];
         country.data.cases = calculateIncrease(data[dataSize - 1]);
-        country.data.casesSevenDayAverage = calculateAveragedIncrease(data[dataSize - 1]);
+        country.data.casesSevenDayAverage = calculateAveragedIncrease(country.data.cases);
     } else {
         country.data.deathsCumulated = data[dataSize - 1];
         country.data.deaths = calculateIncrease(data[dataSize - 1]);
@@ -320,7 +320,7 @@ bool Germany::readCsvByAgs(QString filename, FileType fileType)
         if(fileType == FileType::Cases) {
             d->data.casesCumulated = data[i];
             d->data.cases = calculateIncrease(data[i]);
-            d->data.casesSevenDayAverage = calculateAveragedIncrease(data[i]);
+            d->data.casesSevenDayAverage = calculateAveragedIncrease(d->data.cases);
         } else {
             d->data.deathsCumulated = data[i];
             d->data.deaths = calculateIncrease(data[i]);
@@ -359,9 +359,9 @@ QVector<float> Germany::calculateAveragedIncrease(const QVector<int> &in)
         out[i] = cumulatedValues / static_cast<float>(i + 1);
     }
 
-    // calculate all foloowing values
+    // calculate all following values
     for(int i = 7; i < in.size(); ++i) {
-        cumulatedValues += in[i] - in[i - 7];
+        cumulatedValues = cumulatedValues + in[i] - in[i - 7];
         out[i] = cumulatedValues / 7.0f;
     }
 

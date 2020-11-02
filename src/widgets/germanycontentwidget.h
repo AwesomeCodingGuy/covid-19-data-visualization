@@ -16,10 +16,15 @@ class GermanyDataTreeModel;
 
 class GermanyContentWidget : public QWidget
 {
+    Q_OBJECT
+
 public:
     GermanyContentWidget(QWidget *parent = nullptr);
 
     bool loadGermanData(const QString &folder);
+
+public slots:
+    void addNewChart(const QModelIndex &index);
 
 private:
     QWidget *leftTopLevelWidget;

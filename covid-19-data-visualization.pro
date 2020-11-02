@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,8 +14,10 @@ SOURCES += \
     src/main.cpp \
     src/models/germanydatatreemodel.cpp \
     src/models/treeitem.cpp \
+    src/widgets/chartwidget.cpp \
     src/widgets/dashboard.cpp \
     src/widgets/germanycontentwidget.cpp \
+    src/widgets/germanymapwidget.cpp \
     src/widgets/mainwindow.cpp
 
 HEADERS += \
@@ -25,8 +27,10 @@ HEADERS += \
     src/data/germany.h \
     src/models/germanydatatreemodel.h \
     src/models/treeitem.h \
+    src/widgets/chartwidget.h \
     src/widgets/dashboard.h \
     src/widgets/germanycontentwidget.h \
+    src/widgets/germanymapwidget.h \
     src/widgets/mainwindow.h
 
 # Default rules for deployment.
