@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "dashboard.h"
+#include "germanycontentwidget.h"
 
 #include <QSettings>
 #include <QDebug>
@@ -57,7 +58,10 @@ void MainWindow::about()
 
 void MainWindow::loadData()
 {
-    bool ret = covidData.loadGermanData(appSettings.germanyDataPath);
+    bool ret = germanyContentWidget->loadGermanData(appSettings.germanyDataPath);
+    germanyViewAction->setEnabled(ret);
+
+    qDebug() << "Loaded: " << ret;
 }
 
 void MainWindow::readSettings()
@@ -95,8 +99,7 @@ void MainWindow::initWidgets()
     connect(dashboardWidget, &Dashboard::sigLoadData,
             this, &MainWindow::loadData);
 
-    germanyContentWidget = new QWidget();
-    germanyContentWidget->setStyleSheet("Background-color: #000000");
+    germanyContentWidget = new GermanyContentWidget();
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::Germany),
                                        germanyContentWidget);
     worldContentWidget = new QWidget();
@@ -122,10 +125,13 @@ void MainWindow::createActions()
     dashboardViewAction->setCheckable(true);
     germanyViewAction = new QAction(tr("&Deutschland"));
     germanyViewAction->setCheckable(true);
+    germanyViewAction->setEnabled(false);
     worldViewAction = new QAction(tr("&Welt"));
     worldViewAction->setCheckable(true);
+    worldViewAction->setEnabled(false);
     americaViewAction = new QAction(tr("&Amerika"));
     americaViewAction->setCheckable(true);
+    americaViewAction->setEnabled(false);
 
     // Help menu
     aboutAction = new QAction(tr("&Über"));

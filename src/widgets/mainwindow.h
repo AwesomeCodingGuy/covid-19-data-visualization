@@ -5,7 +5,6 @@
 #include <QMap>
 
 #include "../data/appsettings.h"
-#include "../data/coviddata.h"
 
 class QSettings;
 class QMenu;
@@ -16,6 +15,7 @@ class QStackedWidget;
 
 class Dashboard;
 class AppSettings;
+class GermanyContentWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -51,7 +51,6 @@ private:
     bool userReallyWantsToQuit();
 
     AppSettings appSettings;
-    CovidData covidData;
 
     // Menus
     QMenu *fileMenu;
@@ -77,7 +76,7 @@ private:
     // Widgets
     QStackedWidget *centralStackedWidget;
     Dashboard *dashboardWidget;
-    QWidget *germanyContentWidget;
+    GermanyContentWidget *germanyContentWidget;
     QWidget *worldContentWidget;
     QWidget *americaContentWidget;
 };

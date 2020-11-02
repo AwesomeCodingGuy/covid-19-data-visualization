@@ -10,19 +10,23 @@ CONFIG += c++11
 
 SOURCES += \
     src/data/appsettings.cpp \
-    src/data/coviddata.cpp \
     src/data/germany.cpp \
     src/main.cpp \
+    src/models/germanydatatreemodel.cpp \
+    src/models/treeitem.cpp \
     src/widgets/dashboard.cpp \
+    src/widgets/germanycontentwidget.cpp \
     src/widgets/mainwindow.cpp
 
 HEADERS += \
     src/data/appsettings.h \
     src/data/casedata.h \
     src/data/countrycode.h \
-    src/data/coviddata.h \
     src/data/germany.h \
+    src/models/germanydatatreemodel.h \
+    src/models/treeitem.h \
     src/widgets/dashboard.h \
+    src/widgets/germanycontentwidget.h \
     src/widgets/mainwindow.h
 
 # Default rules for deployment.
