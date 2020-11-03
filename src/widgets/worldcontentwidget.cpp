@@ -1,6 +1,6 @@
-#include "germanycontentwidget.h"
+#include "worldcontentwidget.h"
 
-#include "../models/germanydatatreemodel.h"
+#include "../models/worlddatatreemodel.h"
 #include "chartwidget.h"
 
 #include <QDebug>
@@ -13,7 +13,7 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-GermanyContentWidget::GermanyContentWidget(QWidget *parent)
+WorldContentWidget::WorldContentWidget(QWidget *parent)
     : QWidget(parent)
 {
     // build left splitter part
@@ -63,14 +63,13 @@ GermanyContentWidget::GermanyContentWidget(QWidget *parent)
             this, SLOT(removeTab(int)));
 }
 
-bool GermanyContentWidget::loadGermanData(const QString &folder)
+bool WorldContentWidget::loadWorldData(const QString &folder)
 {
-    // load data
-    bool ret = germany.loadData(folder);
+    bool ret = world.loadData(folder);
 
     // if data load was successfully load the tree model into the view
     if(ret) {
-        model = new GermanyDataTreeModel(germany.getCountryData());
+        model = new WorldDataTreeModel(world);
         treeView->setModel(model);
         treeView->header()->resizeSection(0, 240);
         treeView->header()->resizeSection(1, 50);
@@ -80,27 +79,20 @@ bool GermanyContentWidget::loadGermanData(const QString &folder)
     return ret;
 }
 
-void GermanyContentWidget::removeTab(int index)
+void WorldContentWidget::removeTab(int index)
 {
     tabWidget->removeTab(index);
 }
 
-void GermanyContentWidget::addNewChart(const QModelIndex &index)
+void WorldContentWidget::addNewChart(const QModelIndex &index)
 {
     if(contentSelectCombo->currentIndex() == 0) {
-        QVector<QVariant> rowData = model->rowData(index, Qt::DisplayRole);
+        QPair<QString, QString> keyData = model->key(index, Qt::DisplayRole);
 
         QVector<QDateTime> timestamps;
         CaseData data;
 
-        QString code = "";
-        if(!rowData[1].isNull()) {
-            code = rowData[1].toString();
-        } else if(!rowData[2].isNull()) {
-            code = rowData[2].toString();
-        }
-
-        if(!germany.getCaseDataByCode(code, data, timestamps)) {
+        if(!world.getCaseDataByName(keyData.first, keyData.second, data, timestamps)) {
             QMessageBox::information(this, tr("Error"),
                                      tr("Der Datensatz ist fehlerhaft. Das Diagramm kann nicht geladen werden."));
             return;
@@ -114,7 +106,9 @@ void GermanyContentWidget::addNewChart(const QModelIndex &index)
 
         // Add Chart to QTabWidget
         ChartWidget *chartWidget = new ChartWidget(timestamps, data);
-        int newIndex = tabWidget->addTab(chartWidget, rowData[0].toString());
+        int newIndex = tabWidget->addTab(chartWidget, (keyData.second.isEmpty()
+                                                           ? keyData.first
+                                                           : keyData.second));
         tabWidget->setCurrentIndex(newIndex);
     }
 }

@@ -1,9 +1,9 @@
-#ifndef GERMANYCONTENTWIDGET_H
-#define GERMANYCONTENTWIDGET_H
+#ifndef WORLDCONTENTWIDGET_H
+#define WORLDCONTENTWIDGET_H
 
 #include <QWidget>
 
-#include "../data/germany.h"
+#include "../data/world.h"
 
 class QComboBox;
 class QTreeView;
@@ -12,20 +12,21 @@ class QStackedWidget;
 class QTabWidget;
 class QAbstractItemModel;
 
-class GermanyDataTreeModel;
+class WorldDataTreeModel;
 
-class GermanyContentWidget : public QWidget
+class WorldContentWidget : public QWidget
 {
     Q_OBJECT
-
 public:
-    GermanyContentWidget(QWidget *parent = nullptr);
+    explicit WorldContentWidget(QWidget *parent = nullptr);
 
-    bool loadGermanData(const QString &folder);
+    bool loadWorldData(const QString &folder);
 
 public slots:
     void removeTab(int index);
     void addNewChart(const QModelIndex &index);
+
+signals:
 
 private:
     QWidget *leftTopLevelWidget;
@@ -36,9 +37,10 @@ private:
     QComboBox *contentSelectCombo;
     QWidget *mapWidget;
 
-    GermanyDataTreeModel *model;
+    WorldDataTreeModel *model;
 
-    germany::Germany germany;
+    world::World world;
+
 };
 
-#endif // GERMANYCONTENTWIDGET_H
+#endif // WORLDCONTENTWIDGET_H

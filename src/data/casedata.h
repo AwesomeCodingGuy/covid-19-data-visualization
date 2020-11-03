@@ -10,6 +10,11 @@ struct CaseData
     QVector<float> casesSevenDayAverage;
     QVector<int> deathsCumulated;
     QVector<int> deaths;
+
+    void clear();
+    void fill(int value, int count);
 };
+
+void addCaseData(CaseData &sourceAndResult, const CaseData &source2);
 
 #endif // CASEDATA_H

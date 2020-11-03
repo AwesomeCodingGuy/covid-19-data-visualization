@@ -107,10 +107,10 @@ void ChartWidget::initDailyChart()
     // init series
     QtCharts::QLineSeries *sCases = new QtCharts::QLineSeries();
     sCases->setPen(pen_1);
-    sCases->setName(tr("Kumulierte Fälle"));
+    sCases->setName(tr("Fälle"));
     QtCharts::QLineSeries *sDeaths = new QtCharts::QLineSeries();
     sDeaths->setPen(pen_2);
-    sDeaths->setName(tr("Kumulierte Todesfälle"));
+    sDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAverage = new QtCharts::QLineSeries();
     sAverage->setPen(pen_3);
     sAverage->setName(tr("Fälle 7-Tage Mittelwert"));
