@@ -10,28 +10,39 @@ CONFIG += c++11
 
 SOURCES += \
     src/data/appsettings.cpp \
+    src/data/casedata.cpp \
     src/data/germany.cpp \
+    src/data/world.cpp \
     src/main.cpp \
     src/models/germanydatatreemodel.cpp \
     src/models/treeitem.cpp \
+    src/models/worlddatatreemodel.cpp \
+    src/models/worldtreeitem.cpp \
+    src/utils/utility.cpp \
     src/widgets/chartwidget.cpp \
     src/widgets/dashboard.cpp \
     src/widgets/germanycontentwidget.cpp \
     src/widgets/germanymapwidget.cpp \
-    src/widgets/mainwindow.cpp
+    src/widgets/mainwindow.cpp \
+    src/widgets/worldcontentwidget.cpp
 
 HEADERS += \
     src/data/appsettings.h \
     src/data/casedata.h \
     src/data/countrycode.h \
     src/data/germany.h \
+    src/data/world.h \
     src/models/germanydatatreemodel.h \
     src/models/treeitem.h \
+    src/models/worlddatatreemodel.h \
+    src/models/worldtreeitem.h \
+    src/utils/utility.h \
     src/widgets/chartwidget.h \
     src/widgets/dashboard.h \
     src/widgets/germanycontentwidget.h \
     src/widgets/germanymapwidget.h \
-    src/widgets/mainwindow.h
+    src/widgets/mainwindow.h \
+    src/widgets/worldcontentwidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

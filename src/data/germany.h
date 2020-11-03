@@ -90,9 +90,6 @@ private:
     bool readCsvByState(QString filename, FileType fileType);
     bool readCsvByAgs(QString filename, FileType fileType);
 
-    QVector<int> calculateIncrease(const QVector<int> &cumulatedIn);
-    QVector<float> calculateAveragedIncrease(const QVector<int> &cumulatedIn);
-
     Country country;
 };
 

@@ -15,6 +15,7 @@ class QStackedWidget;
 
 class Dashboard;
 class AppSettings;
+class WorldContentWidget;
 class GermanyContentWidget;
 
 class MainWindow : public QMainWindow
@@ -77,7 +78,7 @@ private:
     QStackedWidget *centralStackedWidget;
     Dashboard *dashboardWidget;
     GermanyContentWidget *germanyContentWidget;
-    QWidget *worldContentWidget;
+    WorldContentWidget *worldContentWidget;
     QWidget *americaContentWidget;
 };
 #endif // MAINWINDOW_H

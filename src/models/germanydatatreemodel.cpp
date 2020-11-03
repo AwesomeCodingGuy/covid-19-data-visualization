@@ -5,7 +5,7 @@
 GermanyDataTreeModel::GermanyDataTreeModel(const germany::Country &data, QObject *parent)
     : QAbstractItemModel(parent)
 {
-    rootItem = new TreeItem({"Name", "Code", "AGS"});
+    rootItem = new TreeItem({tr("Name"), tr("Code"), tr("AGS")});
     setupModelData(data, rootItem);
 }
 

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "dashboard.h"
 #include "germanycontentwidget.h"
+#include "worldcontentwidget.h"
 
 #include <QSettings>
 #include <QDebug>
@@ -60,8 +61,11 @@ void MainWindow::loadData()
 {
     bool ret = germanyContentWidget->loadGermanData(appSettings.germanyDataPath);
     germanyViewAction->setEnabled(ret);
+    qDebug() << "Germany load: " << ret;
 
-    qDebug() << "Loaded: " << ret;
+    ret = worldContentWidget->loadWorldData(appSettings.jhuDataPath);
+    worldViewAction->setEnabled(ret);
+    qDebug() << "World load: " << ret;
 }
 
 void MainWindow::readSettings()
@@ -102,8 +106,7 @@ void MainWindow::initWidgets()
     germanyContentWidget = new GermanyContentWidget();
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::Germany),
                                        germanyContentWidget);
-    worldContentWidget = new QWidget();
-    worldContentWidget->setStyleSheet("Background-color: #00ff00");
+    worldContentWidget = new WorldContentWidget();
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::World),
                                        worldContentWidget);
     americaContentWidget = new QWidget();

@@ -1,4 +1,5 @@
 #include "germany.h"
+#include "../utils/utility.h"
 
 #include <QFile>
 #include <QDebug>
@@ -333,39 +334,6 @@ bool Germany::readCsvByAgs(QString filename, FileType fileType)
     }
 
     return true;
-}
-
-QVector<int> Germany::calculateIncrease(const QVector<int> &cumulatedIn)
-{
-    QVector<int> out(cumulatedIn.size());
-
-    out[0] = cumulatedIn[0];
-    for(int i = 1; i < cumulatedIn.size(); ++i) {
-        out[i] = cumulatedIn[i] - cumulatedIn[i-1];
-    }
-
-    return out;
-}
-
-QVector<float> Germany::calculateAveragedIncrease(const QVector<int> &in)
-{
-    // init out vector
-    QVector<float> out(in.size());
-
-    // init first 7 values
-    int cumulatedValues = 0;
-    for(int i = 0; i < 7 && i < in.size(); ++i) {
-        cumulatedValues += in[i];
-        out[i] = cumulatedValues / static_cast<float>(i + 1);
-    }
-
-    // calculate all following values
-    for(int i = 7; i < in.size(); ++i) {
-        cumulatedValues = cumulatedValues + in[i] - in[i - 7];
-        out[i] = cumulatedValues / 7.0f;
-    }
-
-    return out;
 }
 
 } // namespace germany
