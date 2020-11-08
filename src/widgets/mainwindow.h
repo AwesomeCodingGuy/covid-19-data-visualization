@@ -17,6 +17,7 @@ class Dashboard;
 class AppSettings;
 class WorldContentWidget;
 class GermanyContentWidget;
+class UsaContentWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -67,7 +68,7 @@ private:
     QAction *dashboardViewAction;
     QAction *germanyViewAction;
     QAction *worldViewAction;
-    QAction *americaViewAction;
+    QAction *usaViewAction;
 
     QAction *aboutAction;
 
@@ -79,6 +80,6 @@ private:
     Dashboard *dashboardWidget;
     GermanyContentWidget *germanyContentWidget;
     WorldContentWidget *worldContentWidget;
-    QWidget *americaContentWidget;
+    UsaContentWidget *usaContentWidget;
 };
 #endif // MAINWINDOW_H

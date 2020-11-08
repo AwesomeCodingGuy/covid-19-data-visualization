@@ -119,6 +119,7 @@ bool World::readCsvByCountry(const QString &filename, FileType fileType)
     // get timestamps
     // we need this only once
     if(fileType == FileType::Cases) {
+        name = "World";
         timestamps.resize(dataValues);
         for(int i = 4; i < captions.size(); ++i) {
             auto dateParts = captions[i].split('/');
@@ -203,6 +204,9 @@ bool World::readCsvByCountry(const QString &filename, FileType fileType)
 
 void World::calculateTotalValues()
 {
+    // init world data
+    data.fill(0, timestamps.size());
+
     // find all countries with provinces and calculate total values
     for(Country &country : countries) {
         // this is onyl relevent if the country contains provinces
@@ -225,12 +229,8 @@ void World::calculateTotalValues()
                 addCaseData(country.data, province.data);
             }
         }
-    }
 
-    // calculate the World data
-    data.fill(0, timestamps.size());
-    for(const Country &country : countries) {
-        name = "World";
+        // add county data
         addCaseData(data, country.data);
     }
 }
