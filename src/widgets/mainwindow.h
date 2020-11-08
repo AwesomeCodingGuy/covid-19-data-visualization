@@ -53,6 +53,7 @@ private:
     bool userReallyWantsToQuit();
 
     AppSettings appSettings;
+    QString appSavePath;
 
     // Menus
     QMenu *fileMenu;

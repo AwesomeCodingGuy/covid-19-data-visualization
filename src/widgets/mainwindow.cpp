@@ -14,10 +14,14 @@
 #include <QStackedWidget>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QStandardPaths>
+#include <QCoreApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    appSavePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
     readSettings();
 
     initWidgets();
@@ -75,10 +79,11 @@ void MainWindow::loadData()
 
 void MainWindow::readSettings()
 {
-    // load settings
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
-                       "AwesomeCodingGuy", "covid-19-data-visualization");
+    // use path in %APPDATA%/APPNAME/ (for Windows)
+    QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
+                       QSettings::IniFormat);
 
+    // load settings
     settings.beginGroup("dashboard");
     appSettings.germanyDataPath = settings.value("germanyDataPath", QString()).toString();
     appSettings.jhuDataPath = settings.value("jhuDataPath", QString()).toString();
@@ -87,10 +92,11 @@ void MainWindow::readSettings()
 
 void MainWindow::writeSettings()
 {
-    // write settings
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
-                       "AwesomeCodingGuy", "covid-19-data-visualization");
+    // use path in %APPDATA%/APPNAME/ (for Windows)
+    QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
+                       QSettings::IniFormat);
 
+    // write settings
     settings.beginGroup("dashboard");
     settings.setValue("germanyDataPath", appSettings.germanyDataPath);
     settings.setValue("jhuDataPath", appSettings.jhuDataPath);
