@@ -317,9 +317,6 @@ bool Usa::readCsvByCounty(const QString &filename, FileType fileType)
         }
 
         if(fileType == FileType::Cases) {
-            if(nameOfCounty == "New York") {
-                qDebug() << "New York";
-            }
             caseDataPtr->casesCumulated = data;
             caseDataPtr->cases = calculateIncrease(data);
             caseDataPtr->casesSevenDayAverage = calculateAveragedIncrease(caseDataPtr->cases);
