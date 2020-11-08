@@ -8,7 +8,8 @@
 
 namespace world {
 
-struct Location {
+struct Location
+{
     float latitude;
     float longitude;
 };
@@ -20,7 +21,8 @@ struct Province
     CaseData data;
 };
 
-struct Country {
+struct Country
+{
     QString name;
     Location location;
     CaseData data;

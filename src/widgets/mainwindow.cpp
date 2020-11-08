@@ -2,6 +2,7 @@
 #include "dashboard.h"
 #include "germanycontentwidget.h"
 #include "worldcontentwidget.h"
+#include "usacontentwidget.h"
 
 #include <QSettings>
 #include <QDebug>
@@ -66,6 +67,10 @@ void MainWindow::loadData()
     ret = worldContentWidget->loadWorldData(appSettings.jhuDataPath);
     worldViewAction->setEnabled(ret);
     qDebug() << "World load: " << ret;
+
+    ret = usaContentWidget->loadWorldData(appSettings.jhuDataPath);
+    usaViewAction->setEnabled(ret);
+    qDebug() << "USA load: " << ret;
 }
 
 void MainWindow::readSettings()
@@ -109,10 +114,9 @@ void MainWindow::initWidgets()
     worldContentWidget = new WorldContentWidget();
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::World),
                                        worldContentWidget);
-    americaContentWidget = new QWidget();
-    americaContentWidget->setStyleSheet("Background-color: #0000ff");
+    usaContentWidget = new UsaContentWidget();
     centralStackedWidget->insertWidget(static_cast<int>(ViewIndex::America),
-                                       americaContentWidget);
+                                       usaContentWidget);
 
     centralStackedWidget->setCurrentIndex(static_cast<int>(ViewIndex::Dashboard));
 }
@@ -132,9 +136,9 @@ void MainWindow::createActions()
     worldViewAction = new QAction(tr("&Welt"));
     worldViewAction->setCheckable(true);
     worldViewAction->setEnabled(false);
-    americaViewAction = new QAction(tr("&Amerika"));
-    americaViewAction->setCheckable(true);
-    americaViewAction->setEnabled(false);
+    usaViewAction = new QAction(tr("&Amerika"));
+    usaViewAction->setCheckable(true);
+    usaViewAction->setEnabled(false);
 
     // Help menu
     aboutAction = new QAction(tr("&Über"));
@@ -145,7 +149,7 @@ void MainWindow::createActions()
     viewGroup->addAction(dashboardViewAction);
     viewGroup->addAction(germanyViewAction);
     viewGroup->addAction(worldViewAction);
-    viewGroup->addAction(americaViewAction);
+    viewGroup->addAction(usaViewAction);
     dashboardViewAction->setChecked(true);
     connect(viewGroup, &QActionGroup::triggered,
             this, &MainWindow::switchView);
@@ -154,7 +158,7 @@ void MainWindow::createActions()
     actionMap.insert(dashboardViewAction, ViewIndex::Dashboard);
     actionMap.insert(germanyViewAction, ViewIndex::Germany);
     actionMap.insert(worldViewAction, ViewIndex::World);
-    actionMap.insert(americaViewAction, ViewIndex::America);
+    actionMap.insert(usaViewAction, ViewIndex::America);
 }
 
 void MainWindow::createMenus()
@@ -166,7 +170,7 @@ void MainWindow::createMenus()
     viewMenu->addAction(dashboardViewAction);
     viewMenu->addAction(germanyViewAction);
     viewMenu->addAction(worldViewAction);
-    viewMenu->addAction(americaViewAction);
+    viewMenu->addAction(usaViewAction);
 
     helpMenu = menuBar()->addMenu(tr("&Hilfe"));
     helpMenu->addAction(aboutAction);

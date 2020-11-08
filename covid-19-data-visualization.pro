@@ -12,10 +12,13 @@ SOURCES += \
     src/data/appsettings.cpp \
     src/data/casedata.cpp \
     src/data/germany.cpp \
+    src/data/usa.cpp \
     src/data/world.cpp \
     src/main.cpp \
     src/models/germanydatatreemodel.cpp \
     src/models/treeitem.cpp \
+    src/models/usadatatreemodel.cpp \
+    src/models/usatreeitem.cpp \
     src/models/worlddatatreemodel.cpp \
     src/models/worldtreeitem.cpp \
     src/utils/utility.cpp \
@@ -24,6 +27,7 @@ SOURCES += \
     src/widgets/germanycontentwidget.cpp \
     src/widgets/germanymapwidget.cpp \
     src/widgets/mainwindow.cpp \
+    src/widgets/usacontentwidget.cpp \
     src/widgets/worldcontentwidget.cpp
 
 HEADERS += \
@@ -31,9 +35,12 @@ HEADERS += \
     src/data/casedata.h \
     src/data/countrycode.h \
     src/data/germany.h \
+    src/data/usa.h \
     src/data/world.h \
     src/models/germanydatatreemodel.h \
     src/models/treeitem.h \
+    src/models/usadatatreemodel.h \
+    src/models/usatreeitem.h \
     src/models/worlddatatreemodel.h \
     src/models/worldtreeitem.h \
     src/utils/utility.h \
@@ -42,6 +49,7 @@ HEADERS += \
     src/widgets/germanycontentwidget.h \
     src/widgets/germanymapwidget.h \
     src/widgets/mainwindow.h \
+    src/widgets/usacontentwidget.h \
     src/widgets/worldcontentwidget.h
 
 # Default rules for deployment.
