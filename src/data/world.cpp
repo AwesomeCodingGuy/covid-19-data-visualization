@@ -1,4 +1,5 @@
 #include "world.h"
+#include "constants.h"
 #include "../utils/utility.h"
 
 #include <QFile>
@@ -85,12 +86,12 @@ bool World::getCaseDataByName(const QString &country, const QString &province,
 bool World::loadData(const QString &folder)
 {
     // read confirmed cases
-    QString confirmedGlobal = QString(folder).append("/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv");
+    QString confirmedGlobal = QString(folder).append(constants::casesGlobal);
     if(!readCsvByCountry(confirmedGlobal, FileType::Cases)) {
         return false;
     }
     // read confirmed cases
-    QString deathsGlobal = QString(folder).append("/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv");
+    QString deathsGlobal = QString(folder).append(constants::deathsGlobal);
     if(!readCsvByCountry(deathsGlobal, FileType::Deaths)) {
         return false;
     }
@@ -195,7 +196,6 @@ bool World::readCsvByCountry(const QString &filename, FileType fileType)
                 province->data.deathsCumulated = data;
                 province->data.deaths = calculateIncrease(data);
             }
-
         }
     }
 

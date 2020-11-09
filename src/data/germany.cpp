@@ -1,4 +1,5 @@
 #include "germany.h"
+#include "constants.h"
 #include "../utils/utility.h"
 
 #include <QFile>
@@ -92,30 +93,30 @@ bool Germany::getCaseDataByCode(QString code,
 bool Germany::loadData(const QString &folder)
 {
     // read cases by state
-    QString casesByStateFile = QString(folder).append("/cases-rki-by-state.csv");
+    QString casesByStateFile = QString(folder).append(constants::casesByState);
     if(!readCsvByState(casesByStateFile, FileType::Cases)) {
         return false;
     }
     // read deaths by state
-    QString deathsByStateFile = QString(folder).append("/deaths-rki-by-state.csv");
+    QString deathsByStateFile = QString(folder).append(constants::deathsByState);
     if(!readCsvByState(deathsByStateFile, FileType::Deaths)) {
         return false;
     }
 
     // read ags file
-    QString agsFile = QString(folder).append("/ags.json");
+    QString agsFile = QString(folder).append(constants::ags);
     if(!readJsonAgs(agsFile)) {
         return false;
     }
 
     // read cases by ags
-    QString casesByAgsFile = QString(folder).append("/cases-rki-by-ags.csv");
+    QString casesByAgsFile = QString(folder).append(constants::casesByAgs);
     if(!readCsvByAgs(casesByAgsFile, FileType::Cases)) {
         return false;
     }
 
     // read deaths by ags
-    QString deathsByAgsFile = QString(folder).append("/deaths-rki-by-ags.csv");
+    QString deathsByAgsFile = QString(folder).append(constants::deathsByAgs);
     if(!readCsvByAgs(deathsByAgsFile, FileType::Deaths)) {
         return false;
     }
