@@ -9,6 +9,7 @@ class QPushButton;
 class QLineEdit;
 
 class AppSettings;
+class DownloadManager;
 
 class Dashboard : public QWidget
 {
@@ -16,35 +17,34 @@ class Dashboard : public QWidget
 public:
     explicit Dashboard(AppSettings &settings, QWidget *parent = nullptr);
 
+private:
     void initWidgets();
+
+    QString getFileUpdateString(const QString &filename) const;
 
 signals:
     void sigLoadData();
 
 private slots:
-    void selectGermanyFolder();
-    void selectJhuFolder();
-    void germanyFolderChanged(const QString &text);
-    void jhuFolderChanged(const QString &text);
+    void updateFileInfos();
+    void downloadFiles();
 
 private:
     AppSettings &appSettings;
+    DownloadManager *downloadManager;
 
     QGridLayout *gLayout;
+    QGridLayout *gGermanyFileLayout;
+    QGridLayout *gJhuFileLayout;
 
-    QLabel *germanyDataLabel;
-    QLabel *germanyDescriptionLabel;
-    QLineEdit *germanyDataLineEdit;
-    QPushButton *germanyDataSearchPathButton;
+    QLabel *germanyRepoUrlLabel;
+    QLabel *jhuRepoUrlLabel;
+    QLabel* germanyFileInfoLabels[5];
+    QLabel* jhuFileInfoLabels[4];
 
-    QLabel *jhuDataLabel;
-    QLabel *jhuDescriptionLabel;
-    QLineEdit *jhuDataLineEdit;
-    QPushButton *jhuDataSearchPathButton;
-
-    QLabel *infoLabel;
-
+    // download gui
     QPushButton *loadDataButton;
+    QPushButton *downloadDataButton;
 };
 
 #endif // DASHBOARD_H

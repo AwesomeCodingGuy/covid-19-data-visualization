@@ -1,6 +1,5 @@
 #include "utility.h"
 
-#include <QDebug>
 #include <QList>
 
 QVector<int> calculateIncrease(const QVector<int> &cumulatedIn)

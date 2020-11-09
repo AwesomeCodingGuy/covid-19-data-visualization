@@ -1,4 +1,5 @@
 #include "usa.h"
+#include "constants.h"
 #include "../utils/utility.h"
 
 #include <QFile>
@@ -152,12 +153,12 @@ const CaseData* Usa::getCaseDataByUid(const Uid &uid) const
 bool Usa::loadData(const QString &folder)
 {
     // read confirmed cases
-    QString confirmedGlobal = QString(folder).append("/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv");
+    QString confirmedGlobal = QString(folder).append(constants::casesUS);
     if(!readCsvByCounty(confirmedGlobal, FileType::Cases)) {
         return false;
     }
     // read confirmed deaths
-    QString deathsGlobal = QString(folder).append("/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv");
+    QString deathsGlobal = QString(folder).append(constants::deathsUS);
     if(!readCsvByCounty(deathsGlobal, FileType::Deaths)) {
         return false;
     }
@@ -317,9 +318,6 @@ bool Usa::readCsvByCounty(const QString &filename, FileType fileType)
         }
 
         if(fileType == FileType::Cases) {
-            if(nameOfCounty == "New York") {
-                qDebug() << "New York";
-            }
             caseDataPtr->casesCumulated = data;
             caseDataPtr->cases = calculateIncrease(data);
             caseDataPtr->casesSevenDayAverage = calculateAveragedIncrease(caseDataPtr->cases);

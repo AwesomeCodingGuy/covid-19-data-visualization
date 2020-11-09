@@ -14,10 +14,16 @@
 #include <QStackedWidget>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QStandardPaths>
+#include <QCoreApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    // get path to Application data
+    appSavePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    appSettings.downloadFolder = QString("%1/downloads/").arg(appSavePath);
+
     readSettings();
 
     initWidgets();
@@ -60,40 +66,38 @@ void MainWindow::about()
 
 void MainWindow::loadData()
 {
-    bool ret = germanyContentWidget->loadGermanData(appSettings.germanyDataPath);
+    bool ret = germanyContentWidget->loadGermanData(appSettings.downloadFolder);
     germanyViewAction->setEnabled(ret);
     qDebug() << "Germany load: " << ret;
 
-    ret = worldContentWidget->loadWorldData(appSettings.jhuDataPath);
+    ret = worldContentWidget->loadWorldData(appSettings.downloadFolder);
     worldViewAction->setEnabled(ret);
     qDebug() << "World load: " << ret;
 
-    ret = usaContentWidget->loadWorldData(appSettings.jhuDataPath);
+    ret = usaContentWidget->loadWorldData(appSettings.downloadFolder);
     usaViewAction->setEnabled(ret);
     qDebug() << "USA load: " << ret;
 }
 
 void MainWindow::readSettings()
 {
-    // load settings
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
-                       "AwesomeCodingGuy", "covid-19-data-visualization");
+    // use path in %APPDATA%/APPNAME/ (for Windows)
+    QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
+                       QSettings::IniFormat);
 
+    // load settings
     settings.beginGroup("dashboard");
-    appSettings.germanyDataPath = settings.value("germanyDataPath", QString()).toString();
-    appSettings.jhuDataPath = settings.value("jhuDataPath", QString()).toString();
     settings.endGroup();
 }
 
 void MainWindow::writeSettings()
 {
-    // write settings
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
-                       "AwesomeCodingGuy", "covid-19-data-visualization");
+    // use path in %APPDATA%/APPNAME/ (for Windows)
+    QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
+                       QSettings::IniFormat);
 
+    // write settings
     settings.beginGroup("dashboard");
-    settings.setValue("germanyDataPath", appSettings.germanyDataPath);
-    settings.setValue("jhuDataPath", appSettings.jhuDataPath);
     settings.endGroup();
 }
 
