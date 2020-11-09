@@ -9,8 +9,7 @@ public:
     AppSettings();
 
 public:
-    QString germanyDataPath;
-    QString jhuDataPath;
+    QString downloadFolder;
 };
 
 #endif // APPSETTINGS_H

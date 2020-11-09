@@ -1,8 +1,8 @@
-QT       += core gui charts
+QT       += core gui charts network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 TARGET = CovidDataVisualization
 
@@ -13,6 +13,7 @@ TARGET = CovidDataVisualization
 SOURCES += \
     src/data/appsettings.cpp \
     src/data/casedata.cpp \
+    src/data/constants.cpp \
     src/data/germany.cpp \
     src/data/usa.cpp \
     src/data/world.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     src/models/usatreeitem.cpp \
     src/models/worlddatatreemodel.cpp \
     src/models/worldtreeitem.cpp \
+    src/utils/downloadmanager.cpp \
     src/utils/utility.cpp \
     src/widgets/chartwidget.cpp \
     src/widgets/dashboard.cpp \
@@ -35,6 +37,7 @@ SOURCES += \
 HEADERS += \
     src/data/appsettings.h \
     src/data/casedata.h \
+    src/data/constants.h \
     src/data/countrycode.h \
     src/data/germany.h \
     src/data/usa.h \
@@ -45,6 +48,7 @@ HEADERS += \
     src/models/usatreeitem.h \
     src/models/worlddatatreemodel.h \
     src/models/worldtreeitem.h \
+    src/utils/downloadmanager.h \
     src/utils/utility.h \
     src/widgets/chartwidget.h \
     src/widgets/dashboard.h \
