@@ -20,6 +20,7 @@ private:
     void zoomOut();
 
 protected:
+    virtual bool event(QEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual void wheelEvent(QWheelEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event) override;

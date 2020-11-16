@@ -9,6 +9,7 @@
 #include <QGraphicsPathItem>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QToolTip>
 
 constexpr qreal zoomFactor = 1.25;
 
@@ -37,6 +38,24 @@ void MapView::zoomIn()
 void MapView::zoomOut()
 {
     scale(qreal(1.0f) / zoomFactor, qreal(1.0f) / zoomFactor);
+}
+
+bool MapView::event(QEvent *event)
+{
+    if(event->type() == QEvent::ToolTip) {
+        QHelpEvent *helpEvent = static_cast<QHelpEvent*>(event);
+        AreaItem *item = qgraphicsitem_cast<AreaItem*>(itemAt(helpEvent->pos()));
+        if(item) {
+            QToolTip::showText(helpEvent->globalPos(), item->toolTip());
+        } else {
+            QToolTip::hideText();
+            event->ignore();
+        }
+
+        return true;
+    }
+
+    return QGraphicsView::event(event);
 }
 
 void MapView::mouseMoveEvent(QMouseEvent *event)
