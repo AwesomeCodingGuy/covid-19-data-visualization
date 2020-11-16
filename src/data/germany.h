@@ -70,6 +70,7 @@ public:
     Germany();
     ~Germany();
 
+    QString getName(int ags);
     State* getStateByName(const QString &state);
     State* getStateByCode(const QString &code);
     District* getDistrictByAgs(const QString &ags);
@@ -78,13 +79,14 @@ public:
     bool getCaseDataByCode(QString code,
                            CaseData &caseData,
                            QVector<QDateTime> &timestamps);
+    const CaseData* getCaseDataByAgs(const int ags);
+    const QVector<QDateTime> getTimestamps() const;
 
     bool loadData(const QString &folder);
 
 private:
     void init();
     void initStates();
-    void initDistricts();
 
     bool readJsonAgs(QString filename);
     bool readCsvByState(QString filename, FileType fileType);
