@@ -24,13 +24,16 @@ SOURCES += \
     src/models/usatreeitem.cpp \
     src/models/worlddatatreemodel.cpp \
     src/models/worldtreeitem.cpp \
+    src/utils/areaitem.cpp \
     src/utils/downloadmanager.cpp \
+    src/utils/shapelibutils.cpp \
     src/utils/utility.cpp \
     src/widgets/chartwidget.cpp \
     src/widgets/dashboard.cpp \
     src/widgets/germanycontentwidget.cpp \
     src/widgets/germanymapwidget.cpp \
     src/widgets/mainwindow.cpp \
+    src/widgets/mapview.cpp \
     src/widgets/usacontentwidget.cpp \
     src/widgets/worldcontentwidget.cpp
 
@@ -48,15 +51,26 @@ HEADERS += \
     src/models/usatreeitem.h \
     src/models/worlddatatreemodel.h \
     src/models/worldtreeitem.h \
+    src/utils/areaitem.h \
     src/utils/downloadmanager.h \
+    src/utils/graphicsitems.h \
+    src/utils/shapelibutils.h \
     src/utils/utility.h \
     src/widgets/chartwidget.h \
     src/widgets/dashboard.h \
     src/widgets/germanycontentwidget.h \
     src/widgets/germanymapwidget.h \
     src/widgets/mainwindow.h \
+    src/widgets/mapview.h \
     src/widgets/usacontentwidget.h \
     src/widgets/worldcontentwidget.h
+
+# shapelib
+INCLUDEPATH += $$PWD/sub/shapelib
+SOURCES += \
+    sub/shapelib/shpopen.c \
+    sub/shapelib/dbfopen.c \
+    sub/shapelib/safileio.c
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
