@@ -20,6 +20,13 @@ namespace QtCharts {
 class ChartWidget : public QWidget
 {
     Q_OBJECT
+
+    enum ChartType {
+        Cumulated       = 0,
+        Daily           = 1,
+        Acceleration    = 2
+    };
+
 public:
     explicit ChartWidget(const QVector<QDateTime> &timestamps,
                          const CaseData &caseData,
@@ -32,10 +39,12 @@ private:
     void initUi();
     void initCumulatedChart();
     void initDailyChart();
+    void initAccelerationChart();
     void initGraphicalStuff();
 
     void addCumulatedChart();
     void addDailyChart();
+    void addAccelerationChart();
 
     int getOptimalTickinterval(int maxValue);
 
@@ -47,9 +56,11 @@ private:
 
     QtCharts::QChartView *cumulatedChartView;
     QtCharts::QChartView *dailyChartView;
+    QtCharts::QChartView *accelerationChartView;
 
     QtCharts::QChart *cumulatedChart;
     QtCharts::QChart *dailyChart;
+    QtCharts::QChart *accelerationChart;
 
     QPen pen_1;
     QPen pen_2;
