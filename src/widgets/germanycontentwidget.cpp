@@ -2,6 +2,7 @@
 
 #include "../models/germanydatatreemodel.h"
 #include "chartwidget.h"
+#include "germanymapwidget.h"
 
 #include <QDebug>
 #include <QComboBox>
@@ -39,7 +40,7 @@ GermanyContentWidget::GermanyContentWidget(QWidget *parent)
     // build right splitter part
     tabWidget = new QTabWidget;
     tabWidget->setTabsClosable(true);
-    mapWidget = new QWidget;
+    mapWidget = new GermanyMapWidget();
     contentStackedWidget = new QStackedWidget();
     contentStackedWidget->insertWidget(0, tabWidget);
     contentStackedWidget->insertWidget(1, mapWidget);
@@ -48,6 +49,8 @@ GermanyContentWidget::GermanyContentWidget(QWidget *parent)
     splitter = new QSplitter;
     splitter->addWidget(leftTopLevelWidget);
     splitter->addWidget(contentStackedWidget);
+    splitter->setStretchFactor(0, 0);
+    splitter->setStretchFactor(1, 1);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(splitter);
@@ -61,6 +64,8 @@ GermanyContentWidget::GermanyContentWidget(QWidget *parent)
             this, SLOT(addNewChart(const QModelIndex &)));
     connect(tabWidget, SIGNAL(tabCloseRequested(int)),
             this, SLOT(removeTab(int)));
+    connect(mapWidget, SIGNAL(newChartRequested(int)),
+            this, SLOT(addNewChart(int)));
 }
 
 bool GermanyContentWidget::loadGermanData(const QString &folder)
@@ -75,6 +80,9 @@ bool GermanyContentWidget::loadGermanData(const QString &folder)
         treeView->header()->resizeSection(0, 240);
         treeView->header()->resizeSection(1, 50);
         treeView->header()->resizeSection(2, 60);
+
+        // also set the data to the map widget
+        mapWidget->setData(&germany);
     }
 
     return ret;
@@ -117,4 +125,19 @@ void GermanyContentWidget::addNewChart(const QModelIndex &index)
         int newIndex = tabWidget->addTab(chartWidget, rowData[0].toString());
         tabWidget->setCurrentIndex(newIndex);
     }
+}
+
+void GermanyContentWidget::addNewChart(int ags)
+{
+    const CaseData *data = germany.getCaseDataByAgs(ags);
+    const QVector<QDateTime> timestamps = germany.getTimestamps();
+
+    if(data) {
+        // Add Chart to QTabWidget
+        ChartWidget *chartWidget = new ChartWidget(timestamps, *data);
+        int newIndex = tabWidget->addTab(chartWidget, germany.getName(ags));
+        tabWidget->setCurrentIndex(newIndex);
+    }
+
+    contentSelectCombo->setCurrentIndex(0);
 }

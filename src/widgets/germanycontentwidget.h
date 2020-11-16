@@ -13,6 +13,7 @@ class QTabWidget;
 class QAbstractItemModel;
 
 class GermanyDataTreeModel;
+class GermanyMapWidget;
 
 class GermanyContentWidget : public QWidget
 {
@@ -26,6 +27,7 @@ public:
 public slots:
     void removeTab(int index);
     void addNewChart(const QModelIndex &index);
+    void addNewChart(int ags);
 
 private:
     QWidget *leftTopLevelWidget;
@@ -34,7 +36,8 @@ private:
     QStackedWidget *contentStackedWidget;
     QTreeView *treeView;
     QComboBox *contentSelectCombo;
-    QWidget *mapWidget;
+
+    GermanyMapWidget *mapWidget;
 
     GermanyDataTreeModel *model;
 

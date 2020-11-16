@@ -20,6 +20,11 @@ Germany::~Germany()
 
 }
 
+QString Germany::getName(int ags)
+{
+    return getDistrictByAgs(ags)->name;
+}
+
 State* Germany::getStateByName(const QString &state)
 {
     if(!country.states.empty()) {
@@ -90,6 +95,16 @@ bool Germany::getCaseDataByCode(QString code,
     return false;
 }
 
+const CaseData *Germany::getCaseDataByAgs(const int ags)
+{
+    return &getDistrictByAgs(ags)->data;
+}
+
+const QVector<QDateTime> Germany::getTimestamps() const
+{
+    return country.timestamps;
+}
+
 bool Germany::loadData(const QString &folder)
 {
     // read cases by state
@@ -127,7 +142,6 @@ bool Germany::loadData(const QString &folder)
 void Germany::init()
 {
     initStates();
-    initDistricts();
 }
 
 void Germany::initStates()
@@ -166,16 +180,6 @@ void Germany::initStates()
 
         country.states.append(s);
     }
-}
-
-void Germany::initDistricts()
-{
-    // TODO: check data sources
-//    // init districts from internal csv file
-//    QString districtFile = ":/arcgis/kreisgrenzen/Kreisgrenzen_2018_mit_Einwohnerzahl.csv";
-//    if(!QFile::exists(districtFile)) {
-//        qDebug() << "File not found";
-//    }
 }
 
 bool Germany::readJsonAgs(QString filename)
