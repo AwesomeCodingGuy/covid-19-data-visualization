@@ -48,6 +48,26 @@ void AreaItem::setName(const QString &newName)
     updateTooltip();
 }
 
+QString AreaItem::getDesignation() const
+{
+    return designation;
+}
+
+void AreaItem::setDesignation(const QString &newDesignation)
+{
+    designation = newDesignation;
+
+    updateTooltip();
+}
+
+void AreaItem::setCompleteName(const QString &newName, const QString &newDesignation)
+{
+    name = newName;
+    designation = newDesignation;
+
+    updateTooltip();
+}
+
 void AreaItem::setIncidence7(float value)
 {
     incidence7 = value;
@@ -121,7 +141,7 @@ void AreaItem::updateTooltip()
     QString tip = QString(
                 "<table style=\"font-size: large\">"
                 " <tr>"
-                "  <th style=\"border-bottom: 1px solid #000000;\"><b>%1</b></th>"
+                "  <th style=\"border-bottom: 1px solid #000000;\"><b>(%9)  %1</b></th>"
                 "  <th style=\"border-bottom: 1px solid #000000;\" align=\"right\"><b>%2</b></th>"
                 " </tr><tr>"
                 "  <td>" + QObject::tr("Heute gemeldete Fälle") + "</td>"
@@ -147,7 +167,8 @@ void AreaItem::updateTooltip()
      .arg(casesTotal)
      .arg(deathsTotal)
      .arg(QLocale(QLocale::German).toString(incidence7, 'f', 1))
-     .arg(getColorFromIncidence(incidence7).name());
+     .arg(getColorFromIncidence(incidence7).name())
+     .arg(designation);
 
     setToolTip(tip);
 }

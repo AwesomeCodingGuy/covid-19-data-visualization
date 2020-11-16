@@ -51,7 +51,7 @@ bool GermanyMapWidget::loadGermanMap(const QString &file)
         // create graphics path item
         AreaItem *item = new AreaItem(path);
         item->setData(agsItemDataIndex, region.ags);
-        item->setName(region.name);
+        item->setCompleteName(region.name, region.bez);
 
         // add item to scene and ags map
         scene->addItem(item);

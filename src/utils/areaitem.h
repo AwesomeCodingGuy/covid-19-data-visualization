@@ -12,7 +12,7 @@ class AreaItem : public QGraphicsPathItem
     static constexpr QColor Green   {112, 199, 120};
     static constexpr QColor Orange  {255, 171, 0};
     static constexpr QColor Red     {183, 55, 68};
-    static constexpr QColor DarkRed {142, 53, 49};
+    static constexpr QColor DarkRed {112, 39, 23};
     static constexpr QColor Black   {0, 0, 0};
 
 public:
@@ -25,6 +25,11 @@ public:
 
     QString getName() const;
     void setName(const QString &newName);
+
+    QString getDesignation() const;
+    void setDesignation(const QString &newDesignation);
+
+    void setCompleteName(const QString &newName, const QString &newDesignation);
 
     void setIncidence7(float value);
     float getIncidence7() const;
@@ -44,6 +49,7 @@ private:
 
 private:
     QString name;
+    QString designation;
 
     QDateTime timestamp;
     float incidence7;
