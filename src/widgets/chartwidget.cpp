@@ -107,7 +107,6 @@ void ChartWidget::initCumulatedChart()
 
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
-    //axisY->setTitleText(tr("Fälle"));
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
@@ -170,7 +169,6 @@ void ChartWidget::initDailyChart()
 
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
-    //axisY->setTitleText(tr("Fälle"));
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
@@ -237,9 +235,6 @@ void ChartWidget::initAccelerationChart()
 
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
-    // axisY->setTitleText(tr("Änderung"));
-    axisY->applyNiceNumbers();
-    // axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
 
     // build chart
     accelerationChart = new QtCharts::QChart();
