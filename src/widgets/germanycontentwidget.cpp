@@ -109,7 +109,7 @@ void GermanyContentWidget::addNewChart(const QModelIndex &index)
         }
 
         if(!germany.getCaseDataByCode(code, data, timestamps)) {
-            QMessageBox::information(this, tr("Error"),
+            QMessageBox::information(this, tr("Fehler"),
                                      tr("Der Datensatz ist fehlerhaft. Das Diagramm kann nicht geladen werden."));
             return;
         }

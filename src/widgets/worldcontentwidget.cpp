@@ -19,7 +19,7 @@ WorldContentWidget::WorldContentWidget(QWidget *parent)
     // build left splitter part
     contentSelectCombo = new QComboBox();
     contentSelectCombo->addItem(tr("Diagramme"), 0);
-    contentSelectCombo->addItem(tr("Karte"), 1);
+//    contentSelectCombo->addItem(tr("Karte"), 1);
 
     treeView = new QTreeView();
     treeView->setIndentation(10);
@@ -42,7 +42,7 @@ WorldContentWidget::WorldContentWidget(QWidget *parent)
     mapWidget = new QWidget;
     contentStackedWidget = new QStackedWidget();
     contentStackedWidget->insertWidget(0, tabWidget);
-    contentStackedWidget->insertWidget(1, mapWidget);
+//    contentStackedWidget->insertWidget(1, mapWidget);
 
     // build splitter and add to widgets layout
     splitter = new QSplitter;
@@ -93,7 +93,7 @@ void WorldContentWidget::addNewChart(const QModelIndex &index)
         CaseData data;
 
         if(!world.getCaseDataByName(keyData.first, keyData.second, data, timestamps)) {
-            QMessageBox::information(this, tr("Error"),
+            QMessageBox::information(this, tr("Fehler"),
                                      tr("Der Datensatz ist fehlerhaft. Das Diagramm kann nicht geladen werden."));
             return;
         }
