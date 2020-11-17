@@ -48,6 +48,8 @@ WorldContentWidget::WorldContentWidget(QWidget *parent)
     splitter = new QSplitter;
     splitter->addWidget(leftTopLevelWidget);
     splitter->addWidget(contentStackedWidget);
+    splitter->setStretchFactor(0, 0);
+    splitter->setStretchFactor(1, 1);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(splitter);
@@ -72,8 +74,6 @@ bool WorldContentWidget::loadWorldData(const QString &folder)
         model = new WorldDataTreeModel(world);
         treeView->setModel(model);
         treeView->header()->resizeSection(0, 240);
-        treeView->header()->resizeSection(1, 50);
-        treeView->header()->resizeSection(2, 60);
     }
 
     return ret;
