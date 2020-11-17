@@ -184,8 +184,8 @@ bool MainWindow::userReallyWantsToQuit()
 {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this,
-                                  "Anwendung schließen",
-                                  "Möchten Sie die Anwendung wirklich schließen?",
+                                  tr("Anwendung schließen"),
+                                  tr("Möchten Sie die Anwendung wirklich schließen?"),
                                   QMessageBox::Yes | QMessageBox::No);
     return (reply == QMessageBox::Yes);
 }
