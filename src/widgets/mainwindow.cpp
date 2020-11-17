@@ -16,6 +16,8 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QCoreApplication>
+#include <QApplication>
+#include <QDesktopWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     initWidgets();
     createActions();
     createMenus();
-
-    resize(800, 600);
 }
 
 MainWindow::~MainWindow()
@@ -85,8 +85,16 @@ void MainWindow::readSettings()
     QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
                        QSettings::IniFormat);
 
+    QRect desktopRect = QApplication::desktop()->availableGeometry(this);
+    const QSize initialWindowSize = QSize(800, 600);
+
     // load settings
     settings.beginGroup("dashboard");
+    settings.endGroup();
+    settings.beginGroup("mainwindow");
+    resize(settings.value("size", initialWindowSize).toSize());
+    move(settings.value("pos", QPoint((desktopRect.width() - initialWindowSize.width()) / 2,
+                                      (desktopRect.height() - initialWindowSize.height()) / 2)).toPoint());
     settings.endGroup();
 }
 
@@ -98,6 +106,10 @@ void MainWindow::writeSettings()
 
     // write settings
     settings.beginGroup("dashboard");
+    settings.endGroup();
+    settings.beginGroup("mainwindow");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
     settings.endGroup();
 }
 
