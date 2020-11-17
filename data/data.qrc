@@ -3,4 +3,7 @@
         <file>de_bundeslaender.json</file>
         <file>us_states.json</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>images/icons/resetZoom_32x32.png</file>
+    </qresource>
 </RCC>
