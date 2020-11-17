@@ -6,9 +6,11 @@
 #include <QBrush>
 #include <QPen>
 #include <QDebug>
+#include <QToolBar>
 #include <QStackedWidget>
 #include <QComboBox>
 #include <QBoxLayout>
+#include <QIcon>
 
 #include <QtCharts/QLegend>
 #include <QtCharts/QChartView>
@@ -24,14 +26,18 @@ ChartWidget::ChartWidget(const QVector<QDateTime> &timestamps,
     , timestamps(timestamps)
     , caseData(caseData)
 {
+    // init pens for charts
+    pen_1 = QPen(Qt::blue, 2);
+    pen_2 = QPen(Qt::black, 2);
+    pen_3 = QPen(QColor(255, 127, 0), 2);
+
+    // init UI
     initUi();
-    initGraphicalStuff();
+
+    // init charts
     initCumulatedChart();
     initDailyChart();
     initAccelerationChart();
-    addCumulatedChart();
-    addDailyChart();
-    addAccelerationChart();
 }
 
 ChartWidget::~ChartWidget()
@@ -39,28 +45,40 @@ ChartWidget::~ChartWidget()
 
 }
 
+void ChartWidget::resetZoom()
+{
+    QtCharts::QChartView *v = dynamic_cast<QtCharts::QChartView*>(chartContainer->widget(chartContainer->currentIndex()));
+    if(v) {
+        v->chart()->zoomReset();
+    }
+}
+
 void ChartWidget::initUi()
 {
     // set stacked widget as main content widget
     chartContainer = new QStackedWidget();
 
+    // add a combo box to the widget above the stacked widget.
+    chartSwitchCombo = new QComboBox();
+    chartSwitchCombo->move(5, 5);
+    chartSwitchCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    connect(chartSwitchCombo, SIGNAL(currentIndexChanged(int)),
+            chartContainer, SLOT(setCurrentIndex(int)));
+
+    // cerate toolbar
+    toolBar = new QToolBar();
+    toolBar->addWidget(chartSwitchCombo);
+    QAction *a = toolBar->addAction(QIcon(":/icons/images/icons/resetZoom_32x32.png"),
+                                    tr("Zoom zurücksetzen"));
+    connect(a, &QAction::triggered,
+            this, &ChartWidget::resetZoom);
+
+    // init layout
     QHBoxLayout *hLayout = new QHBoxLayout();
+    hLayout->setMenuBar(toolBar);
     hLayout->addWidget(chartContainer);
 
     setLayout(hLayout);
-
-    // add a combo box to the widget above the stacked widget.
-    chartSwitchCombo = new QComboBox(this);
-    chartSwitchCombo->move(0, 0);
-    connect(chartSwitchCombo, SIGNAL(currentIndexChanged(int)),
-            chartContainer, SLOT(setCurrentIndex(int)));
-}
-
-void ChartWidget::initGraphicalStuff()
-{
-    pen_1 = QPen(Qt::blue, 2);
-    pen_2 = QPen(Qt::black, 2);
-    pen_3 = QPen(QColor(255, 127, 0), 2);
 }
 
 void ChartWidget::initCumulatedChart()
@@ -68,10 +86,10 @@ void ChartWidget::initCumulatedChart()
     // init series
     QtCharts::QLineSeries *sCases = new QtCharts::QLineSeries();
     sCases->setPen(pen_1);
-    sCases->setName(tr("Kumulierte Fälle"));
+    sCases->setName(tr("Erkrankungen"));
     QtCharts::QLineSeries *sDeaths = new QtCharts::QLineSeries();
     sDeaths->setPen(pen_2);
-    sDeaths->setName(tr("Kumulierte Todesfälle"));
+    sDeaths->setName(tr("Todesfälle"));
 
     // init series data
     for(int i = 0; i < timestamps.size(); ++i) {
@@ -89,7 +107,7 @@ void ChartWidget::initCumulatedChart()
 
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
-    axisY->setTitleText(tr("Fälle"));
+    //axisY->setTitleText(tr("Fälle"));
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
@@ -97,6 +115,11 @@ void ChartWidget::initCumulatedChart()
 
     // build chart
     cumulatedChart = new QtCharts::QChart();
+    QFont font = cumulatedChart->titleFont();
+    font.setBold(true);
+    font.setPointSizeF(font.pointSizeF() * 1.25f);
+    cumulatedChart->setTitleFont(font);
+    cumulatedChart->setTitle(tr("Fälle kumuliert"));
     cumulatedChart->addSeries(sCases);
     cumulatedChart->addSeries(sDeaths);
     cumulatedChart->addAxis(axisX, Qt::AlignBottom);
@@ -107,6 +130,9 @@ void ChartWidget::initCumulatedChart()
     sCases->attachAxis(axisY);
     sDeaths->attachAxis(axisX);
     sDeaths->attachAxis(axisY);
+
+    // add chart to its own view
+    addNewChartView(cumulatedChartView, cumulatedChart, ChartType::Cumulated);
 }
 
 void ChartWidget::initDailyChart()
@@ -114,13 +140,13 @@ void ChartWidget::initDailyChart()
     // init series
     QtCharts::QLineSeries *sCases = new QtCharts::QLineSeries();
     sCases->setPen(pen_1);
-    sCases->setName(tr("Fälle"));
+    sCases->setName(tr("Erkrankungen"));
     QtCharts::QLineSeries *sDeaths = new QtCharts::QLineSeries();
     sDeaths->setPen(pen_2);
     sDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAverage = new QtCharts::QLineSeries();
     sAverage->setPen(pen_3);
-    sAverage->setName(tr("Fälle 7-Tage Mittelwert"));
+    sAverage->setName(tr("7-Tage-Inzidenz"));
 
     // init series data
     for(int i = 0; i < timestamps.size(); ++i) {
@@ -144,7 +170,7 @@ void ChartWidget::initDailyChart()
 
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
-    axisY->setTitleText(tr("Fälle"));
+    //axisY->setTitleText(tr("Fälle"));
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
@@ -153,6 +179,11 @@ void ChartWidget::initDailyChart()
 
     // build chart
     dailyChart = new QtCharts::QChart();
+    QFont font = dailyChart->titleFont();
+    font.setBold(true);
+    font.setPointSizeF(font.pointSizeF() * 1.25f);
+    dailyChart->setTitleFont(font);
+    dailyChart->setTitle(tr("Fälle / Tag"));
     dailyChart->addSeries(sCases);
     dailyChart->addSeries(sDeaths);
     dailyChart->addSeries(sAverage);
@@ -166,6 +197,9 @@ void ChartWidget::initDailyChart()
     sDeaths->attachAxis(axisY);
     sAverage->attachAxis(axisY);
     sAverage->attachAxis(axisX);
+
+    // add chart to its own view
+    addNewChartView(dailyChartView, dailyChart, ChartType::Daily);
 }
 
 void ChartWidget::initAccelerationChart()
@@ -173,13 +207,13 @@ void ChartWidget::initAccelerationChart()
     // init series
     QtCharts::QLineSeries *sAccCases = new QtCharts::QLineSeries();
     sAccCases->setPen(pen_1);
-    sAccCases->setName(tr("Beschleunigungsrate der Fälle"));
+    sAccCases->setName(tr("Fälle"));
     QtCharts::QLineSeries *sAccDeaths = new QtCharts::QLineSeries();
     sAccDeaths->setPen(pen_2);
-    sAccDeaths->setName(tr("Beschleunigungsrate der Todesfälle"));
+    sAccDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAccCases7= new QtCharts::QLineSeries();
     sAccCases7->setPen(pen_3);
-    sAccCases7->setName(tr("Beschleunigungsrate der 7-Tage-Inzidenz"));
+    sAccCases7->setName(tr("7-Tage-Inzidenz"));
 
     // calculate rate
     sAccCases->append(timestamps[0].toMSecsSinceEpoch(), 0);
@@ -203,12 +237,17 @@ void ChartWidget::initAccelerationChart()
 
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
-    axisY->setTitleText(tr("Änderung"));
+    // axisY->setTitleText(tr("Änderung"));
     axisY->applyNiceNumbers();
     // axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
 
     // build chart
     accelerationChart = new QtCharts::QChart();
+    QFont font = accelerationChart->titleFont();
+    font.setBold(true);
+    font.setPointSizeF(font.pointSizeF() * 1.25f);
+    accelerationChart->setTitleFont(font);
+    accelerationChart->setTitle(tr("Beschleunigung / Tag"));
     accelerationChart->addSeries(sAccCases);
     accelerationChart->addSeries(sAccDeaths);
     accelerationChart->addSeries(sAccCases7);
@@ -223,45 +262,23 @@ void ChartWidget::initAccelerationChart()
     sAccCases7->attachAxis(axisX);
     sAccCases7->attachAxis(axisY);
 
-    //
     axisY->applyNiceNumbers();
 
-    // legend
-    // QtCharts::QLegend *legend = accelerationChart->legend();
-    // legend->detachFromChart();
-    // legend->setBackgroundVisible(true);
-    // legend->setBrush(QBrush(QColor(128, 128, 128, 128)));
-    // legend->setPen(QPen(QColor(192, 192, 192, 192)));
-    // legend->setGeometry(QRectF(width() / 2 - 150, 20, 300, 80));
+    // add chart to its own view
+    addNewChartView(accelerationChartView, accelerationChart, ChartType::Acceleration);
 }
 
-void ChartWidget::addCumulatedChart()
+void ChartWidget::addNewChartView(QtCharts::QChartView *view, QtCharts::QChart *chart, ChartType type)
 {
-    cumulatedChartView = new QtCharts::QChartView(cumulatedChart);
-    cumulatedChartView->setRenderHint(QPainter::Antialiasing);
-    chartContainer->insertWidget(ChartType::Cumulated, cumulatedChartView);
-    chartSwitchCombo->addItem(tr("Kumulierte Fälle"), ChartType::Cumulated);
-}
-
-void ChartWidget::addDailyChart()
-{
-    dailyChartView = new QtCharts::QChartView(dailyChart);
-    dailyChartView->setRenderHint(QPainter::Antialiasing);
-    chartContainer->insertWidget(ChartType::Daily, dailyChartView);
-    chartSwitchCombo->addItem(tr("Tägliche Fälle"), ChartType::Daily);
-}
-
-void ChartWidget::addAccelerationChart()
-{
-    accelerationChartView = new QtCharts::QChartView(accelerationChart);
-    accelerationChartView->setRenderHint(QPainter::Antialiasing);
-    chartContainer->insertWidget(ChartType::Acceleration, accelerationChartView);
-    chartSwitchCombo->addItem(tr("Beschleunigung"), ChartType::Acceleration);
+    view = new QtCharts::QChartView(chart);
+    view->setRubberBand(QtCharts::QChartView::RectangleRubberBand);
+    view->setRenderHint(QPainter::Antialiasing);
+    chartContainer->insertWidget(type, view);
+    chartSwitchCombo->addItem(chart->title(), type);
 }
 
 int ChartWidget::getOptimalTickinterval(int maxValue)
 {
     int exp = static_cast<int>(std::log10(maxValue / 2));
-
     return static_cast<int>(std::pow(10, exp));
 }

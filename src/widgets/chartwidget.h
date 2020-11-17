@@ -11,6 +11,7 @@
 class QComboBox;
 class QStackedWidget;
 class QPen;
+class QToolBar;
 
 namespace QtCharts {
     class QChart;
@@ -35,24 +36,26 @@ public:
 
 signals:
 
+public slots:
+    void resetZoom();
+
 private:
     void initUi();
     void initCumulatedChart();
     void initDailyChart();
     void initAccelerationChart();
-    void initGraphicalStuff();
 
-    void addCumulatedChart();
-    void addDailyChart();
-    void addAccelerationChart();
+    void addNewChartView(QtCharts::QChartView *view, QtCharts::QChart *chart, ChartType type);
 
     int getOptimalTickinterval(int maxValue);
 
+private:
     QVector<QDateTime> timestamps;
     CaseData caseData;
 
     QComboBox *chartSwitchCombo;
     QStackedWidget *chartContainer;
+    QToolBar *toolBar;
 
     QtCharts::QChartView *cumulatedChartView;
     QtCharts::QChartView *dailyChartView;
