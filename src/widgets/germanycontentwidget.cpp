@@ -78,8 +78,8 @@ bool GermanyContentWidget::loadGermanData(const QString &folder)
         model = new GermanyDataTreeModel(germany.getCountryData());
         treeView->setModel(model);
         treeView->header()->resizeSection(0, 240);
-        treeView->header()->resizeSection(1, 50);
-        treeView->header()->resizeSection(2, 60);
+        treeView->header()->hideSection(1);
+        treeView->header()->hideSection(2);
 
         // also set the data to the map widget
         mapWidget->setData(&germany);

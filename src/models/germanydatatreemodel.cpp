@@ -5,7 +5,7 @@
 GermanyDataTreeModel::GermanyDataTreeModel(const germany::Country &data, QObject *parent)
     : QAbstractItemModel(parent)
 {
-    rootItem = new TreeItem({tr("Name"), tr("Code"), tr("AGS")});
+    rootItem = new TreeItem({tr("Region / Kreis"), tr("Code"), tr("AGS")});
     setupModelData(data, rootItem);
 }
 
@@ -127,7 +127,7 @@ int GermanyDataTreeModel::columnCount(const QModelIndex &parent) const
 void GermanyDataTreeModel::setupModelData(const germany::Country &modelData, TreeItem *parent)
 {
     // start with first element - the country
-    TreeItem *countryItem = new TreeItem({QString("%0 (%1)").arg(modelData.name).arg(modelData.states.size()),
+    TreeItem *countryItem = new TreeItem({QString("%0").arg(modelData.name),
                                           modelData.code,
                                           QVariant()},
                                          parent);
@@ -135,7 +135,7 @@ void GermanyDataTreeModel::setupModelData(const germany::Country &modelData, Tre
 
     // add states
     for(const germany::State &state : modelData.states) {
-        TreeItem *stateItem = new TreeItem({QString("%0 (%1)").arg(state.name).arg(state.districts.size()),
+        TreeItem *stateItem = new TreeItem({QString("%0").arg(state.name),
                                             state.code,
                                             QVariant()},
                                            countryItem);

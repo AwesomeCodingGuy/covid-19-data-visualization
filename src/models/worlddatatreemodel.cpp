@@ -142,17 +142,13 @@ int WorldDataTreeModel::columnCount(const QModelIndex &parent) const
 void WorldDataTreeModel::setupModelData(const world::World &modelData, WorldTreeItem *parent)
 {
     // start with first element - the country
-    WorldTreeItem *worldItem = new WorldTreeItem({(modelData.countries.size() > 0)
-                                                    ? QString("%0 (%1)").arg(modelData.name).arg(modelData.countries.size())
-                                                    : QString("%0").arg(modelData.name)},
+    WorldTreeItem *worldItem = new WorldTreeItem({QString("%0").arg(modelData.name)},
                                                  QPair<QString, QString>(modelData.name, ""),
                                                  parent);
     parent->appendChild(worldItem);
     // add countries
     for(const world::Country &country : modelData.countries) {
-        WorldTreeItem *countryItem = new WorldTreeItem({(country.provinces.size() > 0)
-                                                        ? QString("%0 (%1)").arg(country.name).arg(country.provinces.size())
-                                                        : QString("%0").arg(country.name)},
+        WorldTreeItem *countryItem = new WorldTreeItem({QString("%0").arg(country.name)},
                                                        QPair<QString, QString>(country.name, ""),
                                                        worldItem);
         worldItem->appendChild(countryItem);
