@@ -23,6 +23,7 @@ GermanyMapWidget::GermanyMapWidget(QWidget *parent)
     , germanyData(nullptr)
 {
     scene = new QGraphicsScene();
+    scene->setBackgroundBrush(QBrush(QColor(204, 204, 204)));
     graphicsView = new MapView();
     graphicsView->setScene(scene);
 

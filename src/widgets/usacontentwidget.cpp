@@ -19,7 +19,7 @@ UsaContentWidget::UsaContentWidget(QWidget *parent)
     // build left splitter part
     contentSelectCombo = new QComboBox();
     contentSelectCombo->addItem(tr("Diagramme"), 0);
-    contentSelectCombo->addItem(tr("Karte"), 1);
+//    contentSelectCombo->addItem(tr("Karte"), 1);
 
     treeView = new QTreeView();
     treeView->setIndentation(10);
@@ -42,12 +42,14 @@ UsaContentWidget::UsaContentWidget(QWidget *parent)
     mapWidget = new QWidget;
     contentStackedWidget = new QStackedWidget();
     contentStackedWidget->insertWidget(0, tabWidget);
-    contentStackedWidget->insertWidget(1, mapWidget);
+//    contentStackedWidget->insertWidget(1, mapWidget);
 
     // build splitter and add to widgets layout
     splitter = new QSplitter;
     splitter->addWidget(leftTopLevelWidget);
     splitter->addWidget(contentStackedWidget);
+    splitter->setStretchFactor(0, 0);
+    splitter->setStretchFactor(1, 1);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(splitter);
@@ -76,7 +78,7 @@ bool UsaContentWidget::loadWorldData(const QString &folder)
     if(ret) {
         model = new UsaDataTreeModel(usa);
         treeView->setModel(model);
-        treeView->header()->resizeSection(0, 175);
+        treeView->header()->resizeSection(0, 220);
         treeView->header()->resizeSection(1, 50);
     }
 
@@ -101,7 +103,7 @@ void UsaContentWidget::addNewChart(const QModelIndex &index)
 
         // check data
         if(!data) {
-            QMessageBox::information(this, tr("Error"),
+            QMessageBox::information(this, tr("Fehler"),
                                      tr("Der Datensatz ist fehlerhaft. Das Diagramm kann nicht geladen werden."));
             return;
         }
