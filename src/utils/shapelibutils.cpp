@@ -131,8 +131,6 @@ bool readDatabaseFileUsa(const QString &filename, QVector<MapRegion> &regions)
 
     assert(fields == 9);
 
-    qDebug() << records;
-
     // get data from database
     for(int i = 0; i < records; ++i) {
         regions[i].name = DBFReadStringAttribute(dbfHandle, i, 5);
