@@ -10,6 +10,17 @@ void CaseData::clear()
     deaths.clear();
 }
 
+void CaseData::clearAll()
+{
+    casesCumulated.clear();
+    cases.clear();
+    casesSevenDayAverage.clear();
+    deathsCumulated.clear();
+    deaths.clear();
+    startDate = QDate();
+    population = 0;
+}
+
 void CaseData::fill(int value, int count)
 {
     casesCumulated.fill(value, count);

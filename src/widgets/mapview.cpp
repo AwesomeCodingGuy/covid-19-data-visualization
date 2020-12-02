@@ -90,7 +90,7 @@ void MapView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     AreaItem *pathItem = qgraphicsitem_cast<AreaItem*>(itemAt(event->pos()));
     if(pathItem) {
-        emit pathItemDoubleClicked(pathItem);
+        emit pathItemDoubleClicked(pathItem->getDataset());
         event->accept();
     }
 }

@@ -60,7 +60,7 @@ void DownloadManager::startNextDownload()
     }
 
     QNetworkRequest request(url);
-    currentDownload= manager.get(request);
+    currentDownload = manager.get(request);
     connect(currentDownload, &QNetworkReply::downloadProgress,
             this, &DownloadManager::downloadProgress);
     connect(currentDownload, &QNetworkReply::finished,

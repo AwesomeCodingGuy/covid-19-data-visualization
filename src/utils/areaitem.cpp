@@ -172,3 +172,13 @@ void AreaItem::updateTooltip()
 
     setToolTip(tip);
 }
+
+CovidDataTreeItem *AreaItem::getDataset() const
+{
+    return dataset;
+}
+
+void AreaItem::setDataset(CovidDataTreeItem *value)
+{
+    dataset = value;
+}

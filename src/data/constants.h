@@ -24,6 +24,13 @@ extern const QString casesGlobal;
 extern const QString deathsUS;
 extern const QString deathsGlobal;
 
+// local data
+extern const QString germanyStateJson;
+extern const QString germanyShapeFile;
+
+extern const QString usaStateJson;
+extern const QString usaShapeFile;
+
 }
 
 #endif // CONSTANTS_H

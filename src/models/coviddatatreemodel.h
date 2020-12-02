@@ -1,25 +1,23 @@
-#ifndef USADATATREEMODEL_H
-#define USADATATREEMODEL_H
+#ifndef COVIDDATATREEMODEL_H
+#define COVIDDATATREEMODEL_H
 
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
 
-#include "../data/usa.h"
+class TreeItem;
 
-class UsaTreeItem;
+class CovidDataTreeItem;
 
-class UsaDataTreeModel : public QAbstractItemModel
+class CovidDataTreeModel : public QAbstractItemModel
 {
-    Q_OBJECT
-
 public:
-    explicit UsaDataTreeModel(const usa::Usa &data, QObject *parent = nullptr);
-    ~UsaDataTreeModel();
+    explicit CovidDataTreeModel(const CovidDataTreeItem &data, QObject *parent = nullptr);
+    ~CovidDataTreeModel();
 
     QVariant data(const QModelIndex &index, int role) const override;
     QVector<QVariant> rowData(const QModelIndex &index, int role) const;
-    usa::Uid uid(const QModelIndex &index, int role) const;
+    const CovidDataTreeItem* getCovidDataItem(const QModelIndex &index) const;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const override;
@@ -30,9 +28,9 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
 private:
-    void setupModelData(const usa::Usa &modelData, UsaTreeItem *parent);
+    void setupModelData(const CovidDataTreeItem &data, TreeItem *parent);
 
-    UsaTreeItem *rootItem;
+    TreeItem *rootItem;
 };
 
-#endif // USADATATREEMODEL_H
+#endif // COVIDDATATREEMODEL_H

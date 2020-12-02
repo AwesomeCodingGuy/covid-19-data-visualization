@@ -6,6 +6,8 @@
 
 #include "graphicsitems.h"
 
+class CovidDataTreeItem;
+
 class AreaItem : public QGraphicsPathItem
 {
     static constexpr QColor Neutral {180, 180, 180};
@@ -37,6 +39,9 @@ public:
     void setLatestData(QDateTime time, int casesToday, int deathsToday,
                        int casesTotal, int deathsTotal, float incidence7);
 
+    CovidDataTreeItem *getDataset() const;
+    void setDataset(CovidDataTreeItem *value);
+
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -57,6 +62,8 @@ private:
     int deathsToday;
     int casesTotal;
     int deathsTotal;
+
+    CovidDataTreeItem *dataset;
 };
 
 #endif // AREAITEM_H

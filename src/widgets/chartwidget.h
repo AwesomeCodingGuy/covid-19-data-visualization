@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QDateTime>
+#include <QDate>
 #include <QWidget>
 #include <QPen>
 
@@ -32,12 +33,16 @@ public:
     explicit ChartWidget(const QVector<QDateTime> &timestamps,
                          const CaseData &caseData,
                          QWidget *parent = nullptr);
+    explicit ChartWidget(const CaseData &caseData,
+                         QWidget *parent = nullptr);
     ~ChartWidget();
 
 signals:
 
 public slots:
     void resetZoom();
+    void handleMarkerClicked();
+    void rescale();
 
 private:
     void initUi();
@@ -47,9 +52,11 @@ private:
 
     void addNewChartView(QtCharts::QChartView *view, QtCharts::QChart *chart, ChartType type);
 
+    void connectMarkers(const QtCharts::QChart &chart);
     int getOptimalTickinterval(int maxValue);
 
 private:
+    // TODO: make this of type QDate
     QVector<QDateTime> timestamps;
     CaseData caseData;
 

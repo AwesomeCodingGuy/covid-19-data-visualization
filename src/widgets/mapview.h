@@ -4,10 +4,11 @@
 #include <QGraphicsView>
 
 class AreaItem;
+class CovidDataTreeItem;
 
 class MapView : public QGraphicsView
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     MapView(QWidget *parent = nullptr);
@@ -28,7 +29,7 @@ protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 signals:
-    void pathItemDoubleClicked(AreaItem *);
+    void pathItemDoubleClicked(CovidDataTreeItem *);
 
 };
 

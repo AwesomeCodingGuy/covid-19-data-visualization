@@ -1,8 +1,11 @@
 #include "treeitem.h"
 
-TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parentItem)
+#include "../data/coviddatatreeitem.h"
+
+TreeItem::TreeItem(const QVector<QVariant> &data, const CovidDataTreeItem &covidDataItem, TreeItem *parentItem)
     : itemData(data)
     , parent(parentItem)
+    , covidDataItem(covidDataItem)
 {
 
 }
@@ -49,6 +52,11 @@ QVector<QVariant> TreeItem::rowData(int column) const
         return QVector<QVariant>(columnCount());
     }
     return itemData;
+}
+
+const CovidDataTreeItem &TreeItem::getCovidDataItem() const
+{
+    return covidDataItem;
 }
 
 int TreeItem::row() const
