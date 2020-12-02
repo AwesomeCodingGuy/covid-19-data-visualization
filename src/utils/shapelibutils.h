@@ -7,19 +7,11 @@
 #include <QPolygonF>
 
 #include "shapefil.h"
+#include "../data/mapregion.h"
 
-struct MapRegion
-{
-    QString name;
-    QVector<QPolygonF> polygons;
-    QString agsStr;
-    int ags;
-    int parts;
-    int ewz;
-    QString bez;
-};
-
-void readShapeFile(const QString &filename, QVector<MapRegion> &regions);
+bool readShapeFileData(const QString &filename, QVector<MapRegion> &regions, bool convertToPositive = false);
+bool readDatabaseFileGermany(const QString &filename, QVector<MapRegion> &regions);
+bool readDatabaseFileUsa(const QString &filename, QVector<MapRegion> &regions);
 
 double getDirection(const QPolygonF &polygon);
 

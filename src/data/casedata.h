@@ -1,6 +1,7 @@
 #ifndef CASEDATA_H
 #define CASEDATA_H
 
+#include <QDate>
 #include <QVector>
 
 struct CaseData
@@ -10,8 +11,11 @@ struct CaseData
     QVector<float> casesSevenDayAverage;
     QVector<int> deathsCumulated;
     QVector<int> deaths;
+    QDate startDate;
+    int population;
 
     void clear();
+    void clearAll();
     void fill(int value, int count);
 };
 

@@ -13,11 +13,9 @@ class QWidget;
 class QActionGroup;
 class QStackedWidget;
 
-class Dashboard;
 class AppSettings;
-class WorldContentWidget;
-class GermanyContentWidget;
-class UsaContentWidget;
+
+class MainContentWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -40,47 +38,19 @@ public slots:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    void switchView(QAction *action);
-    void about();
-    void loadData();
 
 private:
     void readSettings();
     void writeSettings();
     void initWidgets();
-    void createActions();
-    void createMenus();
     bool userReallyWantsToQuit();
 
     AppSettings appSettings;
     QString appSavePath;
 
-    // Menus
-    QMenu *fileMenu;
-    QMenu *viewMenu;
-    QMenu *helpMenu;
-
-    // ActionGroup
-    QActionGroup *viewGroup;
-
-    // Actions
-    QAction *quitAction;
-
-    QAction *dashboardViewAction;
-    QAction *germanyViewAction;
-    QAction *worldViewAction;
-    QAction *usaViewAction;
-
-    QAction *aboutAction;
+    MainContentWidget *mainContentWidget;
 
     // Action map
     QMap<QAction*, ViewIndex> actionMap;
-
-    // Widgets
-    QStackedWidget *centralStackedWidget;
-    Dashboard *dashboardWidget;
-    GermanyContentWidget *germanyContentWidget;
-    WorldContentWidget *worldContentWidget;
-    UsaContentWidget *usaContentWidget;
 };
 #endif // MAINWINDOW_H
