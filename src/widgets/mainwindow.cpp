@@ -1,8 +1,4 @@
 #include "mainwindow.h"
-#include "dashboard.h"
-#include "germanycontentwidget.h"
-#include "worldcontentwidget.h"
-#include "usacontentwidget.h"
 #include "maincontentwidget.h"
 
 #include <QSettings>
