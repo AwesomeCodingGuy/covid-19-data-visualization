@@ -15,8 +15,8 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="chart.svg"
-   inkscape:export-filename="E:\Coding\Projects\covid-19-data-visualization\covid-19-data-visualization\data\images\icons\chart_64x64.png"
+   sodipodi:docname="update.svg"
+   inkscape:export-filename="E:\Coding\Projects\covid-19-data-visualization\covid-19-data-visualization\data\images\icons\update_64x64.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <defs
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.2"
-     inkscape:cx="27.153086"
-     inkscape:cy="30.709373"
+     inkscape:zoom="7.919596"
+     inkscape:cx="60.093706"
+     inkscape:cy="28.296409"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -42,13 +42,6 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1">
-    <sodipodi:guide
-       position="2.1166667,2.1166667"
-       orientation="1,0"
-       id="guide815"
-       inkscape:locked="false"
-       inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
     <sodipodi:guide
        position="2.1166667,2.1166667"
        orientation="0,1"
@@ -69,19 +62,24 @@
        id="guide821"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="2.1166666,1.0583333"
-       orientation="0,1"
-       id="guide823"
-       inkscape:locked="false"
-       inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
        position="1.0583333,2.1166668"
        orientation="1,0"
        id="guide825"
        inkscape:locked="false"
        inkscape:label=""
        inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="8.4666667,8.4666667"
+       orientation="1,0"
+       id="guide822"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="8.4666665,8.466667"
+       orientation="0,1"
+       id="guide824"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -91,7 +89,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -101,19 +99,21 @@
      id="layer1"
      transform="translate(0,-280.06665)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.52916667;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 1.0583333,294.88332 H 15.875"
-       id="path827"
-       inkscape:connector-curvature="0" />
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#00b56b;stroke-width:1.71979168;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path826"
+       sodipodi:type="arc"
+       sodipodi:cx="8.5673466"
+       sodipodi:cy="288.46906"
+       sodipodi:rx="6.7972159"
+       sodipodi:ry="6.7972159"
+       sodipodi:start="3.6651914"
+       sodipodi:end="2.4958208"
+       sodipodi:open="true"
+       d="m 2.6807848,285.07045 a 6.7972159,6.7972159 0 0 1 7.4444862,-3.21766 6.7972159,6.7972159 0 0 1 5.226613,6.2013 6.7972159,6.7972159 0 0 1 -4.431905,6.79205 6.7972159,6.7972159 0 0 1 -7.7811303,-2.28642" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.52916667;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 2.1166667,295.94165 V 281.12498"
-       id="path829"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#00b56b;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 3.2364213,293.05486 2.3151042,-9.56753 4.3231028,6.70908 L 15.875,285.6607"
-       id="path831"
+       style="fill:none;stroke:#00b56b;stroke-width:1.71979168;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 2.6807854,281.67182 v 3.39862 h 3.3986142"
+       id="path828"
        inkscape:connector-curvature="0" />
   </g>
 </svg>
