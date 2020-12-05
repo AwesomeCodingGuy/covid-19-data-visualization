@@ -5,6 +5,8 @@
 #include <QBrush>
 #include <QObject>
 
+#include "../data/colors.h"
+
 AreaItem::AreaItem(QGraphicsItem *parent)
     : QGraphicsPathItem(parent)
     , name("")
@@ -123,17 +125,13 @@ void AreaItem::setColor()
 
 QColor AreaItem::getColorFromIncidence(float value)
 {
-    if(value < 0.f) {
-        return Neutral;
-    } else if(value < 35.f) {
-        return Green;
-    } else if(value < 50.f) {
-        return Orange;
-    } else if(value < 100.f) {
-        return Red;
-    } else {
-        return DarkRed;
+    for(auto colorRange : colors::ColorRanges) {
+        if(colorRange.min <= value && value < colorRange.max) {
+            return colorRange.color;
+        }
     }
+
+    return colors::Neutral;
 }
 
 void AreaItem::updateTooltip()

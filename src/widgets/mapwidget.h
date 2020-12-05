@@ -8,6 +8,7 @@
 class QComboBox;
 
 class MapView;
+class SpoilerWidget;
 
 class CovidDataTreeItem;
 
@@ -23,6 +24,9 @@ public:
     void addScene(const CovidDataTreeItem &sceneItem);
 
     void recursiveAddGraphicsItemsToScene(QGraphicsScene *scene, const CovidDataTreeItem &sceneItem);
+
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 
 private:
     void adjustSceneRect(QGraphicsScene *scene, int value);
@@ -41,6 +45,7 @@ private:
     QMap<QString, QGraphicsScene*> scenes;
 
     QComboBox *sceneSelectCombo;
+    SpoilerWidget *colorLegend;
 };
 
 #endif // MAPWIDGET_H

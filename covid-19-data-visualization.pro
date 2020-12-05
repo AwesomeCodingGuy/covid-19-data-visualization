@@ -27,15 +27,18 @@ SOURCES += \
     src/utils/shapelibutils.cpp \
     src/utils/utility.cpp \
     src/widgets/chartwidget.cpp \
+    src/widgets/colorlegend.cpp \
     src/widgets/maincontentwidget.cpp \
     src/widgets/mainwindow.cpp \
     src/widgets/mapview.cpp \
     src/widgets/mapwidget.cpp \
+    src/widgets/spoilerwidget.cpp \
     src/widgets/treeview.cpp
 
 HEADERS += \
     src/data/appsettings.h \
     src/data/casedata.h \
+    src/data/colors.h \
     src/data/constants.h \
     src/data/coviddata.h \
     src/data/coviddatatreeitem.h \
@@ -51,10 +54,12 @@ HEADERS += \
     src/utils/shapelibutils.h \
     src/utils/utility.h \
     src/widgets/chartwidget.h \
+    src/widgets/colorlegend.h \
     src/widgets/maincontentwidget.h \
     src/widgets/mainwindow.h \
     src/widgets/mapview.h \
     src/widgets/mapwidget.h \
+    src/widgets/spoilerwidget.h \
     src/widgets/treeview.h
 
 # shapelib
