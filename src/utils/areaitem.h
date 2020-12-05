@@ -10,17 +10,6 @@ class CovidDataTreeItem;
 
 class AreaItem : public QGraphicsPathItem
 {
-    static constexpr QColor Neutral     = QColor{180, 180, 180};
-    static constexpr QColor Green       = QColor{112, 199, 120};
-    static constexpr QColor LightGreen  = QColor{200, 200, 120};
-    static constexpr QColor Yellow      = QColor{255, 200, 120};
-    static constexpr QColor Orange      = QColor{255, 171, 0};
-    static constexpr QColor LightRed    = QColor{238, 90, 24};
-    static constexpr QColor Red         = QColor{183, 55, 68};
-    static constexpr QColor DarkRed     = QColor{112, 39, 23};
-    static constexpr QColor Magenta     = QColor{255, 0, 255};
-    static constexpr QColor Black       = QColor{0, 0, 0};
-
 public:
     enum { Type = UserType + CustomGraphicsTypes::AreaType};
 
