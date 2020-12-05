@@ -2,12 +2,18 @@
 
 #include "mapview.h"
 #include "spoilerwidget.h"
+#include "colorlegend.h"
 #include "../data/coviddatatreeitem.h"
 #include "../utils/areaitem.h"
 
+#include <QScrollBar>
 #include <QDebug>
 #include <QBoxLayout>
 #include <QComboBox>
+
+constexpr int graphicsViewSpacing = 9;
+constexpr int initialScrollBarWidth = 17;
+constexpr int extraSpacing = 2;
 
 MapWidget::MapWidget(QWidget *parent)
     : QWidget(parent)
@@ -39,14 +45,20 @@ void MapWidget::initUi()
     // widgets without layout
     // Scene select combo
     sceneSelectCombo = new QComboBox(this);
-    sceneSelectCombo->move(9, 9);
+    sceneSelectCombo->move(graphicsViewSpacing + extraSpacing,
+                           graphicsViewSpacing + extraSpacing);
     connect(sceneSelectCombo, &QComboBox::currentTextChanged,
             this, &MapWidget::sceneSelectComboChanged);
 
     // color legend
-    colorLegend = new SpoilerWidget(this);
-    colorLegend->resize(400, 100);
-    colorLegend->move(this->width()-400, 0);
+    QHBoxLayout *legendLayout = new QHBoxLayout();
+    ColorLegend *legend = new ColorLegend();
+    legendLayout->addWidget(legend);
+    legendLayout->setContentsMargins(0, 0, 0, 0);
+
+    colorLegend = new SpoilerWidget(tr("Farblegende"), 300, this);
+    colorLegend->setContentLayout(*legendLayout);
+    colorLegend->setCollapsed(false);
 }
 
 void MapWidget::resetSceneMap()
@@ -130,8 +142,16 @@ void MapWidget::recursiveAddGraphicsItemsToScene(QGraphicsScene *scene, const Co
 
 void MapWidget::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event)
+
     // we need to manually move the legend to the right position
-    colorLegend->move(this->width() - colorLegend->width() - 9, 9);
+    int scrollBarWidth = initialScrollBarWidth;
+    if(mapView->verticalScrollBar()->isVisible()) {
+        scrollBarWidth = mapView->verticalScrollBar()->width();
+    }
+
+    colorLegend->move(this->width() - colorLegend->width() - graphicsViewSpacing - scrollBarWidth - extraSpacing,
+                      graphicsViewSpacing + extraSpacing);
 }
 
 void MapWidget::adjustSceneRect(QGraphicsScene *scene, int value)
