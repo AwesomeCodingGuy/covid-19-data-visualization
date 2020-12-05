@@ -32,9 +32,9 @@ void CaseData::fill(int value, int count)
 
 void addCaseData(CaseData &sourceAndResult, const CaseData &source2)
 {
-    addVectors(sourceAndResult.casesCumulated, source2.casesCumulated);
-    addVectors(sourceAndResult.cases, source2.cases);
-    addVectors(sourceAndResult.casesSevenDayAverage, source2.casesSevenDayAverage);
-    addVectors(sourceAndResult.deaths, source2.deaths);
-    addVectors(sourceAndResult.deathsCumulated, source2.deathsCumulated);
+    addVectors(sourceAndResult.casesCumulated.series, source2.casesCumulated.series);
+    addVectors(sourceAndResult.cases.series, source2.cases.series);
+    addVectors(sourceAndResult.casesSevenDayAverage.series, source2.casesSevenDayAverage.series);
+    addVectors(sourceAndResult.deaths.series, source2.deaths.series);
+    addVectors(sourceAndResult.deathsCumulated.series, source2.deathsCumulated.series);
 }

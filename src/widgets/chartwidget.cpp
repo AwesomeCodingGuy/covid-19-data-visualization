@@ -52,7 +52,7 @@ ChartWidget::ChartWidget(const CaseData &caseData, QWidget *parent)
     pen_3 = QPen(QColor(255, 127, 0), 2);
 
     // calculate timestamps
-    timestamps = QVector<QDateTime>(caseData.cases.size());
+    timestamps = QVector<QDateTime>(caseData.cases.series.size());
     const QDate start(caseData.startDate);
     for(int i = 0; i < timestamps.size(); ++i) {
         timestamps[i] = QDateTime(start.addDays(i));
@@ -227,10 +227,10 @@ void ChartWidget::initCumulatedChart()
 
     // init series data
     for(int i = 0; i < timestamps.size(); ++i) {
-        sCases->append(timestamps[i].toMSecsSinceEpoch(), caseData.casesCumulated[i]);
-        sDeaths->append(timestamps[i].toMSecsSinceEpoch(), caseData.deathsCumulated[i]);
+        sCases->append(timestamps[i].toMSecsSinceEpoch(), caseData.casesCumulated.series[i]);
+        sDeaths->append(timestamps[i].toMSecsSinceEpoch(), caseData.deathsCumulated.series[i]);
     }
-    int maxValue = caseData.casesCumulated.last();
+    int maxValue = caseData.casesCumulated.max;
 
     // init axes
     int tickCount = timestamps.size() / 14 + 1;
@@ -285,16 +285,13 @@ void ChartWidget::initDailyChart()
 
     // init series data
     for(int i = 0; i < timestamps.size(); ++i) {
-        sCases->append(timestamps[i].toMSecsSinceEpoch(), caseData.cases[i]);
-        sDeaths->append(timestamps[i].toMSecsSinceEpoch(), caseData.deaths[i]);
-        sAverage->append(timestamps[i].toMSecsSinceEpoch(), caseData.casesSevenDayAverage[i]);
+        sCases->append(timestamps[i].toMSecsSinceEpoch(), caseData.cases.series[i]);
+        sDeaths->append(timestamps[i].toMSecsSinceEpoch(), caseData.deaths.series[i]);
+        sAverage->append(timestamps[i].toMSecsSinceEpoch(), caseData.casesSevenDayAverage.series[i]);
     }
 
     // get maximum value from series
-    int maxValue = std::max(*std::max_element(caseData.cases.begin(),
-                                              caseData.cases.end()),
-                            *std::max_element(caseData.deaths.begin(),
-                                              caseData.deaths.end()));
+    int maxValue = std::max(caseData.cases.max, caseData.deaths.max);
 
     // init axis
     int tickCount = timestamps.size() / 14 + 1;
@@ -358,15 +355,15 @@ void ChartWidget::initAccelerationChart()
     sAccDeaths->append(timestamps[0].toMSecsSinceEpoch(), 0);
     sAccCases7->append(timestamps[0].toMSecsSinceEpoch(), 0);
     for(int i = 1; i < timestamps.size(); ++i) {
-        int value = caseData.cases[i] - caseData.cases[i - 1];
+        int value = caseData.cases.series[i] - caseData.cases.series[i - 1];
         maxValue = std::max(value, maxValue);
         minValue = std::min(value, minValue);
         sAccCases->append(timestamps[i].toMSecsSinceEpoch(),
                           value);
         sAccDeaths->append(timestamps[i].toMSecsSinceEpoch(),
-                           caseData.deaths[i] - caseData.deaths[i - 1]);
+                           caseData.deaths.series[i] - caseData.deaths.series[i - 1]);
         sAccCases7->append(timestamps[i].toMSecsSinceEpoch(),
-                           caseData.casesSevenDayAverage[i] - caseData.casesSevenDayAverage[i - 1]);
+                           caseData.casesSevenDayAverage.series[i] - caseData.casesSevenDayAverage.series[i - 1]);
     }
 
     // init axis

@@ -162,7 +162,7 @@ bool GermanyDataReader::readCasesByState()
         newData.deathsCumulated         = deathsData[i];
         newData.cases                   = calculateIncrease(casesData[i]);
         newData.deaths                  = calculateIncrease(deathsData[i]);
-        newData.casesSevenDayAverage    = calculateAveragedIncrease(newData.cases);
+        newData.casesSevenDayAverage    = calculateAveragedIncrease(newData.cases.series);
         newData.startDate               = this->startDate;
 
         state->setCaseData(newData);
@@ -174,7 +174,7 @@ bool GermanyDataReader::readCasesByState()
     newData.deathsCumulated         = deathsData.last();
     newData.cases                   = calculateIncrease(casesData.last());
     newData.deaths                  = calculateIncrease(deathsData.last());
-    newData.casesSevenDayAverage    = calculateAveragedIncrease(newData.cases);
+    newData.casesSevenDayAverage    = calculateAveragedIncrease(newData.cases.series);
     newData.startDate               = this->startDate;
 
     rootItem.setCaseData(newData);
@@ -212,7 +212,7 @@ bool GermanyDataReader::readCasesByAgs()
         newData.deathsCumulated         = deathsData[i];
         newData.cases                   = calculateIncrease(casesData[i]);
         newData.deaths                  = calculateIncrease(deathsData[i]);
-        newData.casesSevenDayAverage    = calculateAveragedIncrease(newData.cases);
+        newData.casesSevenDayAverage    = calculateAveragedIncrease(newData.cases.series);
         newData.startDate               = this->startDate;
 
         district->setCaseData(newData);
