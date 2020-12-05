@@ -25,6 +25,7 @@ public:
     void recursiveAddGraphicsItemsToScene(QGraphicsScene *scene, const CovidDataTreeItem &sceneItem);
 
 private:
+    void adjustSceneRect(QGraphicsScene *scene, int value);
     void initUi();
     void resetSceneMap();
 
