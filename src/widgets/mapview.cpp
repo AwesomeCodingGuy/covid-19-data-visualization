@@ -65,14 +65,30 @@ void MapView::mouseMoveEvent(QMouseEvent *event)
 
 void MapView::wheelEvent(QWheelEvent *event)
 {
-    QPoint numDegrees = event->angleDelta() / 8;
+    // set the anchors for the transformation
+    setTransformationAnchor(QGraphicsView::NoAnchor);
+    setResizeAnchor(QGraphicsView::NoAnchor);
 
+    // get event data
+    QPoint numDegrees = event->angleDelta() / 8;
+    QPointF oldPos = mapToScene(event->position().toPoint());
+
+    // only perform zooming when data is valid
     if(!numDegrees.isNull()) {
+        // zoom in or out
         if(numDegrees.y() > 0) {
             zoomIn();
         } else {
             zoomOut();
         }
+
+        // calculate new position and translate the scene according to the delta
+        QPointF newPos = mapToScene(event->position().toPoint());
+
+        // move Scene to old position
+        QPointF deltaPos = newPos - oldPos;
+        qDebug() << deltaPos;
+        translate(deltaPos.x(), deltaPos.y());
     }
 }
 

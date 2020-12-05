@@ -25,7 +25,7 @@ MapWidget::~MapWidget()
 void MapWidget::initUi()
 {
     mapView = new MapView();
-    mapView->setBackgroundBrush(QBrush(QColor(57, 69, 145)));
+    mapView->setBackgroundBrush(QBrush(QColor(101, 102, 203)));
     mapView->scale(1, -1);
     mapView->setDragMode(QGraphicsView::ScrollHandDrag);
     connect(mapView, &MapView::pathItemDoubleClicked,
@@ -97,7 +97,10 @@ void MapWidget::addScene(const CovidDataTreeItem &sceneItem)
         return;
     }
 
-    // insert create dscene in scene map
+    // add some padding to the scene rect
+    adjustSceneRect(newScene, 200);
+
+    // insert created scene in scene map
     scenes.insert(sceneItem.getItemNameAlt(), newScene);
 
     // insert in ComboBox for scene selection
@@ -115,4 +118,11 @@ void MapWidget::recursiveAddGraphicsItemsToScene(QGraphicsScene *scene, const Co
     if(sceneItem.getAreaItem() ) {
         scene->addItem(sceneItem.getAreaItem());
     }
+}
+
+void MapWidget::adjustSceneRect(QGraphicsScene *scene, int value)
+{
+    auto bRect = scene->itemsBoundingRect();
+    bRect.adjust(-value, -value, value, value);
+    scene->setSceneRect(bRect);
 }
