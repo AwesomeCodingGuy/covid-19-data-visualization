@@ -26,6 +26,7 @@ public:
 
 private:
     void initUi();
+    void resetSceneMap();
 
 public slots:
     void sceneSelectComboChanged(const QString &text);

@@ -41,6 +41,15 @@ void MapWidget::initUi()
             this, &MapWidget::sceneSelectComboChanged);
 }
 
+void MapWidget::resetSceneMap()
+{
+    // delete all scenes in map
+    qDeleteAll(scenes);
+
+    // delete all items in combo box
+    sceneSelectCombo->clear();
+}
+
 void MapWidget::sceneSelectComboChanged(const QString &text)
 {
     auto scene = scenes.find(text);
@@ -53,6 +62,8 @@ void MapWidget::sceneSelectComboChanged(const QString &text)
 
 bool MapWidget::loadMapData(const CovidDataTreeItem &rootItem)
 {
+    resetSceneMap();
+
     // add a scene for every dataset item
     for(const CovidDataTreeItem &sceneItem : rootItem.getChildren()) {
         addScene(sceneItem);
