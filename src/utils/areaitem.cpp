@@ -125,14 +125,22 @@ QColor AreaItem::getColorFromIncidence(float value)
 {
     if(value < 0.f) {
         return Neutral;
-    } else if(value < 35.f) {
+    } else if(value < 5.f) {
         return Green;
+    } else if(value < 20.f) {
+        return LightGreen;
+    } else if(value < 35.f) {
+        return Yellow;
     } else if(value < 50.f) {
         return Orange;
     } else if(value < 100.f) {
+        return LightRed;
+    } else if(value < 250.f) {
         return Red;
-    } else {
+    } else if(value < 500.f) {
         return DarkRed;
+    } else {
+        return Magenta;
     }
 }
 
