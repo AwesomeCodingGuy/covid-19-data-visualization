@@ -31,6 +31,7 @@ SOURCES += \
     src/widgets/mainwindow.cpp \
     src/widgets/mapview.cpp \
     src/widgets/mapwidget.cpp \
+    src/widgets/spoilerwidget.cpp \
     src/widgets/treeview.cpp
 
 HEADERS += \
@@ -55,6 +56,7 @@ HEADERS += \
     src/widgets/mainwindow.h \
     src/widgets/mapview.h \
     src/widgets/mapwidget.h \
+    src/widgets/spoilerwidget.h \
     src/widgets/treeview.h
 
 # shapelib

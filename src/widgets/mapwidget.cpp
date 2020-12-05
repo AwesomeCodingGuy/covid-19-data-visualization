@@ -1,6 +1,7 @@
 #include "mapwidget.h"
 
 #include "mapview.h"
+#include "spoilerwidget.h"
 #include "../data/coviddatatreeitem.h"
 #include "../utils/areaitem.h"
 
@@ -35,10 +36,17 @@ void MapWidget::initUi()
     hLayout->addWidget(mapView);
     setLayout(hLayout);
 
+    // widgets without layout
+    // Scene select combo
     sceneSelectCombo = new QComboBox(this);
-    sceneSelectCombo->move(10, 10);
+    sceneSelectCombo->move(9, 9);
     connect(sceneSelectCombo, &QComboBox::currentTextChanged,
             this, &MapWidget::sceneSelectComboChanged);
+
+    // color legend
+    colorLegend = new SpoilerWidget(this);
+    colorLegend->resize(400, 100);
+    colorLegend->move(this->width()-400, 0);
 }
 
 void MapWidget::resetSceneMap()
@@ -118,6 +126,12 @@ void MapWidget::recursiveAddGraphicsItemsToScene(QGraphicsScene *scene, const Co
     if(sceneItem.getAreaItem() ) {
         scene->addItem(sceneItem.getAreaItem());
     }
+}
+
+void MapWidget::resizeEvent(QResizeEvent *event)
+{
+    // we need to manually move the legend to the right position
+    colorLegend->move(this->width() - colorLegend->width() - 9, 9);
 }
 
 void MapWidget::adjustSceneRect(QGraphicsScene *scene, int value)
