@@ -24,7 +24,7 @@ MapWidget::MapWidget(QWidget *parent)
 MapWidget::~MapWidget()
 {
     // delete all scenes
-    for(auto i : scenes) {
+    for(auto i : qAsConst(scenes)) {
         i->deleteLater();
     }
 }

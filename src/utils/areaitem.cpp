@@ -125,7 +125,7 @@ void AreaItem::setColor()
 
 QColor AreaItem::getColorFromIncidence(float value)
 {
-    for(auto colorRange : colors::ColorRanges) {
+    for(const colors::ColorRange &colorRange : colors::ColorRanges) {
         if(colorRange.min <= value && value < colorRange.max) {
             return colorRange.color;
         }
@@ -158,15 +158,15 @@ void AreaItem::updateTooltip()
                 "  <td align=\"right\" style=\"color: %8\">%7</td>"
                 " </tr><tr>"
                 "</table>"
-    ).arg(name)
-     .arg(timestamp.toString("dd.MM.yyyy"))
+    ).arg(name,
+          timestamp.toString("dd.MM.yyyy"))
      .arg(casesToday)
      .arg(deathsToday)
      .arg(casesTotal)
      .arg(deathsTotal)
-     .arg(QLocale(QLocale::German).toString(incidence7, 'f', 1))
-     .arg(getColorFromIncidence(incidence7).name())
-     .arg(designation);
+     .arg(QLocale(QLocale::German).toString(incidence7, 'f', 1),
+          getColorFromIncidence(incidence7).name(),
+          designation);
 
     setToolTip(tip);
 }

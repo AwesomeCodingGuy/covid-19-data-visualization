@@ -160,7 +160,7 @@ bool UsaDataReader::readCsvFileByCounty(const QString &filename, UsaDataReader::
         if(fileType == FileType::Cases) {
             dataItemPtr->getCaseData().casesCumulated       = data;
             dataItemPtr->getCaseData().cases                = calculateIncrease(data);
-            dataItemPtr->getCaseData().casesSevenDayAverage = calculateAveragedIncrease(dataItemPtr->getCaseData().cases);
+            dataItemPtr->getCaseData().casesSevenDayAverage = calculateAveragedIncrease(dataItemPtr->getCaseData().cases.series);
         } else if(fileType == FileType::Deaths) {
             dataItemPtr->getCaseData().deathsCumulated      = data;
             dataItemPtr->getCaseData().deaths               = calculateIncrease(data);
@@ -298,7 +298,7 @@ bool UsaDataReader::mergeMapData(QVector<MapRegion> &regions)
         // calculate the painterpath
         QPainterPath path;
         // add polygons to painter path
-        for(const QPolygonF &polygon : region.polygons) {
+        for(const QPolygonF &polygon : qAsConst(region.polygons)) {
             path.addPolygon(polygon);
         }
 

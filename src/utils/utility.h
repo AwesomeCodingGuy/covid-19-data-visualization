@@ -20,4 +20,11 @@ void addVectors(QVector<T> &sourceAndResult, const QVector<T> &source2)
                    source2.begin(), sourceAndResult.begin(), std::plus<T>());
 }
 
+template<typename T>
+void calculateMinMax(const QVector<T> &vec, T &min, T &max) {
+    auto minMax = std::minmax_element(vec.begin(), vec.end());
+    min = *minMax.first;
+    max = *minMax.second;
+}
+
 #endif // UTILITY_H

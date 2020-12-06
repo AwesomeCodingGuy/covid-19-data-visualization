@@ -201,7 +201,7 @@ void MainContentWidget::addNewChart(const CovidDataTreeItem *chartDataItem)
         // qDebug() << getCompleteName(chartDataItem);
 
         // Add Chart
-        if(chartDataItem->getCaseData().cases.size() > 0) {
+        if(chartDataItem->getCaseData().cases.series.size() > 0) {
             ChartWidget *chartWidget = new ChartWidget(chartDataItem->getCaseData());
             int newIndex = chartTabWidget->addTab(chartWidget, chartDataItem->getItemNameAlt());
             chartTabWidget->setCurrentIndex(newIndex);

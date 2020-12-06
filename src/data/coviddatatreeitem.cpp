@@ -109,19 +109,19 @@ void CovidDataTreeItem::createAreaItem(QPainterPath path)
 {
     float incidence = 0;
     if(data.population != 0) {
-        incidence = 7.0f * data.casesSevenDayAverage.last() * 100000.f / static_cast<float>(data.population);
+        incidence = 7.0f * data.casesSevenDayAverage.series.last() * 100000.f / static_cast<float>(data.population);
     }
 
     QDateTime dTime;
-    dTime.setDate(data.startDate.addDays(data.cases.size() - 1));
+    dTime.setDate(data.startDate.addDays(data.cases.series.size() - 1));
 
     areaItem = new AreaItem(path);
     areaItem->setCompleteName(itemName, itemDesignation);
     areaItem->setLatestData(dTime,
-                            data.cases.last(),
-                            data.deaths.last(),
-                            data.casesCumulated.last(),
-                            data.deathsCumulated.last(),
+                            data.cases.series.last(),
+                            data.deaths.series.last(),
+                            data.casesCumulated.series.last(),
+                            data.deathsCumulated.series.last(),
                             incidence);
     areaItem->setDataset(this);
 }

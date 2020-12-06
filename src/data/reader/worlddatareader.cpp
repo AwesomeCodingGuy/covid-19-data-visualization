@@ -113,7 +113,7 @@ bool WorldDataReader::readCsvFileByCounty(const QString &filename, FileType file
         if(fileType == FileType::Cases) {
             dataItemPtr->getCaseData().casesCumulated       = data;
             dataItemPtr->getCaseData().cases                = calculateIncrease(data);
-            dataItemPtr->getCaseData().casesSevenDayAverage = calculateAveragedIncrease(dataItemPtr->getCaseData().cases);
+            dataItemPtr->getCaseData().casesSevenDayAverage = calculateAveragedIncrease(dataItemPtr->getCaseData().cases.series);
         } else if(fileType == FileType::Deaths) {
             dataItemPtr->getCaseData().deathsCumulated      = data;
             dataItemPtr->getCaseData().deaths               = calculateIncrease(data);
@@ -143,7 +143,7 @@ void WorldDataReader::calculateTotalvalues()
             // before adding country data, add its province data to the country
             if(countryItem.getChildren().size() > 0) {
                 // if there is data for the heartland, move the data to a province first
-                if(countryItemCases.casesCumulated.size() > 0) {
+                if(countryItemCases.casesCumulated.series.size() > 0) {
                     // append "Heartland" to the item, to clearify that this is not really a province
                     CovidDataTreeItem newProvince(QString(countryItem.getItemNameAlt().append(" (Heartland)")));
                     newProvince.setCaseData(countryItem.getCaseData());
