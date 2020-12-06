@@ -51,7 +51,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::readSettings()
 {
     // use path in %APPDATA%/APPNAME/ (for Windows)
-    QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
+    QSettings settings(QString("%1/%2.ini").arg(appSavePath, QCoreApplication::applicationName()),
                        QSettings::IniFormat);
 
     QRect desktopRect = QApplication::desktop()->availableGeometry(this);
@@ -68,7 +68,7 @@ void MainWindow::readSettings()
 void MainWindow::writeSettings()
 {
     // use path in %APPDATA%/APPNAME/ (for Windows)
-    QSettings settings(QString("%1/%2.ini").arg(appSavePath).arg(QCoreApplication::applicationName()),
+    QSettings settings(QString("%1/%2.ini").arg(appSavePath, QCoreApplication::applicationName()),
                        QSettings::IniFormat);
 
     // write settings

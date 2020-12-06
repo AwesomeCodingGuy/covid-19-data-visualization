@@ -51,7 +51,7 @@ void DownloadManager::startNextDownload()
 
     // get a filename from url
     QString filename = saveFilename(url);
-    outputFile.setFileName(QString("%1/%2").arg(downloadFolder).arg(filename));
+    outputFile.setFileName(QString("%1/%2").arg(downloadFolder, filename));
     if(!outputFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text)) {
         // on error this downlaod will be skipped
         qDebug() << "Problem opening file." << qPrintable(outputFile.errorString());
