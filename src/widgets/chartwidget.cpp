@@ -55,7 +55,7 @@ ChartWidget::ChartWidget(const CaseData &caseData, QWidget *parent)
     timestamps = QVector<QDateTime>(caseData.cases.series.size());
     const QDate start(caseData.startDate);
     for(int i = 0; i < timestamps.size(); ++i) {
-        timestamps[i] = QDateTime(start.addDays(i));
+        timestamps[i] = QDateTime(start.addDays(i), QTime(0, 0));
     }
 
     // init UI
@@ -130,60 +130,25 @@ void ChartWidget::handleMarkerClicked()
     }
 }
 
-static bool yPointCompareMax(const QPointF &a, const QPointF &b)
-{
-    return (a.y() < b.y());
-}
-
-static bool yPointCompareMin(const QPointF &a, const QPointF &b)
-{
-    return (a.y() > b.y());
-}
-
 void ChartWidget::rescale()
 {
-    // TODO: somewhere is a bug that suddenly allocates much memory and the applications stays
-    // unresponsible. The problem should be solved on anotehr way -> maybe save all min/max values when creating the window
-
-    return; // added to skip the bug
-
-
-    const QtCharts::QChartView * cView = qobject_cast<QtCharts::QChartView*>(chartContainer->widget(chartContainer->currentIndex()));
-
+    // get current visible QChartView
+    const QtCharts::QChartView *cView = qobject_cast<QtCharts::QChartView*>(chartContainer->widget(chartContainer->currentIndex()));
     if(!cView) {
         return;
     }
 
+    // get current visible QChart
     const QtCharts::QChart *currentChart = cView->chart();
 
-    qreal min = std::numeric_limits<qreal>::max();
-    qreal max = std::numeric_limits<qreal>::min();
-    for(QtCharts::QAbstractSeries *s : currentChart->series()) {
-        QtCharts::QLineSeries *line = qobject_cast<QtCharts::QLineSeries*>(s);
+    // get vertical axes of chart
+    const QList<QtCharts::QAbstractAxis*> axes = currentChart->axes(Qt::Orientation::Vertical);
+    // cast first axis to QValueAxis - it is assumes that there is only 1
+    auto verticalValueAxis = qobject_cast<QtCharts::QValueAxis*>(axes.first());
 
-        if(!line || !line->isVisible()) {
-            continue;
-        }
-
-        auto vec = line->pointsVector();
-        max = std::max(max, std::max_element(vec.begin(),
-                                             vec.end(),
-                                             yPointCompareMax)->y());
-
-        min = std::min(min, std::max_element(vec.begin(),
-                                             vec.end(),
-                                             yPointCompareMin)->y());
-    }
-
-    for(auto *axis : currentChart->axes()) {
-        if(axis && axis->type() == QtCharts::QAbstractAxis::AxisTypeValue) {
-            auto a = qobject_cast<QtCharts::QValueAxis*>(axis);
-            if(a) {
-                a->setTickAnchor(0);
-                a->setTickInterval(getOptimalTickinterval(max));
-                a->setRange(min, max);
-            }
-        }
+    // apply nice numbers to axis if it is a valid axis
+    if(verticalValueAxis) {
+        verticalValueAxis->applyNiceNumbers();
     }
 }
 
@@ -242,9 +207,9 @@ void ChartWidget::initCumulatedChart()
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
+    axisY->setRange(0, maxValue);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
-    axisY->setMin(0);
 
     // build chart
     cumulatedChart = new QtCharts::QChart();
@@ -265,6 +230,8 @@ void ChartWidget::initCumulatedChart()
     sCases->attachAxis(axisY);
     sDeaths->attachAxis(axisX);
     sDeaths->attachAxis(axisY);
+
+    // axisY->applyNiceNumbers();
 
     // add chart to its own view
     addNewChartView(cumulatedChartView, cumulatedChart, ChartType::Cumulated);
@@ -303,10 +270,9 @@ void ChartWidget::initDailyChart()
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
+    axisY->setRange(0, maxValue);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
-    axisY->setMin(0);
-    axisY->setMax(maxValue);
 
     // build chart
     dailyChart = new QtCharts::QChart();
@@ -330,6 +296,8 @@ void ChartWidget::initDailyChart()
     sDeaths->attachAxis(axisY);
     sAverage->attachAxis(axisX);
     sAverage->attachAxis(axisY);
+
+    // axisY->applyNiceNumbers();
 
     // add chart to its own view
     addNewChartView(dailyChartView, dailyChart, ChartType::Daily);
@@ -376,9 +344,9 @@ void ChartWidget::initAccelerationChart()
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
+    axisY->setRange(minValue, maxValue);
     axisY->setTickAnchor(0);
     axisY->setTickInterval(getOptimalTickinterval(maxValue));
-    axisY->setRange(minValue, maxValue);
 
     // build chart
     accelerationChart = new QtCharts::QChart();
@@ -403,7 +371,7 @@ void ChartWidget::initAccelerationChart()
     sAccCases7->attachAxis(axisX);
     sAccCases7->attachAxis(axisY);
 
-    axisY->applyNiceNumbers();
+    // axisY->applyNiceNumbers();
 
     // add chart to its own view
     addNewChartView(accelerationChartView, accelerationChart, ChartType::Acceleration);
