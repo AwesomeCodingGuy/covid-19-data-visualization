@@ -111,13 +111,14 @@ void GermanyDataReader::initDistricts()
     file.close();
 
     // get json root object
-    QJsonDocument doc = QJsonDocument::fromJson(jsonContent.toUtf8());
-    QJsonObject jsonRoot = doc.object();
+    const QJsonDocument doc = QJsonDocument::fromJson(jsonContent.toUtf8());
+    const QJsonObject jsonRoot = doc.object();
 
     // iterate over ags objects
-    for(QString agsStr : jsonRoot.keys()) {
+    auto rootKeys = jsonRoot.keys();
+    for(const QString &agsStr : qAsConst(rootKeys)) {
         // get data from file
-        QJsonObject district = jsonRoot.value(agsStr).toObject();
+        const QJsonObject district = jsonRoot.value(agsStr).toObject();
         const int ags = agsStr.toInt();
         const int stateKey = ags / 1000;
         const int districtKey = ags % 1000;
@@ -334,7 +335,7 @@ bool GermanyDataReader::mergeMapData(QVector<MapRegion> &regions)
         // calculate the painterpath
         QPainterPath path;
         // add polygons to painter path
-        for(const QPolygonF &polygon : region.polygons) {
+        for(const QPolygonF &polygon : qAsConst(region.polygons)) {
             path.addPolygon(polygon);
         }
 

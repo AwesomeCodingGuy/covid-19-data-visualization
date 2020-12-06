@@ -298,7 +298,7 @@ bool UsaDataReader::mergeMapData(QVector<MapRegion> &regions)
         // calculate the painterpath
         QPainterPath path;
         // add polygons to painter path
-        for(const QPolygonF &polygon : region.polygons) {
+        for(const QPolygonF &polygon : qAsConst(region.polygons)) {
             path.addPolygon(polygon);
         }
 
