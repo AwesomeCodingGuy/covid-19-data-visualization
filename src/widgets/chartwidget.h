@@ -54,6 +54,7 @@ private:
 
     void connectMarkers(const QtCharts::QChart &chart);
     int getOptimalTickinterval(int maxValue);
+    int getOptimalTickinterval(int minValue, int maxValue);
 
 private:
     // TODO: make this of type QDate

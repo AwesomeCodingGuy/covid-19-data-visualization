@@ -132,6 +132,8 @@ void ChartWidget::handleMarkerClicked()
 
 void ChartWidget::rescale()
 {
+    // TODO: There are still some problems with lags...however the application does not freeze at the moment
+
     // get current visible QChartView
     const QtCharts::QChartView *cView = qobject_cast<QtCharts::QChartView*>(chartContainer->widget(chartContainer->currentIndex()));
     if(!cView) {
@@ -141,6 +143,24 @@ void ChartWidget::rescale()
     // get current visible QChart
     const QtCharts::QChart *currentChart = cView->chart();
 
+    //get min /max values of visible charts
+    int min = 0;
+    int max = 0;
+    bool anyChartVisible = false;
+    const QList<QtCharts::QAbstractSeries*> series = currentChart->series();
+    foreach(QtCharts::QAbstractSeries *s, series) {
+        if(s->isVisible()) {
+            min = std::min(min, s->property("min").toInt());
+            max = std::max(max, s->property("max").toInt());
+            anyChartVisible = true;
+        }
+    }
+
+    // break if there is no chart visible - there is no need for rescaling
+    if(!anyChartVisible) {
+        return;
+    }
+
     // get vertical axes of chart
     const QList<QtCharts::QAbstractAxis*> axes = currentChart->axes(Qt::Orientation::Vertical);
     // cast first axis to QValueAxis - it is assumes that there is only 1
@@ -148,7 +168,9 @@ void ChartWidget::rescale()
 
     // apply nice numbers to axis if it is a valid axis
     if(verticalValueAxis) {
-        verticalValueAxis->applyNiceNumbers();
+        verticalValueAxis->setRange(1.1f * min, 1.1f * max);
+        qDebug() << min << " - " << max << " Int: " << getOptimalTickinterval(min, max);
+        verticalValueAxis->setTickInterval(getOptimalTickinterval(min, max));
     }
 }
 
@@ -195,7 +217,11 @@ void ChartWidget::initCumulatedChart()
         sCases->append(timestamps[i].toMSecsSinceEpoch(), caseData.casesCumulated.series[i]);
         sDeaths->append(timestamps[i].toMSecsSinceEpoch(), caseData.deathsCumulated.series[i]);
     }
-    int maxValue = caseData.casesCumulated.max;
+
+    sCases->setProperty("min", caseData.casesCumulated.min);
+    sCases->setProperty("max", caseData.casesCumulated.max);
+    sDeaths->setProperty("min", caseData.deathsCumulated.min);
+    sDeaths->setProperty("max", caseData.deathsCumulated.max);
 
     // init axes
     int tickCount = timestamps.size() / 14 + 1;
@@ -207,9 +233,10 @@ void ChartWidget::initCumulatedChart()
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
-    axisY->setRange(0, maxValue);
+    axisY->setRange(1.1f * std::min(caseData.casesCumulated.min, caseData.deathsCumulated.min),
+                    1.1f * std::max(caseData.casesCumulated.max, caseData.deathsCumulated.max));
     axisY->setTickAnchor(0);
-    axisY->setTickInterval(getOptimalTickinterval(maxValue));
+    axisY->setTickInterval(getOptimalTickinterval(axisY->max()));
 
     // build chart
     cumulatedChart = new QtCharts::QChart();
@@ -230,8 +257,6 @@ void ChartWidget::initCumulatedChart()
     sCases->attachAxis(axisY);
     sDeaths->attachAxis(axisX);
     sDeaths->attachAxis(axisY);
-
-    // axisY->applyNiceNumbers();
 
     // add chart to its own view
     addNewChartView(cumulatedChartView, cumulatedChart, ChartType::Cumulated);
@@ -257,8 +282,13 @@ void ChartWidget::initDailyChart()
         sAverage->append(timestamps[i].toMSecsSinceEpoch(), caseData.casesSevenDayAverage.series[i]);
     }
 
-    // get maximum value from series
-    int maxValue = std::max(caseData.cases.max, caseData.deaths.max);
+    // get maximum values from series
+    sCases->setProperty("min", caseData.cases.min);
+    sCases->setProperty("max", caseData.cases.max);
+    sDeaths->setProperty("min", caseData.deaths.min);
+    sDeaths->setProperty("max", caseData.deaths.max);
+    sAverage->setProperty("min", caseData.casesSevenDayAverage.min);
+    sAverage->setProperty("max", caseData.casesSevenDayAverage.max);
 
     // init axis
     int tickCount = timestamps.size() / 14 + 1;
@@ -270,9 +300,12 @@ void ChartWidget::initDailyChart()
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
-    axisY->setRange(0, maxValue);
+    axisY->setRange(1.1f * std::min(std::min(caseData.cases.min, caseData.deaths.min),
+                                    static_cast<int>(caseData.casesSevenDayAverage.min)),
+                    1.1f * std::max(std::max(caseData.cases.max, caseData.deaths.max),
+                                    static_cast<int>(caseData.casesSevenDayAverage.max)));
     axisY->setTickAnchor(0);
-    axisY->setTickInterval(getOptimalTickinterval(maxValue));
+    axisY->setTickInterval(getOptimalTickinterval(axisY->max()));
 
     // build chart
     dailyChart = new QtCharts::QChart();
@@ -317,22 +350,41 @@ void ChartWidget::initAccelerationChart()
     sAccCases7->setName(tr("7-Tage-Inzidenz"));
 
     // calculate rate
-    int maxValue = 0;
-    int minValue = 0;
+    int maxValueC = 0;
+    int minValueC = 0;
+    int minValueD = 0;
+    int maxValueD = 0;
+    float minValueA = 0;
+    float maxValueA = 0;
     sAccCases->append(timestamps[0].toMSecsSinceEpoch(), 0);
     sAccDeaths->append(timestamps[0].toMSecsSinceEpoch(), 0);
     sAccCases7->append(timestamps[0].toMSecsSinceEpoch(), 0);
     for(int i = 1; i < timestamps.size(); ++i) {
-        int value = caseData.cases.series[i] - caseData.cases.series[i - 1];
-        maxValue = std::max(value, maxValue);
-        minValue = std::min(value, minValue);
+        int valueC = caseData.cases.series[i] - caseData.cases.series[i - 1];
+        maxValueC = std::max(valueC, maxValueC);
+        minValueC = std::min(valueC, minValueC);
         sAccCases->append(timestamps[i].toMSecsSinceEpoch(),
-                          value);
+                          valueC);
+
+        int valueD = caseData.deaths.series[i] - caseData.deaths.series[i - 1];
+        maxValueD = std::max(valueD, maxValueD);
+        minValueD = std::min(valueD, minValueD);
         sAccDeaths->append(timestamps[i].toMSecsSinceEpoch(),
-                           caseData.deaths.series[i] - caseData.deaths.series[i - 1]);
+                           valueD);
+
+        float valueF = caseData.casesSevenDayAverage.series[i] - caseData.casesSevenDayAverage.series[i - 1];
+        maxValueA = std::max(valueF, maxValueA);
+        minValueA = std::min(valueF, minValueA);
         sAccCases7->append(timestamps[i].toMSecsSinceEpoch(),
-                           caseData.casesSevenDayAverage.series[i] - caseData.casesSevenDayAverage.series[i - 1]);
+                           valueF);
     }
+
+    sAccCases->setProperty("min", minValueC);
+    sAccCases->setProperty("max", maxValueC);
+    sAccDeaths->setProperty("min", minValueD);
+    sAccDeaths->setProperty("max", maxValueD);
+    sAccCases7->setProperty("min", minValueA);
+    sAccCases7->setProperty("max", maxValueA);
 
     // init axis
     int tickCount = timestamps.size() / 14 + 1;
@@ -344,9 +396,10 @@ void ChartWidget::initAccelerationChart()
     QtCharts::QValueAxis *axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTickType(QtCharts::QValueAxis::TickType::TicksDynamic);
-    axisY->setRange(minValue, maxValue);
+    axisY->setRange(1.1f * std::min(std::min(minValueC, minValueD), static_cast<int>(minValueA)),
+                    1.1f * std::max(std::max(maxValueC, maxValueD), static_cast<int>(maxValueA)));
     axisY->setTickAnchor(0);
-    axisY->setTickInterval(getOptimalTickinterval(maxValue));
+    axisY->setTickInterval(getOptimalTickinterval(axisY->max()));
 
     // build chart
     accelerationChart = new QtCharts::QChart();
@@ -407,5 +460,11 @@ void ChartWidget::connectMarkers(const QtCharts::QChart &chart)
 int ChartWidget::getOptimalTickinterval(int maxValue)
 {
     int exp = static_cast<int>(std::log10(maxValue / 2));
+    return static_cast<int>(std::pow(10, exp));
+}
+
+int ChartWidget::getOptimalTickinterval(int minValue, int maxValue)
+{
+    int exp = static_cast<int>(std::log10((maxValue - minValue) / 2));
     return static_cast<int>(std::pow(10, exp));
 }
