@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include "../utils/utility.h"
+
 template<typename T>
 struct CaseSeries
 {
@@ -23,9 +25,7 @@ struct CaseSeries
 
     CaseSeries& operator=(const QVector<T> &data) {
         series = data;
-        auto minMax = std::minmax_element(series.begin(), series.end());
-        min = *minMax.first;
-        max = *minMax.second;
+        calculateMinMax(series, min, max);
         return *this;
     }
 };
@@ -44,6 +44,11 @@ struct CaseData
     void clearAll();
     void fill(int value, int count);
 };
+
+template<typename T>
+void calculateMinMax(CaseSeries<T> &s) {
+    calculateMinMax(s.series, s.min, s.max);
+}
 
 void addCaseData(CaseData &sourceAndResult, const CaseData &source2);
 
