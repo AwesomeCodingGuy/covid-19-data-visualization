@@ -8,6 +8,7 @@
 
 namespace colors {
 
+// Incidence
 constexpr Q_DECL_UNUSED QColor Neutral     = QColor{180, 180, 180};
 constexpr Q_DECL_UNUSED QColor Green       = QColor{112, 199, 120};
 constexpr Q_DECL_UNUSED QColor LightGreen  = QColor{200, 200, 120};
@@ -17,6 +18,10 @@ constexpr Q_DECL_UNUSED QColor LightRed    = QColor{238, 90, 24};
 constexpr Q_DECL_UNUSED QColor Red         = QColor{183, 55, 68};
 constexpr Q_DECL_UNUSED QColor DarkRed     = QColor{112, 39, 23};
 constexpr Q_DECL_UNUSED QColor Magenta     = QColor{255, 0, 255};
+
+// More colors
+constexpr Q_DECL_UNUSED QColor Black       = QColor{0, 0, 0};
+constexpr Q_DECL_UNUSED QColor DarkGray    = QColor{32, 32, 32};
 
 struct ColorRange {
     float min;
