@@ -6,82 +6,114 @@
         {
             "id": 1,
             "name": "Schleswig-Holstein",
-            "code": "DE-SH"
+            "code": "DE-SH",
+            "lat": 54.1856,
+            "lon": 9.8222
         },
         {
             "id": 2,
             "name": "Hamburg",
-            "code": "DE-HH"
+            "code": "DE-HH",
+            "lat": 53.5688,
+            "lon": 10.0288
         },
         {
             "id": 3,
             "name": "Niedersachsen",
-            "code": "DE-NI"
+            "code": "DE-NI",
+            "lat": 52.8398,
+            "lon": 9.0760
         },
         {
             "id": 4,
             "name": "Bremen",
-            "code": "DE-HB"
+            "code": "DE-HB",
+            "lat": 53.3137,
+            "lon": 8.7105
         },
         {
             "id": 5,
             "name": "Nordrhein-Westfalen",
-            "code": "DE-NW"
+            "code": "DE-NW",
+            "lat": 51.4783,
+            "lon": 7.555
         },
         {
             "id": 6,
             "name": "Hessen",
-            "code": "DE-HE"
+            "code": "DE-HE",
+            "lat": 50.6080,
+            "lon": 9.0285
         },
         {
             "id": 7,
             "name": "Rheinland-Pfalz",
-            "code": "DE-RP"
+            "code": "DE-RP",
+            "lat": 49.9551,
+            "lon": 7.3104
         },
         {
             "id": 8,
             "name": "Baden-Württemberg",
-            "code": "DE-BW"
+            "code": "DE-BW",
+            "lat": 48.53777,
+            "lon": 9.04111
         },
         {
             "id": 9,
             "name": "Bayern",
-            "code": "DE-BY"
+            "code": "DE-BY",
+            "lat": 48.94638,
+            "lon": 11.4041
         },
         {
             "id": 10,
             "name": "Saarland",
-            "code": "DE-SL"
+            "code": "DE-SL",
+            "lat": 49.3842,
+            "lon": 6.9536
         },
         {
             "id": 11,
             "name": "Berlin",
-            "code": "DE-BE"
+            "code": "DE-BE",
+            "lat": 52.5028,
+            "lon": 13.405
         },
         {
             "id": 12,
             "name": "Brandenburg",
-            "code": "DE-BB"
+            "code": "DE-BB",
+            "lat": 52.4590,
+            "lon": 13.0158
         },
         {
             "id": 13,
             "name": "Mecklenburg-Vorpommern",
-            "code": "DE-MV"
+            "code": "DE-MV",
+            "lat": 53.7735,
+            "lon": 12.5756
         },
         {
             "id": 14,
             "name": "Sachsen",
-            "code": "DE-SN"
+            "code": "DE-SN",
+            "lat": 50.9294,
+            "lon": 13.4583
         },
         {
             "id": 15,
             "name": "Sachsen-Anhalt",
-            "code": "DE-ST"
+            "code": "DE-ST",
+            "lat": 52.0090,
+            "lon": 11.7027
         },
         {
             "id": 16,
             "name": "Thüringen",
-            "code": "DE-TH"
+            "code": "DE-TH",
+            "lat": 50.9033,
+            "lon": 11.0264
         }
     ]
 }
