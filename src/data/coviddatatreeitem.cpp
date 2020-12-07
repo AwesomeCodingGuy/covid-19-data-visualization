@@ -1,6 +1,12 @@
 #include "coviddatatreeitem.h"
 
+// Qt
+#include <QDebug>
+#include <QGraphicsTextItem>
+
 // STL
+#include <limits>
+#include <cmath>
 #include <utility>
 
 #include "../utils/areaitem.h"
@@ -13,15 +19,22 @@ CovidDataTreeItem::CovidDataTreeItem(CovidDataTreeItem *parent)
 
 CovidDataTreeItem::CovidDataTreeItem(const QString &itemName, CovidDataTreeItem *parent)
     : itemNameAlt(itemName)
+    , location(std::numeric_limits<double>::infinity(),std::numeric_limits<double>::infinity())
     , parent(parent)
     , areaItem(nullptr)
+    , textItem(nullptr)
 {
 
 }
 
 CovidDataTreeItem::~CovidDataTreeItem()
 {
-
+    if(areaItem && !areaItem->scene()) {
+        delete areaItem;
+    }
+    if(textItem && !textItem->scene()) {
+        delete textItem;
+    }
 }
 
 void CovidDataTreeItem::setItemNameAlt(const QString &name)
@@ -124,6 +137,8 @@ void CovidDataTreeItem::createAreaItem(QPainterPath path)
                             data.deathsCumulated.series.last(),
                             incidence);
     areaItem->setDataset(this);
+
+    createTextItem();
 }
 
 AreaItem* CovidDataTreeItem::getAreaItem() const
@@ -154,6 +169,37 @@ QString CovidDataTreeItem::getItemDesignation() const
 void CovidDataTreeItem::setItemDesignation(const QString &value)
 {
     itemDesignation = value;
+}
+
+QPointF CovidDataTreeItem::getLocation() const
+{
+    return location;
+}
+
+void CovidDataTreeItem::setLocation(const QPointF &value)
+{
+    location = value;
+}
+
+void CovidDataTreeItem::createTextItem()
+{
+    if(std::isinf(location.x()) || std::isinf(location.y())) {
+        return;
+    }
+
+    textItem = new QGraphicsTextItem(itemNameAlt);
+
+    qDebug() << location << " --- " << textItem->boundingRect();
+    textItem->setPos(location.x() - (textItem->boundingRect().width() / 2) * .4f,
+                     location.y() - (textItem->boundingRect().height() / 2) * -.4f);
+    textItem->setZValue(1);
+    textItem->setTransform(QTransform::fromScale(.4f, -.4f));
+    textItem->setAcceptHoverEvents(false);
+}
+
+QGraphicsTextItem *CovidDataTreeItem::getTextItem() const
+{
+    return textItem;
 }
 
 QString appendParentName(QString name, const CovidDataTreeItem *treeItem)

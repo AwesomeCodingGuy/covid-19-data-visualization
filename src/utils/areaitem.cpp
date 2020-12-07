@@ -119,7 +119,7 @@ void AreaItem::init()
 
 void AreaItem::setColor()
 {
-    setPen(QPen(Qt::black));
+    setPen(QPen(colors::DarkGray));
     setBrush(QBrush(getColorFromIncidence(incidence7)));
 }
 

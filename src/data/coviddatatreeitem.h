@@ -8,6 +8,7 @@
 #include "casedata.h"
 
 class AreaItem;
+class QGraphicsTextItem;
 
 class CovidDataTreeItem
 {
@@ -46,17 +47,25 @@ public:
     QString getItemDesignation() const;
     void setItemDesignation(const QString &value);
 
+    QPointF getLocation() const;
+    void setLocation(const QPointF &value);
+
+    void createTextItem();
+    QGraphicsTextItem* getTextItem() const;
+
 private:
     QString itemNameAlt;
     QString itemName;
     QString itemDesignation;
     CaseData data;
+    QPointF location;
 
     CovidDataTreeItem *parent;
     QMap<int, CovidDataTreeItem> children;
 
     // visual representation for map
     AreaItem *areaItem;
+    QGraphicsTextItem *textItem;
 };
 
 QString getCompleteName(const CovidDataTreeItem *treeItem);

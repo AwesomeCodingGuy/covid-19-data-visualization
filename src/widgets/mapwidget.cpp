@@ -135,8 +135,11 @@ void MapWidget::recursiveAddGraphicsItemsToScene(QGraphicsScene *scene, const Co
     }
 
     // if the path variable is not empty, a graphics item can be added to the scene
-    if(sceneItem.getAreaItem() ) {
+    if(sceneItem.getAreaItem()) {
         scene->addItem(sceneItem.getAreaItem());
+        if(sceneItem.getTextItem()) {
+            scene->addItem(sceneItem.getTextItem());
+        }
     }
 }
 

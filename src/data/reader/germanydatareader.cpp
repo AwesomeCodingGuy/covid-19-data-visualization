@@ -91,6 +91,11 @@ void GermanyDataReader::initStates()
     QJsonArray states = jsonRoot.value("states").toArray();
     for(const QJsonValue &v : states) {
         CovidDataTreeItem newStateItem(v.toObject().value("name").toString());
+        QPointF location;
+        location.setX(v.toObject().value("lon").toDouble() * 100);
+        location.setY(v.toObject().value("lat").toDouble() * 100);
+        newStateItem.setLocation(location);
+
         rootItem.addChild(v.toObject().value("id").toInt(), newStateItem);
 
         // insert code and id combination for finding states in csv file data
@@ -131,6 +136,12 @@ void GermanyDataReader::initDistricts()
         // add new item
         CovidDataTreeItem newItem;
         newItem.setItemNameAlt(district.value("name").toString());
+        QPointF location;
+        location.setX(district.value("lon").toDouble() * 100);
+        location.setY(district.value("lat").toDouble() * 100);
+        newItem.setLocation(location);
+
+        // append to state
         CovidDataTreeItem *state = rootItem.getChild(stateKey);
         state->addChild(districtKey, newItem);
     }
