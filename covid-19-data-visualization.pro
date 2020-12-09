@@ -23,6 +23,7 @@ SOURCES += \
     src/models/coviddatatreemodel.cpp \
     src/models/treeitem.cpp \
     src/utils/areaitem.cpp \
+    src/utils/callout.cpp \
     src/utils/downloadmanager.cpp \
     src/utils/shapelibutils.cpp \
     src/utils/utility.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     src/models/coviddatatreemodel.h \
     src/models/treeitem.h \
     src/utils/areaitem.h \
+    src/utils/callout.h \
     src/utils/downloadmanager.h \
     src/utils/graphicsitems.h \
     src/utils/shapelibutils.h \
