@@ -27,6 +27,7 @@ SOURCES += \
     src/utils/downloadmanager.cpp \
     src/utils/shapelibutils.cpp \
     src/utils/utility.cpp \
+    src/widgets/chartview.cpp \
     src/widgets/chartwidget.cpp \
     src/widgets/colorlegend.cpp \
     src/widgets/maincontentwidget.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     src/utils/graphicsitems.h \
     src/utils/shapelibutils.h \
     src/utils/utility.h \
+    src/widgets/chartview.h \
     src/widgets/chartwidget.h \
     src/widgets/colorlegend.h \
     src/widgets/maincontentwidget.h \
