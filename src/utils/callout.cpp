@@ -1,46 +1,50 @@
 #include "callout.h"
 
 #include <QPainter>
+#include <QDebug>
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
+#include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 #include <QtCharts/QChart>
 
-Callout::Callout(QtCharts::QChart *parent)
+Callout::Callout(QtCharts::QChart *parent, QtCharts::QAbstractSeries *series)
     : QGraphicsItem(parent)
-    , chart(parent)
+    , mChart(parent)
+    , mSeries(series)
 {
 
 }
 
 void Callout::setText(const QString &newText)
 {
-    text = newText;
-    QFontMetrics metrics(font);
-    textRect = metrics.boundingRect(QRect(0, 0, 150, 150), Qt::AlignLeft, text);
-    textRect.translate(5, 5);
+    td.setHtml(newText);
+    ctx.clip = QRect(0, 0, td.size().width(), td.size().height());
+    ctx.clip.translate(5, 5);
+
     prepareGeometryChange();
-    rect = textRect.adjusted(-5, -5, 5, 5);
+    mRect = ctx.clip.adjusted(-5, -5, 5, 5);
 }
 
 void Callout::setAnchor(QPointF anchorPoint)
 {
-    anchor = anchorPoint;
+    mAnchor = anchorPoint;
 }
 
 void Callout::updateGeometry()
 {
     prepareGeometryChange();
-    setPos(chart->mapToPosition(anchor) + QPoint(10, -50));
+    setPos(mChart->mapToPosition(mAnchor) + QPoint(10, -50));
 }
 
 QRectF Callout::boundingRect() const
 {
-    QPointF mappedAnchor = mapFromParent(chart->mapToPosition(anchor));
+    QPointF anchor = mapFromParent(mChart->mapToPosition(mAnchor));
     QRectF rect;
-    rect.setLeft(qMin(rect.left(), mappedAnchor.x()));
-    rect.setRight(qMax(rect.right(), mappedAnchor.x()));
-    rect.setTop(qMin(rect.top(), mappedAnchor.y()));
-    rect.setBottom(qMax(rect.bottom(), mappedAnchor.y()));
+    rect.setLeft(qMin(mRect.left(), anchor.x()));
+    rect.setRight(qMax(mRect.right(), anchor.x()));
+    rect.setTop(qMin(mRect.top(), anchor.y()));
+    rect.setBottom(qMax(mRect.bottom(), anchor.y()));
     return rect;
 }
 
@@ -49,35 +53,35 @@ void Callout::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     Q_UNUSED(option);
     Q_UNUSED(parent);
     QPainterPath path;
-    path.addRoundedRect(rect, 5, 5);
+    path.addRoundedRect(mRect, 5, 5);
 
-    QPointF newAnchor = mapFromParent(chart->mapToPosition(anchor));
-    if(!rect.contains(newAnchor)) {
+    QPointF anchor = mapFromParent(mChart->mapToPosition(mAnchor));
+    if(!mRect.contains(anchor)) {
         QPointF p1;
         QPointF p2;
 
-        bool above = newAnchor.y() <= rect.top();
-        bool aboveCenter = anchor.y() > rect.top() && newAnchor.y() <= rect.center().y();
-        bool belowCenter = anchor.y() > rect.center().y() && anchor.y() <= rect.bottom();
-        bool below = anchor.y() > rect.bottom();
+        bool above = anchor.y() <= mRect.top();
+        bool aboveCenter = anchor.y() > mRect.top() && anchor.y() <= mRect.center().y();
+        bool belowCenter = anchor.y() > mRect.center().y() && anchor.y() <= mRect.bottom();
+        bool below = anchor.y() > mRect.bottom();
 
-        bool onLeft = anchor.x() <= rect.left();
-        bool leftOfCenter = anchor.x() > rect.left() && anchor.x() <=rect.center().x();
-        bool rightOfcenter = anchor.x() > rect.center().x() && anchor.x() <= rect.right();
-        bool onRight = anchor.x() > rect.right();
+        bool onLeft = anchor.x() <= mRect.left();
+        bool leftOfCenter = anchor.x() > mRect.left() && anchor.x() <= mRect.center().x();
+        bool rightOfCenter = anchor.x() > mRect.center().x() && anchor.x() <= mRect.right();
+        bool onRight = anchor.x() > mRect.right();
 
-        qreal x = (onRight + rightOfcenter) * rect.width();
-        qreal y = (below + belowCenter) * rect.height();
+        qreal x = (onRight + rightOfCenter) * mRect.width();
+        qreal y = (below + belowCenter) * mRect.height();
         bool cornerCase = (above && onLeft) || (above && onRight) || (below && onLeft) || (below && onRight);
-        bool vertical = anchor.x() > rect.right();
+        bool vertical = qAbs(anchor.x() - x) > qAbs(anchor.y() - y);
 
-        qreal x1 = x + leftOfCenter * 10 - rightOfcenter * 20 + cornerCase * !vertical * (onLeft * 10 - onRight *20);
+        qreal x1 = x + leftOfCenter * 10 - rightOfCenter * 20 + cornerCase * !vertical * (onLeft * 10 - onRight * 20);
         qreal y1 = y + aboveCenter * 10 - belowCenter * 20 + cornerCase * vertical * (above * 10 - below * 20);
         p1.setX(x1);
         p1.setY(y1);
 
-        qreal x2 = x = leftOfCenter * 20 - rightOfcenter * 10 + cornerCase * !vertical * (onLeft * 20 - onRight * 10);
-        qreal y2 = y = aboveCenter * 20 - belowCenter * 10 + cornerCase * vertical *(above * 20 - below * 10);
+        qreal x2 = x + leftOfCenter * 20 - rightOfCenter * 10 + cornerCase * !vertical * (onLeft * 20 - onRight * 10);
+        qreal y2 = y + aboveCenter * 20 - belowCenter * 10 + cornerCase * vertical * (above * 20 - below * 10);
         p2.setX(x2);
         p2.setY(y2);
 
@@ -89,7 +93,13 @@ void Callout::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
     painter->setBrush(QColor(255, 255, 255));
     painter->drawPath(path);
-    painter->drawText(rect, text);
+    painter->translate(5, 5);
+    td.documentLayout()->draw(painter, ctx);
+}
+
+void Callout::setSeries(QtCharts::QAbstractSeries *series)
+{
+    mSeries = series;
 }
 
 void Callout::mousePressEvent(QGraphicsSceneMouseEvent *event)
