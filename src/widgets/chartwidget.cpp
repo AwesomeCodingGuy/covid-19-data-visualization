@@ -14,12 +14,13 @@
 #include <QIcon>
 
 #include <QtCharts/QLegend>
-#include <QtCharts/QChartView>
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QLegendMarker>
+
+#include "chartview.h"
 
 ChartWidget::ChartWidget(const QVector<QDateTime> &timestamps,
                          const CaseData &caseData,
@@ -430,13 +431,24 @@ void ChartWidget::initAccelerationChart()
     addNewChartView(accelerationChartView, accelerationChart, ChartType::Acceleration);
 }
 
-void ChartWidget::addNewChartView(QtCharts::QChartView *view, QtCharts::QChart *chart, ChartType type)
+void ChartWidget::addNewChartView(ChartView *view, QtCharts::QChart *chart, ChartType type)
 {
-    view = new QtCharts::QChartView(chart);
+    view = new ChartView(chart);
     view->setRubberBand(QtCharts::QChartView::RectangleRubberBand);
     view->setRenderHint(QPainter::Antialiasing);
     chartContainer->insertWidget(type, view);
     chartSwitchCombo->addItem(chart->title(), type);
+
+    // make callout connections
+    auto seriesAll = chart->series();
+    for(auto series : seriesAll) {
+        if(series->type() == QtCharts::QAbstractSeries::SeriesTypeLine) {
+            auto lineSeries = qobject_cast<QtCharts::QLineSeries*>(series);
+            connect(lineSeries, &QtCharts::QLineSeries::hovered,
+                    view, &ChartView::setTooltip);
+        }
+    }
+
 }
 
 void ChartWidget::connectMarkers(const QtCharts::QChart &chart)

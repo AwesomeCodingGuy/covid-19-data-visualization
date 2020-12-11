@@ -189,7 +189,6 @@ void CovidDataTreeItem::createTextItem()
 
     textItem = new QGraphicsTextItem(itemNameAlt);
 
-    qDebug() << location << " --- " << textItem->boundingRect();
     textItem->setPos(location.x() - (textItem->boundingRect().width() / 2) * .4f,
                      location.y() - (textItem->boundingRect().height() / 2) * -.4f);
     textItem->setZValue(1);

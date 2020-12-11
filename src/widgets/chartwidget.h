@@ -16,8 +16,9 @@ class QToolBar;
 
 namespace QtCharts {
     class QChart;
-    class QChartView;
 }
+
+class ChartView;
 
 class ChartWidget : public QWidget
 {
@@ -50,7 +51,7 @@ private:
     void initDailyChart();
     void initAccelerationChart();
 
-    void addNewChartView(QtCharts::QChartView *view, QtCharts::QChart *chart, ChartType type);
+    void addNewChartView(ChartView *view, QtCharts::QChart *chart, ChartType type);
 
     void connectMarkers(const QtCharts::QChart &chart);
     int getOptimalTickinterval(int maxValue);
@@ -65,9 +66,9 @@ private:
     QStackedWidget *chartContainer;
     QToolBar *toolBar;
 
-    QtCharts::QChartView *cumulatedChartView;
-    QtCharts::QChartView *dailyChartView;
-    QtCharts::QChartView *accelerationChartView;
+    ChartView *cumulatedChartView;
+    ChartView *dailyChartView;
+    ChartView *accelerationChartView;
 
     QtCharts::QChart *cumulatedChart;
     QtCharts::QChart *dailyChart;
