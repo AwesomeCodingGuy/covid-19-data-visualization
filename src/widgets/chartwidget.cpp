@@ -438,6 +438,17 @@ void ChartWidget::addNewChartView(ChartView *view, QtCharts::QChart *chart, Char
     view->setRenderHint(QPainter::Antialiasing);
     chartContainer->insertWidget(type, view);
     chartSwitchCombo->addItem(chart->title(), type);
+
+    // make callout connections
+    auto seriesAll = chart->series();
+    for(auto series : seriesAll) {
+        if(series->type() == QtCharts::QAbstractSeries::SeriesTypeLine) {
+            auto lineSeries = qobject_cast<QtCharts::QLineSeries*>(series);
+            connect(lineSeries, &QtCharts::QLineSeries::hovered,
+                    view, &ChartView::setTooltip);
+        }
+    }
+
 }
 
 void ChartWidget::connectMarkers(const QtCharts::QChart &chart)
