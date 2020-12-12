@@ -119,6 +119,8 @@ bool UsaDataReader::readCsvFileByCounty(const QString &filename, UsaDataReader::
         QString nameOfCounty = entries[5];
         QString nameOfState = entries[6];
         int fips = getFips(entries[0], entries[4]);
+        double lat = entries[8].toDouble();
+        double lon = entries[9].toDouble();
         QVector<int> data(dataValues);
         for(int i = countyDataValues; i < entries.size(); ++i) {
             data[i - countyDataValues] = entries[i].toInt();
@@ -158,6 +160,7 @@ bool UsaDataReader::readCsvFileByCounty(const QString &filename, UsaDataReader::
         }
 
         if(fileType == FileType::Cases) {
+            dataItemPtr->setLocation(QPointF((360.0 + lon) * 100, lat * 100));
             dataItemPtr->getCaseData().casesCumulated       = data;
             dataItemPtr->getCaseData().cases                = calculateIncrease(data);
             dataItemPtr->getCaseData().casesSevenDayAverage = calculateAveragedIncrease(dataItemPtr->getCaseData().cases.series);
@@ -245,7 +248,11 @@ CovidDataTreeItem *UsaDataReader::getItemByFips(int stateFips, int countyFips)
 {
     CovidDataTreeItem *item = rootItem.getChild(stateFips);
     if(item) {
-        return item->getChild(countyFips);
+        if(countyFips == 0) {
+            return item;
+        } else {
+            return item->getChild(countyFips);
+        }
     }
 
     return nullptr;
@@ -294,6 +301,11 @@ bool UsaDataReader::mergeMapData(QVector<MapRegion> &regions)
 
         // add additional data
         item->setItemName(region.name);
+
+        CovidDataTreeItem *itemParent = getItemByFips(region.stateFips.toInt(), 0);
+        if(itemParent) {
+            item->setItemDesignation(itemParent->getItemNameAlt());
+        }
 
         // calculate the painterpath
         QPainterPath path;

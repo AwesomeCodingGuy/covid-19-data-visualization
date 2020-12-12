@@ -9,6 +9,7 @@
 #include <cmath>
 #include <utility>
 
+#include "colors.h"
 #include "../utils/areaitem.h"
 
 CovidDataTreeItem::CovidDataTreeItem(CovidDataTreeItem *parent)
@@ -189,6 +190,7 @@ void CovidDataTreeItem::createTextItem()
 
     textItem = new QGraphicsTextItem(itemNameAlt);
 
+    textItem->setDefaultTextColor(colors::MapText);
     textItem->setPos(location.x() - (textItem->boundingRect().width() / 2) * .4f,
                      location.y() - (textItem->boundingRect().height() / 2) * -.4f);
     textItem->setZValue(1);
