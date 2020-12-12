@@ -13,35 +13,36 @@ constexpr Q_DECL_UNUSED QColor Neutral     = QColor{180, 180, 180};
 constexpr Q_DECL_UNUSED QColor Green       = QColor{112, 199, 120};
 constexpr Q_DECL_UNUSED QColor LightGreen  = QColor{200, 200, 120};
 constexpr Q_DECL_UNUSED QColor Yellow      = QColor{255, 200, 120};
-constexpr Q_DECL_UNUSED QColor Orange      = QColor{255, 171, 0};
-constexpr Q_DECL_UNUSED QColor LightRed    = QColor{238, 90, 24};
-constexpr Q_DECL_UNUSED QColor Red         = QColor{183, 55, 68};
-constexpr Q_DECL_UNUSED QColor DarkRed     = QColor{112, 39, 23};
-constexpr Q_DECL_UNUSED QColor Magenta     = QColor{255, 0, 255};
+constexpr Q_DECL_UNUSED QColor Orange      = QColor{255, 171,   0};
+constexpr Q_DECL_UNUSED QColor LightRed    = QColor{238,  90,  24};
+constexpr Q_DECL_UNUSED QColor Red         = QColor{183,  55,  68};
+constexpr Q_DECL_UNUSED QColor DarkRed     = QColor{112,  39,  23};
+constexpr Q_DECL_UNUSED QColor Magenta     = QColor{255,  0,  255};
 
 // More colors
-constexpr Q_DECL_UNUSED QColor Black       = QColor{0, 0, 0};
-constexpr Q_DECL_UNUSED QColor DarkGray    = QColor{32, 32, 32};
+constexpr Q_DECL_UNUSED QColor Black       = QColor{0,     0,   0};
+constexpr Q_DECL_UNUSED QColor DarkGray    = QColor{32,   32,  32};
+constexpr Q_DECL_UNUSED QColor MapText     = QColor{255, 255, 255};
 
 // Chart colors
 constexpr Q_DECL_UNUSED std::array<QColor, 17> ChartColors{
-    QColor{0, 0, 0},
-    QColor{255, 127, 0},
-    QColor{0, 0, 131},
-    QColor{0, 145, 0},
-    QColor{210, 0, 0},
-    QColor{243, 200, 0},
-    QColor{86, 84, 81},
-    QColor{255, 0, 247},
-    QColor{112, 228, 0},
-    QColor{0, 106, 255},
-    QColor{59, 246, 255},
-    QColor{89, 7, 255},
-    QColor{48, 92, 0},
-    QColor{254, 0, 69},
+    QColor{0,     0,   0},
+    QColor{255, 127,   0},
+    QColor{0,     0, 131},
+    QColor{0,   145,   0},
+    QColor{210,   0,   0},
+    QColor{243, 200,   0},
+    QColor{86,   84,  81},
+    QColor{255,   0, 247},
+    QColor{112, 228,   0},
+    QColor{0,   106, 255},
+    QColor{59,  246, 255},
+    QColor{89,    7, 255},
+    QColor{48,   92,   0},
+    QColor{254,   0,  69},
     QColor{185, 185, 185},
-    QColor{161, 128, 0},
-    QColor{99, 0, 51}
+    QColor{161, 128,   0},
+    QColor{99,    0,  51}
 };
 
 struct ColorRange {
