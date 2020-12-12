@@ -15,6 +15,9 @@ class QPushButton;
 class QToolBar;
 class QButtonGroup;
 class QProgressDialog;
+class QItemSelectionModel;
+class QItemSelection;
+class QAction;
 
 // Custom Widgets
 class TreeView;
@@ -48,6 +51,12 @@ public slots:
     void addNewChart(const QModelIndex &index);
     void addNewChart(const CovidDataTreeItem *dataItem);
     void removeTab(int index);
+    void treeSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void treeContextMenuRequested(const QPoint &pos);
+    void clearSelection();
+    void selectionChangedUpdate();
+
+    void compare();
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
@@ -67,6 +76,9 @@ private:
     QToolBar        *contentToolBar;
     QButtonGroup    *contentButtonGroup;
 
+    QAction         *compareAction;
+    QAction         *clearSelectionAction;
+
     // Custom
     TreeView        *dataTreeView;
     MapWidget       *mapWidget;
@@ -77,6 +89,7 @@ private:
 
     CovidData           covidData;
     CovidDataTreeModel  *treeModel;
+    QItemSelectionModel *selectionModel;
 
     // Download and load
     QProgressDialog *progress;
