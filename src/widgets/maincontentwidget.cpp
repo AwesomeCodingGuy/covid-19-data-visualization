@@ -1,11 +1,13 @@
 #include "maincontentwidget.h"
 
 // Qt header
+#include <QMenu>
 #include <QSplitter>
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QToolButton>
 #include <QButtonGroup>
 #include <QToolBar>
 #include <QIcon>
@@ -16,6 +18,7 @@
 #include <QTimer>
 #include <QtConcurrent/QtConcurrent>
 #include <QMessageBox>
+#include <QItemSelectionModel>
 
 // Custom header
 #include "treeview.h"
@@ -85,6 +88,9 @@ void MainContentWidget::initUi()
 
     // Custom
     dataTreeView        = new TreeView();
+    dataTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(dataTreeView, &TreeView::customContextMenuRequested,
+            this, &MainContentWidget::treeContextMenuRequested);
     connect(dataTreeView, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(addNewChart(const QModelIndex &)));
     mapWidget           = new MapWidget();
@@ -112,12 +118,20 @@ void MainContentWidget::initUi()
     chartButton->setCheckable(true);
     chartButton->setChecked(true);
 
+
     contentButtonGroup->addButton(chartButton, StackedIndex::Chart);
     contentButtonGroup->addButton(mapButton, StackedIndex::Map);
     contentButtonGroup->setExclusive(true);
 
     contentToolBar->addWidget(chartButton);
     contentToolBar->addWidget(mapButton);
+    contentToolBar->addSeparator();
+    compareAction = contentToolBar->addAction(QIcon(":/icons/images/icons/compare_32x32.png"),
+                                              tr("Vergleichen"), this, &MainContentWidget::compare);
+    compareAction->setDisabled(true);
+    clearSelectionAction = contentToolBar->addAction(QIcon(":/icons/images/icons/resetSelection_32x32.png"),
+                                                     tr("Auswahl aufheben"), this, &MainContentWidget::clearSelection);
+    clearSelectionAction->setDisabled(true);
 
     contentWidget->insertWidget(StackedIndex::Chart, chartTabWidget);
     contentWidget->insertWidget(StackedIndex::Map, mapWidget);
@@ -221,6 +235,81 @@ void MainContentWidget::removeTab(int index)
     chartTabWidget->removeTab(index);
 }
 
+void MainContentWidget::treeSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    Q_UNUSED(selected);
+    Q_UNUSED(deselected);
+
+    selectionChangedUpdate();
+}
+
+void MainContentWidget::treeContextMenuRequested(const QPoint &pos)
+{
+    // init menu
+    QMenu contextMenu = QMenu(tr("TreeView"), this);
+
+    // clear selection
+    QAction ctxClearSelectionAction(QIcon(":/icons/images/icons/resetSelection_32x32.png"),
+                                    tr("Auswahl aufheben"), this);
+    ctxClearSelectionAction.setEnabled(selectionModel->selectedIndexes().count() > 0);
+    connect(&ctxClearSelectionAction, &QAction::triggered,
+            this, &MainContentWidget::clearSelection);
+    contextMenu.addAction(&ctxClearSelectionAction);
+
+    // compare
+    QAction ctxCompareSelectionAction(QIcon(":/icons/images/icons/compare_32x32.png"),
+                                      tr("Vergleichen"), this);
+    ctxCompareSelectionAction.setEnabled(selectionModel->selectedIndexes().count() > 1);
+    connect(&ctxCompareSelectionAction, &QAction::triggered,
+            this, &MainContentWidget::compare);
+    contextMenu.addAction(&ctxCompareSelectionAction);
+
+    // open context menu
+    contextMenu.exec(dataTreeView->viewport()->mapToGlobal(pos));
+}
+
+void MainContentWidget::clearSelection()
+{
+    selectionModel->reset();
+    compareAction->setEnabled(false);
+
+    selectionChangedUpdate();
+}
+
+void MainContentWidget::selectionChangedUpdate()
+{
+    int selectedItems = selectionModel->selectedIndexes().count();
+    compareAction->setEnabled(selectedItems > 1);
+    clearSelectionAction->setEnabled(selectedItems > 0);
+}
+
+void MainContentWidget::compare()
+{
+    if(selectionModel->selectedIndexes().count() > 17) {
+        QMessageBox::information(this, tr("Vergleichen"),
+                                 tr("Es sind zu viele Daten ausgewählt.\n"
+                                    "Bitte beschränken Sie sich auf 17 Datensätze."));
+        return;
+    } else if(selectionModel->selectedIndexes().count() < 2) {
+        // this should not happen
+        QMessageBox::information(this, tr("Vergleichen"),
+                                 tr("Zum Vergleichen müssen mindestens 2 Datensätze ausgewählt sein."));
+        return;
+    }
+
+    // add new chartwidget with data.
+    const QModelIndexList indexList = selectionModel->selectedIndexes();
+    QVector<const CovidDataTreeItem *> caseDataItems;
+    for(auto index : indexList) {
+        caseDataItems.append(treeModel->getCovidDataItem(index));
+    }
+
+
+    ChartWidget *chartWidget = new ChartWidget(caseDataItems);
+    int newIndex = chartTabWidget->addTab(chartWidget, tr("Vergleich"));
+    chartTabWidget->setCurrentIndex(newIndex);
+}
+
 void MainContentWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -310,6 +399,11 @@ void MainContentWidget::loadData()
     // set data into tree view
     treeModel = new CovidDataTreeModel(covidData.getDataSets());
     dataTreeView->setModel(treeModel);
+    selectionModel = dataTreeView->selectionModel();
+    dataTreeView->setSelectionMode(QTreeView::MultiSelection);
+    connect(selectionModel, &QItemSelectionModel::selectionChanged,
+            this, &MainContentWidget::treeSelectionChanged);
+
 
     // loading finished
     qDebug() << "Loading finished";

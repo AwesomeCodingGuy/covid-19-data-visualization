@@ -8,5 +8,7 @@
         <file>images/icons/chart_32x32.png</file>
         <file>images/icons/map_32x32.png</file>
         <file>images/icons/update_32x32.png</file>
+        <file>images/icons/compare_32x32.png</file>
+        <file>images/icons/resetSelection_32x32.png</file>
     </qresource>
 </RCC>

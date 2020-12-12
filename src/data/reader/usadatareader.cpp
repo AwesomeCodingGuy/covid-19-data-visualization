@@ -225,7 +225,7 @@ QDate UsaDataReader::getStartDateOfDataSet()
 {
     //open file
     QFile file;
-    file.setFileName(confirmedUsaFile);
+    file.setFileName(deathsUsaFile);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
 
     // get first entry of second line in file

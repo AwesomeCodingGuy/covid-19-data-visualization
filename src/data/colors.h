@@ -23,6 +23,27 @@ constexpr Q_DECL_UNUSED QColor Magenta     = QColor{255, 0, 255};
 constexpr Q_DECL_UNUSED QColor Black       = QColor{0, 0, 0};
 constexpr Q_DECL_UNUSED QColor DarkGray    = QColor{32, 32, 32};
 
+// Chart colors
+constexpr Q_DECL_UNUSED std::array<QColor, 17> ChartColors{
+    QColor{0, 0, 0},
+    QColor{255, 127, 0},
+    QColor{0, 0, 131},
+    QColor{0, 145, 0},
+    QColor{210, 0, 0},
+    QColor{243, 200, 0},
+    QColor{86, 84, 81},
+    QColor{255, 0, 247},
+    QColor{112, 228, 0},
+    QColor{0, 106, 255},
+    QColor{59, 246, 255},
+    QColor{89, 7, 255},
+    QColor{48, 92, 0},
+    QColor{254, 0, 69},
+    QColor{185, 185, 185},
+    QColor{161, 128, 0},
+    QColor{99, 0, 51}
+};
+
 struct ColorRange {
     float min;
     float max;
