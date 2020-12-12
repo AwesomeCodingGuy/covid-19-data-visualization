@@ -285,16 +285,29 @@ void MainContentWidget::selectionChangedUpdate()
 
 void MainContentWidget::compare()
 {
-    qDebug() << "Comparing: ";
-
     if(selectionModel->selectedIndexes().count() > 17) {
         QMessageBox::information(this, tr("Vergleichen"),
                                  tr("Es sind zu viele Daten ausgewählt.\n"
                                     "Bitte beschränken Sie sich auf 17 Datensätze."));
         return;
+    } else if(selectionModel->selectedIndexes().count() < 2) {
+        // this should not happen
+        QMessageBox::information(this, tr("Vergleichen"),
+                                 tr("Zum Vergleichen müssen mindestens 2 Datensätze ausgewählt sein."));
+        return;
     }
 
     // add new chartwidget with data.
+    const QModelIndexList indexList = selectionModel->selectedIndexes();
+    QVector<const CovidDataTreeItem *> caseDataItems;
+    for(auto index : indexList) {
+        caseDataItems.append(treeModel->getCovidDataItem(index));
+    }
+
+
+    ChartWidget *chartWidget = new ChartWidget(caseDataItems);
+    int newIndex = chartTabWidget->addTab(chartWidget, tr("Vergleich"));
+    chartTabWidget->setCurrentIndex(newIndex);
 }
 
 void MainContentWidget::paintEvent(QPaintEvent *event)

@@ -16,18 +16,27 @@ class QToolBar;
 
 namespace QtCharts {
     class QChart;
+    class QDateTimeAxis;
+    class QValueAxis;
+    class QAbstractAxis;
 }
 
 class ChartView;
+class CovidDataTreeItem;
 
 class ChartWidget : public QWidget
 {
     Q_OBJECT
 
     enum ChartType {
-        Cumulated       = 0,
-        Daily           = 1,
-        Acceleration    = 2
+        Cumulated               = 0,
+        Daily                   = 1,
+        Acceleration            = 2,
+        CumulatedCasesCompare   = 3,
+        CumulatedDeathsCompare  = 4,
+        DailyCasesCompare       = 5,
+        DailyDeathsCompare      = 6,
+        SevenDayCsesCompare     = 7,
     };
 
 public:
@@ -36,6 +45,9 @@ public:
                          QWidget *parent = nullptr);
     explicit ChartWidget(const CaseData &caseData,
                          QWidget *parent = nullptr);
+    explicit ChartWidget(QVector<const CovidDataTreeItem *> caseDataItems,
+                         QWidget *parent = nullptr);
+
     ~ChartWidget();
 
 signals:
@@ -51,11 +63,22 @@ private:
     void initDailyChart();
     void initAccelerationChart();
 
-    void addNewChartView(ChartView *view, QtCharts::QChart *chart, ChartType type);
+    void addNewChartView(QtCharts::QChart *chart, ChartType type);
 
     void connectMarkers(const QtCharts::QChart &chart);
     int getOptimalTickinterval(int maxValue);
     int getOptimalTickinterval(int minValue, int maxValue);
+
+    void initDateTimeVector(const QDate &start, const int values);
+    void calculateTimestamps(const QVector<const CovidDataTreeItem *> caseDataItems);
+
+    void initCumulatedSeries(const QVector<const CovidDataTreeItem *> caseDataItems);
+
+    QtCharts::QDateTimeAxis* createDateTimeAxis();
+    QtCharts::QValueAxis* createValueAxis(qreal min, qreal max);
+    QtCharts::QChart* createChart(const QString &title,
+                                  QtCharts::QAbstractAxis *xAxis,
+                                  QtCharts::QAbstractAxis *yAxis);
 
 private:
     // TODO: make this of type QDate
@@ -65,14 +88,6 @@ private:
     QComboBox *chartSwitchCombo;
     QStackedWidget *chartContainer;
     QToolBar *toolBar;
-
-    ChartView *cumulatedChartView;
-    ChartView *dailyChartView;
-    ChartView *accelerationChartView;
-
-    QtCharts::QChart *cumulatedChart;
-    QtCharts::QChart *dailyChart;
-    QtCharts::QChart *accelerationChart;
 
     QPen pen_1;
     QPen pen_2;
