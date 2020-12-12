@@ -34,7 +34,18 @@ void Callout::setAnchor(QPointF anchorPoint)
 void Callout::updateGeometry()
 {
     prepareGeometryChange();
-    setPos(mChart->mapToPosition(mAnchor) + QPoint(10, -50));
+
+    QSizeF windowSize = mChart->size();
+    QPointF anchor = mChart->mapToPosition(mAnchor);
+    QPoint offset(10, -50);
+    if(anchor.x() + 10 + mRect.width() > windowSize.width()) {
+        offset.setX(-mRect.width() - 10);
+    }
+    if(anchor.y() - 50 < 0) {
+        offset.setY(10 + mRect.height());
+    }
+
+    setPos(anchor + offset);
 }
 
 QRectF Callout::boundingRect() const
