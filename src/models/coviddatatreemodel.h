@@ -11,6 +11,7 @@ class CovidDataTreeItem;
 
 class CovidDataTreeModel : public QAbstractItemModel
 {
+    Q_OBJECT
 public:
     explicit CovidDataTreeModel(const CovidDataTreeItem &data, QObject *parent = nullptr);
     ~CovidDataTreeModel();

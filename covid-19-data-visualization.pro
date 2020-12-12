@@ -80,3 +80,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     data/data.qrc
+
+TRANSLATIONS = \
+    data/languages/CovidDataVisualization_de.ts \
+    data/languages/CovidDataVisualization_en.ts

@@ -84,6 +84,9 @@ void MainContentWidget::initUi()
     updateButton        = new QPushButton(QIcon(":/icons/images/icons/update_32x32.png"),
                                           tr("Daten herunterladen / aktualisieren"));
     contentToolBar      = new QToolBar();
+    auto tMargins = contentToolBar->contentsMargins();
+    tMargins.setRight(11);
+    contentToolBar->setContentsMargins(tMargins);
     contentButtonGroup  = new QButtonGroup(this);
 
     // Custom
@@ -123,15 +126,26 @@ void MainContentWidget::initUi()
     contentButtonGroup->addButton(mapButton, StackedIndex::Map);
     contentButtonGroup->setExclusive(true);
 
+    // Content switch
     contentToolBar->addWidget(chartButton);
     contentToolBar->addWidget(mapButton);
     contentToolBar->addSeparator();
+
+    // Selection and compare
     compareAction = contentToolBar->addAction(QIcon(":/icons/images/icons/compare_32x32.png"),
                                               tr("Vergleichen"), this, &MainContentWidget::compare);
     compareAction->setDisabled(true);
     clearSelectionAction = contentToolBar->addAction(QIcon(":/icons/images/icons/resetSelection_32x32.png"),
                                                      tr("Auswahl aufheben"), this, &MainContentWidget::clearSelection);
     clearSelectionAction->setDisabled(true);
+
+    // spacer and options
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    contentToolBar->addWidget(spacer);
+
+    optionAction = contentToolBar->addAction(QIcon(":/icons/images/icons/options_32x32.png"),
+                                             tr("Einstellungen"), this, &MainContentWidget::optionsRequested);
 
     contentWidget->insertWidget(StackedIndex::Chart, chartTabWidget);
     contentWidget->insertWidget(StackedIndex::Map, mapWidget);
@@ -308,6 +322,11 @@ void MainContentWidget::compare()
     ChartWidget *chartWidget = new ChartWidget(caseDataItems);
     int newIndex = chartTabWidget->addTab(chartWidget, tr("Vergleich"));
     chartTabWidget->setCurrentIndex(newIndex);
+}
+
+void MainContentWidget::optionsRequested()
+{
+
 }
 
 void MainContentWidget::paintEvent(QPaintEvent *event)

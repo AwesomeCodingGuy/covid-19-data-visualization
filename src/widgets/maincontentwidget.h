@@ -57,6 +57,7 @@ public slots:
     void selectionChangedUpdate();
 
     void compare();
+    void optionsRequested();
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
@@ -78,6 +79,7 @@ private:
 
     QAction         *compareAction;
     QAction         *clearSelectionAction;
+    QAction         *optionAction;
 
     // Custom
     TreeView        *dataTreeView;
