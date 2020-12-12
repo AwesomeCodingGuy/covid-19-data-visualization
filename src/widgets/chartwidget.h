@@ -36,7 +36,7 @@ class ChartWidget : public QWidget
         CumulatedDeathsCompare  = 4,
         DailyCasesCompare       = 5,
         DailyDeathsCompare      = 6,
-        SevenDayCsesCompare     = 7,
+        SevenDayCasesCompare    = 7,
     };
 
 public:
@@ -72,7 +72,9 @@ private:
     void initDateTimeVector(const QDate &start, const int values);
     void calculateTimestamps(const QVector<const CovidDataTreeItem *> caseDataItems);
 
-    void initCumulatedSeries(const QVector<const CovidDataTreeItem *> caseDataItems);
+    void initSimpleSeries(const QVector<const CovidDataTreeItem *> caseDataItems,
+                          const QString &title,
+                          ChartType chartType);
 
     QtCharts::QDateTimeAxis* createDateTimeAxis();
     QtCharts::QValueAxis* createValueAxis(qreal min, qreal max);
@@ -80,18 +82,18 @@ private:
                                   QtCharts::QAbstractAxis *xAxis,
                                   QtCharts::QAbstractAxis *yAxis);
 
+    const CaseSeries<int>& getSeriesReferenceInt(const CaseData &data,
+                                                 ChartType chartType);
+    const CaseSeries<float>& getSeriesReferenceFloat(const CaseData &data,
+                                                     ChartType chartType);
+
 private:
-    // TODO: make this of type QDate
     QVector<QDateTime> timestamps;
     CaseData caseData;
 
     QComboBox *chartSwitchCombo;
     QStackedWidget *chartContainer;
     QToolBar *toolBar;
-
-    QPen pen_1;
-    QPen pen_2;
-    QPen pen_3;
 };
 
 #endif // CHARTWIDGET_H

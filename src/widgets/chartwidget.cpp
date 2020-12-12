@@ -31,11 +31,6 @@ ChartWidget::ChartWidget(const QVector<QDateTime> &timestamps,
     , timestamps(timestamps)
     , caseData(caseData)
 {
-    // init pens for charts
-    pen_1 = QPen(colors::ChartColors[2], 2);
-    pen_2 = QPen(colors::ChartColors[0], 2);
-    pen_3 = QPen(colors::ChartColors[1], 2);
-
     // init UI
     initUi();
 
@@ -49,11 +44,6 @@ ChartWidget::ChartWidget(const CaseData &caseData, QWidget *parent)
     : QWidget(parent)
     , caseData(caseData)
 {
-    // init pens for charts
-    pen_1 = QPen(colors::ChartColors[2], 2);
-    pen_2 = QPen(colors::ChartColors[0], 2);
-    pen_3 = QPen(colors::ChartColors[1], 2);
-
     // calculate timestamps
     initDateTimeVector(caseData.startDate, caseData.cases.series.size());
 
@@ -77,7 +67,11 @@ ChartWidget::ChartWidget(QVector<const CovidDataTreeItem *> caseDataItems,
     calculateTimestamps(caseDataItems);
 
     // add series
-    initCumulatedSeries(caseDataItems);
+    initSimpleSeries(caseDataItems, tr("Erkrankungen kumuliert"), ChartType::CumulatedCasesCompare);
+    initSimpleSeries(caseDataItems, tr("Todesfälle kumuliert"), ChartType::CumulatedDeathsCompare);
+    initSimpleSeries(caseDataItems, tr("Tägliche Neuerkrankungen"), ChartType::DailyCasesCompare);
+    initSimpleSeries(caseDataItems, tr("Tägliche Todesfälle"), ChartType::DailyDeathsCompare);
+    initSimpleSeries(caseDataItems, tr("7-Tage-Inzidenz"), ChartType::SevenDayCasesCompare);
 }
 
 ChartWidget::~ChartWidget()
@@ -219,10 +213,10 @@ void ChartWidget::initCumulatedChart()
 {
     // init series
     QtCharts::QLineSeries *sCases = new QtCharts::QLineSeries();
-    sCases->setPen(pen_1);
+    sCases->setPen(QPen(colors::ChartColors[2], 2));
     sCases->setName(tr("Erkrankungen"));
     QtCharts::QLineSeries *sDeaths = new QtCharts::QLineSeries();
-    sDeaths->setPen(pen_2);
+    sDeaths->setPen(QPen(colors::ChartColors[0], 2));
     sDeaths->setName(tr("Todesfälle"));
 
     // init series data
@@ -260,13 +254,13 @@ void ChartWidget::initDailyChart()
 {
     // init series
     QtCharts::QLineSeries *sCases = new QtCharts::QLineSeries();
-    sCases->setPen(pen_1);
+    sCases->setPen(QPen(colors::ChartColors[2], 2));
     sCases->setName(tr("Erkrankungen"));
     QtCharts::QLineSeries *sDeaths = new QtCharts::QLineSeries();
-    sDeaths->setPen(pen_2);
+    sDeaths->setPen(QPen(colors::ChartColors[0], 2));
     sDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAverage = new QtCharts::QLineSeries();
-    sAverage->setPen(pen_3);
+    sAverage->setPen(QPen(colors::ChartColors[1], 2));
     sAverage->setName(tr("7-Tage-Inzidenz"));
 
     // init series data
@@ -314,13 +308,13 @@ void ChartWidget::initAccelerationChart()
 {
     // init series
     QtCharts::QLineSeries *sAccCases = new QtCharts::QLineSeries();
-    sAccCases->setPen(pen_1);
+    sAccCases->setPen(QPen(colors::ChartColors[2], 2));
     sAccCases->setName(tr("Fälle"));
     QtCharts::QLineSeries *sAccDeaths = new QtCharts::QLineSeries();
-    sAccDeaths->setPen(pen_2);
+    sAccDeaths->setPen(QPen(colors::ChartColors[0], 2));
     sAccDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAccCases7= new QtCharts::QLineSeries();
-    sAccCases7->setPen(pen_3);
+    sAccCases7->setPen(QPen(colors::ChartColors[1], 2));
     sAccCases7->setName(tr("7-Tage-Inzidenz"));
 
     // calculate rate
@@ -465,7 +459,9 @@ void ChartWidget::calculateTimestamps(const QVector<const CovidDataTreeItem *> c
     initDateTimeVector(startDate, (startDate.daysTo(endDate) + 1)); // add 1 since the end day has data itself
 }
 
-void ChartWidget::initCumulatedSeries(const QVector<const CovidDataTreeItem *> caseDataItems)
+void ChartWidget::initSimpleSeries(const QVector<const CovidDataTreeItem *> caseDataItems,
+                                   const QString &title,
+                                   ChartType chartType)
 {
     const int seriesCount = caseDataItems.size();
     QVector<QtCharts::QLineSeries*> series(seriesCount, nullptr);
@@ -487,16 +483,31 @@ void ChartWidget::initCumulatedSeries(const QVector<const CovidDataTreeItem *> c
         qreal max = 0;
 
         // calculate timeoffet to begin data
-        const CaseData &data = caseDataItems[s]->getCaseData();
-        int t = startOfTimeSeries.daysTo(data.startDate);
+        int t = startOfTimeSeries.daysTo(caseDataItems[s]->getCaseData().startDate);
         int v = 0;
-        for(; t < timestamps.size() && v < data.casesCumulated.series.size() ; ++t) {
-            qint64 timePoint = timestamps[t].toMSecsSinceEpoch();
-            qreal value = data.casesCumulated.series[v++];
-            series[s]->append(timePoint, value);
+
+        if(chartType == SevenDayCasesCompare) {
+            const CaseSeries<float>& data = getSeriesReferenceFloat(caseDataItems[s]->getCaseData(), chartType);
+            for(; t < timestamps.size() && v < data.series.size(); ++t) {
+                qint64 timePoint = timestamps[t].toMSecsSinceEpoch();
+                qreal value = data.series[v++];
+                series[s]->append(timePoint, value);
+            }
+            min = data.min;
+            max = data.max;
+        } else if(chartType == CumulatedCasesCompare
+                  || chartType == CumulatedDeathsCompare
+                  || chartType == DailyCasesCompare
+                  || chartType == DailyDeathsCompare) {
+            const CaseSeries<int>& data = getSeriesReferenceInt(caseDataItems[s]->getCaseData(), chartType);
+            for(; t < timestamps.size() && v < data.series.size(); ++t) {
+                qint64 timePoint = timestamps[t].toMSecsSinceEpoch();
+                qreal value = data.series[v++];
+                series[s]->append(timePoint, value);
+            }
+            min = data.min;
+            max = data.max;
         }
-        min = data.casesCumulated.min;
-        max = data.casesCumulated.max;
 
         series[s]->setProperty("min", min);
         series[s]->setProperty("max", max);
@@ -509,7 +520,7 @@ void ChartWidget::initCumulatedSeries(const QVector<const CovidDataTreeItem *> c
     QtCharts::QDateTimeAxis *axisX = createDateTimeAxis();
     QtCharts::QValueAxis *axisY = createValueAxis(1.1f * minOfAll,
                                                   1.1f * maxOfAll);
-    QtCharts::QChart *newChart = createChart(tr("Fälle kumuliert"), axisX, axisY);
+    QtCharts::QChart *newChart = createChart(title, axisX, axisY);
 
     // add series
     for(int s = 0; s < seriesCount; ++s) {
@@ -519,7 +530,7 @@ void ChartWidget::initCumulatedSeries(const QVector<const CovidDataTreeItem *> c
     }
 
     connectMarkers(*newChart);
-    addNewChartView(newChart, ChartType::CumulatedCasesCompare);
+    addNewChartView(newChart, chartType);
 }
 
 QtCharts::QDateTimeAxis* ChartWidget::createDateTimeAxis()
@@ -562,4 +573,39 @@ QtCharts::QChart *ChartWidget::createChart(const QString &title,
     chart->addAxis(yAxis, Qt::AlignLeft);
 
     return chart;
+}
+
+const CaseSeries<int> &ChartWidget::getSeriesReferenceInt(const CaseData &data,
+                                                          ChartWidget::ChartType chartType)
+{
+    switch(chartType) {
+        case CumulatedCasesCompare:
+            return data.casesCumulated;
+            break;
+        case CumulatedDeathsCompare:
+            return data.deathsCumulated;
+            break;
+        case DailyCasesCompare:
+            return data.cases;
+            break;
+        case DailyDeathsCompare:
+            return data.deaths;
+            break;
+        default:
+            return data.cases;
+            break;
+    }
+}
+
+const CaseSeries<float> &ChartWidget::getSeriesReferenceFloat(const CaseData &data,
+                                                              ChartWidget::ChartType chartType)
+{
+    switch(chartType) {
+        case SevenDayCasesCompare:
+            return data.casesSevenDayAverage;
+            break;
+        default:
+            return data.casesSevenDayAverage;
+            break;
+    }
 }
