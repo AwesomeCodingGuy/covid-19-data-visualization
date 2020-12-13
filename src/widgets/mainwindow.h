@@ -53,6 +53,7 @@ private:
     QString appSavePath;
 
     QTranslator *translator;
+    QTranslator *qtTranslator;
 
     MainContentWidget *mainContentWidget;
 

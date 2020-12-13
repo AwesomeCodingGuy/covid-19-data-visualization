@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // set language and install translator, before initializing the widgets
     translator = new QTranslator(this);
+    qtTranslator = new QTranslator(this);
     installTranslation();
 
     // init ui
@@ -122,5 +123,9 @@ void MainWindow::installTranslation()
 {
     if(translator->load("CovidDataVisualization_" + appSettings->getLanguageCode(), ":/languages/languages/")) {
         QCoreApplication::installTranslator(translator);
+    }
+
+    if(qtTranslator->load("qt_" + appSettings->getLanguageCode(), "./translations/")) {
+        QCoreApplication::installTranslator(qtTranslator);
     }
 }
