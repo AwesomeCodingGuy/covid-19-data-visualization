@@ -24,6 +24,7 @@
 #include "treeview.h"
 #include "mapwidget.h"
 #include "chartwidget.h"
+#include "optionsdialog.h"
 #include "../utils/downloadmanager.h"
 #include "../data/constants.h"
 #include "../data/appsettings.h"
@@ -84,6 +85,9 @@ void MainContentWidget::initUi()
     updateButton        = new QPushButton(QIcon(":/icons/images/icons/update_32x32.png"),
                                           tr("Daten herunterladen / aktualisieren"));
     contentToolBar      = new QToolBar();
+    auto tMargins = contentToolBar->contentsMargins();
+    tMargins.setRight(11);
+    contentToolBar->setContentsMargins(tMargins);
     contentButtonGroup  = new QButtonGroup(this);
 
     // Custom
@@ -118,20 +122,30 @@ void MainContentWidget::initUi()
     chartButton->setCheckable(true);
     chartButton->setChecked(true);
 
-
     contentButtonGroup->addButton(chartButton, StackedIndex::Chart);
     contentButtonGroup->addButton(mapButton, StackedIndex::Map);
     contentButtonGroup->setExclusive(true);
 
+    // Content switch
     contentToolBar->addWidget(chartButton);
     contentToolBar->addWidget(mapButton);
     contentToolBar->addSeparator();
+
+    // Selection and compare
     compareAction = contentToolBar->addAction(QIcon(":/icons/images/icons/compare_32x32.png"),
                                               tr("Vergleichen"), this, &MainContentWidget::compare);
     compareAction->setDisabled(true);
     clearSelectionAction = contentToolBar->addAction(QIcon(":/icons/images/icons/resetSelection_32x32.png"),
                                                      tr("Auswahl aufheben"), this, &MainContentWidget::clearSelection);
     clearSelectionAction->setDisabled(true);
+
+    // spacer and options
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    contentToolBar->addWidget(spacer);
+
+    optionAction = contentToolBar->addAction(QIcon(":/icons/images/icons/options_32x32.png"),
+                                             tr("Einstellungen"), this, &MainContentWidget::optionsRequested);
 
     contentWidget->insertWidget(StackedIndex::Chart, chartTabWidget);
     contentWidget->insertWidget(StackedIndex::Map, mapWidget);
@@ -246,7 +260,7 @@ void MainContentWidget::treeSelectionChanged(const QItemSelection &selected, con
 void MainContentWidget::treeContextMenuRequested(const QPoint &pos)
 {
     // init menu
-    QMenu contextMenu = QMenu(tr("TreeView"), this);
+    QMenu contextMenu = QMenu(this);
 
     // clear selection
     QAction ctxClearSelectionAction(QIcon(":/icons/images/icons/resetSelection_32x32.png"),
@@ -310,6 +324,12 @@ void MainContentWidget::compare()
     chartTabWidget->setCurrentIndex(newIndex);
 }
 
+void MainContentWidget::optionsRequested()
+{
+    OptionsDialog optionsDiag(&appSettings, this);
+    optionsDiag.exec();
+}
+
 void MainContentWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -317,6 +337,14 @@ void MainContentWidget::paintEvent(QPaintEvent *event)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void MainContentWidget::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QWidget::changeEvent(event);
 }
 
 void MainContentWidget::loadData()
@@ -404,10 +432,22 @@ void MainContentWidget::loadData()
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
             this, &MainContentWidget::treeSelectionChanged);
 
-
     // loading finished
     qDebug() << "Loading finished";
     if(progress) {
         delete progress;
     }
+}
+
+void MainContentWidget::retranslateUi()
+{
+    // PushButtons
+    mapButton->setText(tr("Karten"));
+    chartButton->setText(tr("Diagramme"));
+    updateButton->setText(tr("Daten herunterladen / aktualisieren"));
+
+    // ToolButtons
+    compareAction->setText(tr("Vergleichen"));
+    clearSelectionAction->setText(tr("Auswahl aufheben"));
+    optionAction->setText(tr("Einstellungen"));
 }

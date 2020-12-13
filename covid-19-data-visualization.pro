@@ -34,6 +34,7 @@ SOURCES += \
     src/widgets/mainwindow.cpp \
     src/widgets/mapview.cpp \
     src/widgets/mapwidget.cpp \
+    src/widgets/optionsdialog.cpp \
     src/widgets/spoilerwidget.cpp \
     src/widgets/treeview.cpp
 
@@ -63,6 +64,7 @@ HEADERS += \
     src/widgets/mainwindow.h \
     src/widgets/mapview.h \
     src/widgets/mapwidget.h \
+    src/widgets/optionsdialog.h \
     src/widgets/spoilerwidget.h \
     src/widgets/treeview.h
 
@@ -80,3 +82,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     data/data.qrc
+
+TRANSLATIONS = \
+    data/languages/CovidDataVisualization_de.ts \
+    data/languages/CovidDataVisualization_en.ts

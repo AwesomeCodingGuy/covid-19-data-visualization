@@ -87,6 +87,11 @@ private:
     const CaseSeries<float>& getSeriesReferenceFloat(const CaseData &data,
                                                      ChartType chartType);
 
+    void retranslateUi();
+
+protected:
+    virtual void changeEvent(QEvent *event);
+
 private:
     QVector<QDateTime> timestamps;
     CaseData caseData;

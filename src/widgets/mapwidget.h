@@ -27,11 +27,14 @@ public:
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void changeEvent(QEvent *event);
 
 private:
     void adjustSceneRect(QGraphicsScene *scene, int value);
     void initUi();
     void resetSceneMap();
+
+    void retranslateUi();
 
 public slots:
     void sceneSelectComboChanged(const QString &text);

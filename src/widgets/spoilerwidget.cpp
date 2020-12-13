@@ -80,6 +80,11 @@ void SpoilerWidget::setCollapsed(bool collapsed)
     toggleButton.setChecked(!collapsed);
 }
 
+void SpoilerWidget::setButtonName(const QString &title)
+{
+    toggleButton.setText(title);
+}
+
 void SpoilerWidget::toggle(bool collapsed)
 {
     // start the toggling animation

@@ -3,17 +3,19 @@
 #include "mapview.h"
 #include "spoilerwidget.h"
 #include "colorlegend.h"
+#include "../data/colors.h"
 #include "../data/coviddatatreeitem.h"
 #include "../utils/areaitem.h"
 
+#include <QEvent>
 #include <QScrollBar>
 #include <QDebug>
 #include <QBoxLayout>
 #include <QComboBox>
 
-constexpr int graphicsViewSpacing = 9;
-constexpr int initialScrollBarWidth = 17;
-constexpr int extraSpacing = 2;
+constexpr Q_DECL_UNUSED int graphicsViewSpacing     = 9;
+constexpr Q_DECL_UNUSED int initialScrollBarWidth   = 17;
+constexpr Q_DECL_UNUSED int extraSpacing            = 2;
 
 MapWidget::MapWidget(QWidget *parent)
     : QWidget(parent)
@@ -32,7 +34,7 @@ MapWidget::~MapWidget()
 void MapWidget::initUi()
 {
     mapView = new MapView();
-    mapView->setBackgroundBrush(QBrush(QColor(101, 102, 203)));
+    mapView->setBackgroundBrush(QBrush(colors::MapBg));
     mapView->scale(1, -1);
     mapView->setDragMode(QGraphicsView::ScrollHandDrag);
     connect(mapView, &MapView::pathItemDoubleClicked,
@@ -40,13 +42,14 @@ void MapWidget::initUi()
 
     QHBoxLayout *hLayout = new QHBoxLayout;
     hLayout->addWidget(mapView);
+    hLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(hLayout);
 
     // widgets without layout
     // Scene select combo
     sceneSelectCombo = new QComboBox(this);
-    sceneSelectCombo->move(graphicsViewSpacing + extraSpacing,
-                           graphicsViewSpacing + extraSpacing);
+    sceneSelectCombo->move(extraSpacing,
+                           extraSpacing);
     connect(sceneSelectCombo, &QComboBox::currentTextChanged,
             this, &MapWidget::sceneSelectComboChanged);
 
@@ -68,6 +71,12 @@ void MapWidget::resetSceneMap()
 
     // delete all items in combo box
     sceneSelectCombo->clear();
+}
+
+void MapWidget::retranslateUi()
+{
+    colorLegend->setButtonName(tr("Farblegende"));
+    colorLegend->updateGeometry();
 }
 
 void MapWidget::sceneSelectComboChanged(const QString &text)
@@ -153,8 +162,16 @@ void MapWidget::resizeEvent(QResizeEvent *event)
         scrollBarWidth = mapView->verticalScrollBar()->width();
     }
 
-    colorLegend->move(this->width() - colorLegend->width() - graphicsViewSpacing - scrollBarWidth - extraSpacing,
-                      graphicsViewSpacing + extraSpacing);
+    colorLegend->move(this->width() - colorLegend->width() - scrollBarWidth - extraSpacing,
+                      extraSpacing);
+}
+
+void MapWidget::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QWidget::changeEvent(event);
 }
 
 void MapWidget::adjustSceneRect(QGraphicsScene *scene, int value)

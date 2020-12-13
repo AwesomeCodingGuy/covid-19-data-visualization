@@ -12,6 +12,7 @@ class QAction;
 class QWidget;
 class QActionGroup;
 class QStackedWidget;
+class QTranslator;
 
 class AppSettings;
 
@@ -37,6 +38,8 @@ public:
 public slots:
     void closeEvent(QCloseEvent *event);
 
+    void translateApp();
+
 private slots:
 
 private:
@@ -44,9 +47,13 @@ private:
     void writeSettings();
     void initWidgets();
     bool userReallyWantsToQuit();
+    void installTranslation();
 
-    AppSettings appSettings;
+    AppSettings *appSettings;
     QString appSavePath;
+
+    QTranslator *translator;
+    QTranslator *qtTranslator;
 
     MainContentWidget *mainContentWidget;
 

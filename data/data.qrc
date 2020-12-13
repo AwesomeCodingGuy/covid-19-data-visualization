@@ -10,5 +10,10 @@
         <file>images/icons/update_32x32.png</file>
         <file>images/icons/compare_32x32.png</file>
         <file>images/icons/resetSelection_32x32.png</file>
+        <file>images/icons/options_32x32.png</file>
+    </qresource>
+    <qresource prefix="/languages">
+        <file>languages/CovidDataVisualization_de.qm</file>
+        <file>languages/CovidDataVisualization_en.qm</file>
     </qresource>
 </RCC>
