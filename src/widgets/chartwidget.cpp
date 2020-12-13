@@ -261,7 +261,7 @@ void ChartWidget::initDailyChart()
     sDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAverage = new QtCharts::QLineSeries();
     sAverage->setPen(QPen(colors::ChartColors[1], 2));
-    sAverage->setName(tr("7-Tage-Inzidenz"));
+    sAverage->setName(tr("7-Tage-Mittelwert"));
 
     // init series data
     for(int i = 0; i < timestamps.size(); ++i) {
@@ -315,7 +315,7 @@ void ChartWidget::initAccelerationChart()
     sAccDeaths->setName(tr("Todesfälle"));
     QtCharts::QLineSeries *sAccCases7= new QtCharts::QLineSeries();
     sAccCases7->setPen(QPen(colors::ChartColors[1], 2));
-    sAccCases7->setName(tr("7-Tage-Inzidenz"));
+    sAccCases7->setName(tr("7-Tage-Mittelwert"));
 
     // calculate rate
     int maxValueC = 0;
