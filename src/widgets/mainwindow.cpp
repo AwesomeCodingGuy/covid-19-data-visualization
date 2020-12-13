@@ -14,18 +14,29 @@
 #include <QStandardPaths>
 #include <QCoreApplication>
 #include <QApplication>
+#include <QTranslator>
 #include <QDesktopWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    appSettings = new AppSettings(this);
+
     // get path to Application data
     appSavePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    appSettings.downloadFolder = QString("%1/downloads/").arg(appSavePath);
+    appSettings->downloadFolder = QString("%1/downloads/").arg(appSavePath);
 
     readSettings();
 
+    // set language and install translator, before initializing the widgets
+    translator = new QTranslator(this);
+    installTranslation();
+
+    // init ui
     initWidgets();
+
+    // connect the language chaged slot, after the ui initialization
+    connect(appSettings, &AppSettings::languageChanged, this, &MainWindow::translateApp);
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +46,7 @@ MainWindow::~MainWindow()
 
 AppSettings& MainWindow::getAppSettings()
 {
-    return appSettings;
+    return *appSettings;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -48,6 +59,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
+void MainWindow::translateApp()
+{
+    installTranslation();
+
+}
+
 void MainWindow::readSettings()
 {
     // use path in %APPDATA%/APPNAME/ (for Windows)
@@ -58,6 +75,9 @@ void MainWindow::readSettings()
     const QSize initialWindowSize = QSize(800, 600);
 
     // load settings
+    settings.beginGroup("app");
+    appSettings->setLanguageCode(settings.value("lang", QLocale::system().name()).toString());
+    settings.endGroup();
     settings.beginGroup("mainwindow");
     resize(settings.value("size", initialWindowSize).toSize());
     move(settings.value("pos", QPoint((desktopRect.width() - initialWindowSize.width()) / 2,
@@ -72,6 +92,9 @@ void MainWindow::writeSettings()
                        QSettings::IniFormat);
 
     // write settings
+    settings.beginGroup("app");
+    settings.setValue("lang", appSettings->getLanguageCode());
+    settings.endGroup();
     settings.beginGroup("mainwindow");
     settings.setValue("size", size());
     settings.setValue("pos", pos());
@@ -80,7 +103,7 @@ void MainWindow::writeSettings()
 
 void MainWindow::initWidgets()
 {
-    mainContentWidget = new MainContentWidget(appSettings);
+    mainContentWidget = new MainContentWidget(*appSettings);
     mainContentWidget->show();
     this->setCentralWidget(mainContentWidget);
 }
@@ -93,4 +116,11 @@ bool MainWindow::userReallyWantsToQuit()
                                   tr("Möchten Sie die Anwendung wirklich schließen?"),
                                   QMessageBox::Yes | QMessageBox::No);
     return (reply == QMessageBox::Yes);
+}
+
+void MainWindow::installTranslation()
+{
+    if(translator->load("CovidDataVisualization_" + appSettings->getLanguageCode(), ":/languages/languages/")) {
+        QCoreApplication::installTranslator(translator);
+    }
 }

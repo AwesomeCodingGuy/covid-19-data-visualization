@@ -24,6 +24,7 @@
 #include "treeview.h"
 #include "mapwidget.h"
 #include "chartwidget.h"
+#include "optionsdialog.h"
 #include "../utils/downloadmanager.h"
 #include "../data/constants.h"
 #include "../data/appsettings.h"
@@ -326,7 +327,8 @@ void MainContentWidget::compare()
 
 void MainContentWidget::optionsRequested()
 {
-
+    OptionsDialog optionsDiag(&appSettings, this);
+    optionsDiag.exec();
 }
 
 void MainContentWidget::paintEvent(QPaintEvent *event)

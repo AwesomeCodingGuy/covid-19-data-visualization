@@ -95,84 +95,84 @@
 <context>
     <name>MainContentWidget</name>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="81"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="82"/>
         <source>Karten</source>
         <translation>Karten</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="83"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="84"/>
         <source>Diagramme</source>
         <translation>Diagramme</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="85"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="86"/>
         <source>Daten herunterladen / aktualisieren</source>
         <translation>Daten herunterladen / aktualisieren</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="136"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="275"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="303"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="309"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="137"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="276"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="304"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="310"/>
         <source>Vergleichen</source>
         <translation>Vergleichen</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="139"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="267"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="140"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="268"/>
         <source>Auswahl aufheben</source>
         <translation>Auswahl aufheben</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="148"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="149"/>
         <source>Einstellungen</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="187"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="188"/>
         <source>Dateien werden heruntergeladen...</source>
         <translation>Dateien werden heruntergeladen...</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="237"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="238"/>
         <source>Fehler</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="237"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="238"/>
         <source>Keine Daten vorhanden</source>
         <translation>Keine Daten vorhanden</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="263"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="264"/>
         <source>TreeView</source>
         <translation>TreeView</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="304"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="305"/>
         <source>Es sind zu viele Daten ausgewählt.
 Bitte beschränken Sie sich auf 17 Datensätze.</source>
         <translation>Es sind zu viele Daten ausgewählt.
 Bitte beschränken Sie sich auf 17 Datensätze.</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="310"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="311"/>
         <source>Zum Vergleichen müssen mindestens 2 Datensätze ausgewählt sein.</source>
         <translation>Zum Vergleichen müssen mindestens 2 Datensätze ausgewählt sein.</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="323"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="324"/>
         <source>Vergleich</source>
         <translation>Vergleich</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="358"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="365"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="360"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="367"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="359"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="361"/>
         <source>Es sind keine Daten vorhanden.
 
 Bitte drücken sie den Button zum Herunterladen der aktuellen Daten.</source>
@@ -181,7 +181,7 @@ Bitte drücken sie den Button zum Herunterladen der aktuellen Daten.</source>
 Bitte drücken sie den Button zum Herunterladen der aktuellen Daten.</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="366"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="368"/>
         <source>Es fehlen Daten. Die Anwendung kann mit den vorhandenen Daten fortfahren.
 
 Möchten Sie den Ladevorgang fortsetzen?</source>
@@ -190,31 +190,31 @@ Möchten Sie den Ladevorgang fortsetzen?</source>
 Möchten Sie den Ladevorgang fortsetzen?</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="386"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="394"/>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="402"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="388"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="396"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="404"/>
         <source>Datensätze werden gelesen...
 </source>
         <translation>Datensätze werden gelesen...
 </translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="386"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="388"/>
         <source>Deutschland</source>
         <translation>Deutschland</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="394"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="396"/>
         <source>USA</source>
         <translation>USA</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="402"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="404"/>
         <source>World</source>
         <translation>Welt</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/maincontentwidget.cpp" line="410"/>
+        <location filename="../../src/widgets/maincontentwidget.cpp" line="412"/>
         <source>Karten werden gemalt...</source>
         <translation>Karten werden gemalt...</translation>
     </message>
@@ -222,12 +222,12 @@ Möchten Sie den Ladevorgang fortsetzen?</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../src/widgets/mainwindow.cpp" line="92"/>
+        <location filename="../../src/widgets/mainwindow.cpp" line="113"/>
         <source>Anwendung schließen</source>
         <translation>Anwendung schließen</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/mainwindow.cpp" line="93"/>
+        <location filename="../../src/widgets/mainwindow.cpp" line="114"/>
         <source>Möchten Sie die Anwendung wirklich schließen?</source>
         <translation>Möchten Sie die Anwendung wirklich schließen?</translation>
     </message>
@@ -238,6 +238,39 @@ Möchten Sie den Ladevorgang fortsetzen?</translation>
         <location filename="../../src/widgets/mapwidget.cpp" line="59"/>
         <source>Farblegende</source>
         <translation>Farblegende</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="24"/>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="79"/>
+        <source>Einstellungen</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="28"/>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="81"/>
+        <source>Englisch</source>
+        <translation>Englisch</translation>
+    </message>
+    <message>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="30"/>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="82"/>
+        <source>Deutsch</source>
+        <translation>Deutsch</translation>
+    </message>
+    <message>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="45"/>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="80"/>
+        <source>Sprache</source>
+        <translation>Sprache</translation>
+    </message>
+    <message>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="54"/>
+        <location filename="../../src/widgets/optionsdialog.cpp" line="83"/>
+        <source>Schließen</source>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>

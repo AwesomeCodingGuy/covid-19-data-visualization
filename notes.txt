@@ -1,0 +1,3 @@
+green: 00b56bff
+blue: 0098cbff
+red: b10042ff
