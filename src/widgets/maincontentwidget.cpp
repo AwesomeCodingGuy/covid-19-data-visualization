@@ -122,7 +122,6 @@ void MainContentWidget::initUi()
     chartButton->setCheckable(true);
     chartButton->setChecked(true);
 
-
     contentButtonGroup->addButton(chartButton, StackedIndex::Chart);
     contentButtonGroup->addButton(mapButton, StackedIndex::Map);
     contentButtonGroup->setExclusive(true);

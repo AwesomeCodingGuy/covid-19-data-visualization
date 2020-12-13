@@ -3,6 +3,7 @@
 #include "mapview.h"
 #include "spoilerwidget.h"
 #include "colorlegend.h"
+#include "../data/colors.h"
 #include "../data/coviddatatreeitem.h"
 #include "../utils/areaitem.h"
 
@@ -33,7 +34,7 @@ MapWidget::~MapWidget()
 void MapWidget::initUi()
 {
     mapView = new MapView();
-    mapView->setBackgroundBrush(QBrush(QColor(101, 102, 203)));
+    mapView->setBackgroundBrush(QBrush(colors::MapBg));
     mapView->scale(1, -1);
     mapView->setDragMode(QGraphicsView::ScrollHandDrag);
     connect(mapView, &MapView::pathItemDoubleClicked,
