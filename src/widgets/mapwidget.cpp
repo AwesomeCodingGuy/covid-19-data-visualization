@@ -12,7 +12,7 @@
 #include <QBoxLayout>
 #include <QComboBox>
 
-constexpr int graphicsViewSpacing = 9;
+// constexpr int graphicsViewSpacing = 9;
 constexpr int initialScrollBarWidth = 17;
 constexpr int extraSpacing = 2;
 
@@ -41,13 +41,14 @@ void MapWidget::initUi()
 
     QHBoxLayout *hLayout = new QHBoxLayout;
     hLayout->addWidget(mapView);
+    hLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(hLayout);
 
     // widgets without layout
     // Scene select combo
     sceneSelectCombo = new QComboBox(this);
-    sceneSelectCombo->move(graphicsViewSpacing + extraSpacing,
-                           graphicsViewSpacing + extraSpacing);
+    sceneSelectCombo->move(extraSpacing,
+                           extraSpacing);
     connect(sceneSelectCombo, &QComboBox::currentTextChanged,
             this, &MapWidget::sceneSelectComboChanged);
 
@@ -160,8 +161,8 @@ void MapWidget::resizeEvent(QResizeEvent *event)
         scrollBarWidth = mapView->verticalScrollBar()->width();
     }
 
-    colorLegend->move(this->width() - colorLegend->width() - graphicsViewSpacing - scrollBarWidth - extraSpacing,
-                      graphicsViewSpacing + extraSpacing);
+    colorLegend->move(this->width() - colorLegend->width() - scrollBarWidth - extraSpacing,
+                      extraSpacing);
 }
 
 void MapWidget::changeEvent(QEvent *event)
