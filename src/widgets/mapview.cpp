@@ -87,7 +87,6 @@ void MapView::wheelEvent(QWheelEvent *event)
 
         // move Scene to old position
         QPointF deltaPos = newPos - oldPos;
-        qDebug() << deltaPos;
         translate(deltaPos.x(), deltaPos.y());
     }
 }
