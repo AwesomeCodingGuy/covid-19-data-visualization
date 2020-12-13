@@ -20,7 +20,7 @@ OptionsDialog::OptionsDialog(AppSettings *settings, QWidget *parent)
 
 void OptionsDialog::initUi()
 {
-    resize(200, 150);
+    resize(300, 100);
     setWindowTitle(tr("Einstellungen"));
 
     // left layout, with radio buttons
@@ -43,12 +43,15 @@ void OptionsDialog::initUi()
 
     // build the layout
     languageLabel = new QLabel(tr("Sprache"));
+    infoLabel = new QLabel(tr("Hinweis:\nFür eine vollständige Übersetzung muss die Anwendung neugestartet werden."));
+    infoLabel->setWordWrap(true);
 
     QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->addWidget(languageLabel);
     leftLayout->addWidget(germanRadio);
     leftLayout->addWidget(englishRadio);
     leftLayout->addStretch();
+    leftLayout->addWidget(infoLabel);
 
     // right layout
     closeButton = new QPushButton(tr("Schließen"));
@@ -78,6 +81,7 @@ void OptionsDialog::retranslateUi()
 {
     setWindowTitle(tr("Einstellungen"));
     languageLabel->setText(tr("Sprache"));
+    infoLabel->setText(tr("Hinweis:\nFür eine vollständige Übersetzung muss die Anwendung neugestartet werden."));
     englishRadio->setText(tr("Englisch"));
     germanRadio->setText(tr("Deutsch"));
     closeButton->setText(tr("Schließen"));

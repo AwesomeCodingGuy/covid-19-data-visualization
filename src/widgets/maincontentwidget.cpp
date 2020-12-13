@@ -261,7 +261,7 @@ void MainContentWidget::treeSelectionChanged(const QItemSelection &selected, con
 void MainContentWidget::treeContextMenuRequested(const QPoint &pos)
 {
     // init menu
-    QMenu contextMenu = QMenu(tr("TreeView"), this);
+    QMenu contextMenu = QMenu(this);
 
     // clear selection
     QAction ctxClearSelectionAction(QIcon(":/icons/images/icons/resetSelection_32x32.png"),
@@ -338,6 +338,14 @@ void MainContentWidget::paintEvent(QPaintEvent *event)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void MainContentWidget::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QWidget::changeEvent(event);
 }
 
 void MainContentWidget::loadData()
@@ -425,10 +433,22 @@ void MainContentWidget::loadData()
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
             this, &MainContentWidget::treeSelectionChanged);
 
-
     // loading finished
     qDebug() << "Loading finished";
     if(progress) {
         delete progress;
     }
+}
+
+void MainContentWidget::retranslateUi()
+{
+    // PushButtons
+    mapButton->setText(tr("Karten"));
+    chartButton->setText(tr("Diagramme"));
+    updateButton->setText(tr("Daten herunterladen / aktualisieren"));
+
+    // ToolButtons
+    compareAction->setText(tr("Vergleichen"));
+    clearSelectionAction->setText(tr("Auswahl aufheben"));
+    optionAction->setText(tr("Einstellungen"));
 }

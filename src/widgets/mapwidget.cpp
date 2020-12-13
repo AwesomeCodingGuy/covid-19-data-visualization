@@ -6,6 +6,7 @@
 #include "../data/coviddatatreeitem.h"
 #include "../utils/areaitem.h"
 
+#include <QEvent>
 #include <QScrollBar>
 #include <QDebug>
 #include <QBoxLayout>
@@ -68,6 +69,12 @@ void MapWidget::resetSceneMap()
 
     // delete all items in combo box
     sceneSelectCombo->clear();
+}
+
+void MapWidget::retranslateUi()
+{
+    colorLegend->setButtonName(tr("Farblegende"));
+    colorLegend->updateGeometry();
 }
 
 void MapWidget::sceneSelectComboChanged(const QString &text)
@@ -155,6 +162,14 @@ void MapWidget::resizeEvent(QResizeEvent *event)
 
     colorLegend->move(this->width() - colorLegend->width() - graphicsViewSpacing - scrollBarWidth - extraSpacing,
                       graphicsViewSpacing + extraSpacing);
+}
+
+void MapWidget::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QWidget::changeEvent(event);
 }
 
 void MapWidget::adjustSceneRect(QGraphicsScene *scene, int value)

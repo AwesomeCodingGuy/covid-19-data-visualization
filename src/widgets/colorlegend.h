@@ -14,12 +14,18 @@ public:
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
+    virtual void changeEvent(QEvent *event);
+
+private:
+    void retranslateUi();
 
 signals:
 
 private:
     QGridLayout layout;
 
+    QLabel          *headlineLabel;
+    QList<QLabel*>  valueLabels;
 };
 
 #endif // COLORLEGEND_H

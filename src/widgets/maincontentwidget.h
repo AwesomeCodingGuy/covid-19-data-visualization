@@ -61,9 +61,11 @@ public slots:
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
+    virtual void changeEvent(QEvent *event);
 
 private:
     void loadData();
+    void retranslateUi();
 
 private:
     // Widgets

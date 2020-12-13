@@ -609,3 +609,16 @@ const CaseSeries<float> &ChartWidget::getSeriesReferenceFloat(const CaseData &da
             break;
     }
 }
+
+void ChartWidget::retranslateUi()
+{
+
+}
+
+void ChartWidget::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QWidget::changeEvent(event);
+}

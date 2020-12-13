@@ -40,6 +40,7 @@ private:
 
     QPushButton *closeButton;
     QLabel *languageLabel;
+    QLabel *infoLabel;
     QButtonGroup *radioButtonGroup;
     QRadioButton *englishRadio;
     QRadioButton *germanRadio;

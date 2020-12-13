@@ -19,6 +19,8 @@ public:
     void setContentLayout(QLayout &contentLayout);
     void setCollapsed(bool collapsed);
 
+    void setButtonName(const QString &title);
+
 public:
     void toggle(bool collapsed);
 
