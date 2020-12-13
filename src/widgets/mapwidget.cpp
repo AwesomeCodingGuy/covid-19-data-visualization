@@ -13,9 +13,9 @@
 #include <QBoxLayout>
 #include <QComboBox>
 
-// constexpr int graphicsViewSpacing = 9;
-constexpr int initialScrollBarWidth = 17;
-constexpr int extraSpacing = 2;
+constexpr Q_DECL_UNUSED int graphicsViewSpacing     = 9;
+constexpr Q_DECL_UNUSED int initialScrollBarWidth   = 17;
+constexpr Q_DECL_UNUSED int extraSpacing            = 2;
 
 MapWidget::MapWidget(QWidget *parent)
     : QWidget(parent)
